@@ -2,12 +2,89 @@
 import Layout from "../../components/Layout.astro";
 ---
 
-<Layout title="謝罪文メーカー｜1分ツール" description="謝罪文メーカーは準備中です。">
+<Layout
+  title="謝罪文メーカー｜遅延・ミスのお詫びメールを作成"
+  description="遅延、返信漏れ、納期遅れ、添付ミスなどの謝罪メールを、状況に合わせて短時間で作れます。入力内容はブラウザ内で処理されます。"
+>
   <main class="page">
-    <div class="container content">
-      <h1>謝罪文メーカー</h1>
-      <p>このツールは準備中です。遅延、ミス、連絡漏れなどのお詫びメールを作れるようにする予定です。</p>
-      <p><a href="/tools/keigo-mail/">敬語メール返信メーカー</a> は利用できます。</p>
+    <div class="container">
+      <section class="hero" style="padding-top: 10px;">
+        <span class="hero__label">メール</span>
+        <h1>謝罪文メーカー</h1>
+        <p>遅延、返信漏れ、納期遅れ、添付ミスなどのお詫びメールを、状況に合わせて丁寧な文面に整えます。</p>
+      </section>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2>入力</h2>
+          <div class="hint">謝罪文は「何が起きたか」「今どうするか」「次に防ぐか」を入れると伝わりやすくなります。</div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="situation">謝罪の内容</label>
+              <select id="situation">
+                <option value="lateReply">返信が遅れた</option>
+                <option value="delay">対応・納期が遅れた</option>
+                <option value="mistake">内容にミスがあった</option>
+                <option value="attachment">添付・送付漏れがあった</option>
+                <option value="schedule">予定変更をお願いする</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="recipient">相手</label>
+              <select id="recipient">
+                <option value="external">取引先</option>
+                <option value="customer">お客様</option>
+                <option value="boss">上司</option>
+                <option value="internal">社内</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>文章の長さ</label>
+            <div class="segmented" data-group="length">
+              <button type="button" data-value="short">短め</button>
+              <button type="button" data-value="medium" class="active">標準</button>
+              <button type="button" data-value="long">丁寧</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="whatHappened">何が起きたか</label>
+            <textarea id="whatHappened" placeholder="例：ご依頼いただいた資料の送付が予定より遅れてしまった"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="nextAction">今後の対応</label>
+            <textarea id="nextAction" placeholder="例：本日18時までに確認し、修正版をお送りします"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="prevention">再発防止・補足</label>
+            <textarea id="prevention" placeholder="例：確認手順を見直し、送付前のチェックを徹底します"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" id="generateBtn" type="button">謝罪文を作る</button>
+            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="clearBtn" type="button">クリア</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>出力</h2>
+          <div id="output" class="output"></div>
+          <div class="template-grid">
+            <button class="template-button" type="button" data-template="lateReply">返信遅れ</button>
+            <button class="template-button" type="button" data-template="delay">納期遅れ</button>
+            <button class="template-button" type="button" data-template="attachment">添付漏れ</button>
+          </div>
+        </section>
+      </div>
     </div>
   </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline src="/scripts/apology-mail.js"></script>
 </Layout>
