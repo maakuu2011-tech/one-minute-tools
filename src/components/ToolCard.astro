@@ -1,0 +1,11 @@
+---
+const { tool } = Astro.props;
+const isSoon = tool.status !== "公開中";
+---
+
+<a class="tool-card" href={tool.href}>
+  <span class="tool-card__category">{tool.category}</span>
+  <h3>{tool.title}</h3>
+  <p>{tool.description}</p>
+  <span class:list={["tool-card__status", { "is-soon": isSoon }]}>{tool.status}</span>
+</a>

@@ -1,0 +1,95 @@
+---
+import Layout from "../../components/Layout.astro";
+---
+
+<Layout
+  title="敬語メール返信メーカー｜自然なビジネスメール返信を作成"
+  description="相手のメールを貼って、目的や丁寧さを選ぶだけで、自然な敬語の返信文を作成できます。入力内容はブラウザ内で処理されます。"
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero" style="padding-top: 10px;">
+        <span class="hero__label">メール</span>
+        <h1>敬語メール返信メーカー</h1>
+        <p>相手から来たメールを貼って、目的を選ぶだけ。自然な敬語の返信文をすぐ作れます。</p>
+      </section>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2>入力</h2>
+          <div class="hint">入力内容はサーバーに送信されません。このページ内の処理だけで返信文を作成します。</div>
+
+          <div class="field">
+            <label for="incoming">相手から来たメール</label>
+            <textarea id="incoming" placeholder="例: 先日ご相談した件ですが、今週中にお見積りをいただくことは可能でしょうか。"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="purpose">返信の目的</label>
+              <select id="purpose">
+                <option value="accept">了承する</option>
+                <option value="delay">少し待ってもらう</option>
+                <option value="decline">丁寧に断る</option>
+                <option value="ask">追加で確認する</option>
+                <option value="apology">謝罪する</option>
+                <option value="thanks">お礼を伝える</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="relationship">相手</label>
+              <select id="relationship">
+                <option value="external">社外・取引先</option>
+                <option value="customer">お客様</option>
+                <option value="boss">上司</option>
+                <option value="colleague">同僚</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>丁寧さ</label>
+            <div class="segmented" data-group="politeness">
+              <button type="button" data-value="normal" class="active">標準</button>
+              <button type="button" data-value="formal">かなり丁寧</button>
+              <button type="button" data-value="soft">やわらかめ</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>長さ</label>
+            <div class="segmented" data-group="length">
+              <button type="button" data-value="short">短め</button>
+              <button type="button" data-value="medium" class="active">普通</button>
+              <button type="button" data-value="long">詳しめ</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="details">入れたい内容</label>
+            <textarea id="details" placeholder="例: 本日中に確認し、明日午前中までに見積書を送る"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" id="generateBtn" type="button">返信文を作る</button>
+            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="clearBtn" type="button">クリア</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>出力</h2>
+          <div id="output" class="output"></div>
+          <div class="template-grid">
+            <button class="template-button" type="button" data-template="estimate">見積り返信</button>
+            <button class="template-button" type="button" data-template="meeting">日程調整</button>
+            <button class="template-button" type="button" data-template="apology">遅延のお詫び</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline src="/scripts/keigo-mail.js"></script>
+</Layout>

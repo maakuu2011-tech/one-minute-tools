@@ -1,0 +1,21 @@
+---
+import Layout from "../../components/Layout.astro";
+import ToolCard from "../../components/ToolCard.astro";
+import tools from "../../data/tools.json";
+---
+
+<Layout title="ツール一覧｜1分ツール" description="1分ツールで使える無料ツールの一覧です。">
+  <main class="page">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <h1>ツール一覧</h1>
+          <p class="section__note">必要なときにすぐ使える小さな道具を追加していきます。</p>
+        </div>
+      </div>
+      <div class="tool-grid">
+        {tools.map((tool) => <ToolCard tool={tool} />)}
+      </div>
+    </div>
+  </main>
+</Layout>

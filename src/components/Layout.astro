@@ -1,0 +1,47 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "1分ツール",
+  description = "仕事や生活のちょっと困ったをすぐ片づける小ツール集です。",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="/">
+          <span class="brand__mark">1</span>
+          <span>
+            <span class="brand__name">1分ツール</span>
+            <span class="brand__note">すぐ使える小さな道具箱</span>
+          </span>
+        </a>
+        <nav class="nav" aria-label="メインナビゲーション">
+          <a href="/tools/">ツール一覧</a>
+          <a href="/about/">このサイトについて</a>
+          <a href="/privacy/">プライバシー</a>
+        </nav>
+      </div>
+    </header>
+    <slot />
+    <footer class="site-footer">
+      <div class="container">
+        <div>© 1分ツール</div>
+        <div class="footer-links">
+          <a href="/about/">このサイトについて</a>
+          <a href="/privacy/">プライバシーポリシー</a>
+          <a href="/contact/">お問い合わせ</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

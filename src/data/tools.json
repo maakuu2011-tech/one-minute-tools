@@ -1,0 +1,29 @@
+[
+  {
+    "id": "keigo-mail",
+    "title": "敬語メール返信メーカー",
+    "description": "相手のメールを貼って、自然な敬語の返信文を作れます。",
+    "category": "メール",
+    "href": "/tools/keigo-mail/",
+    "status": "公開中",
+    "keywords": ["敬語", "メール返信", "ビジネスメール"]
+  },
+  {
+    "id": "apology-mail",
+    "title": "謝罪文メーカー",
+    "description": "遅延やミスのお詫びメールを、丁寧な文面に整えます。",
+    "category": "メール",
+    "href": "/tools/apology-mail/",
+    "status": "準備中",
+    "keywords": ["謝罪文", "お詫びメール", "ビジネス"]
+  },
+  {
+    "id": "thanks-mail",
+    "title": "お礼メールメーカー",
+    "description": "取引先や社内向けのお礼メールをすぐ作れます。",
+    "category": "メール",
+    "href": "/tools/thanks-mail/",
+    "status": "準備中",
+    "keywords": ["お礼メール", "文例", "敬語"]
+  }
+]
