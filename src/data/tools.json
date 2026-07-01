@@ -1,5 +1,14 @@
 [
   {
+    "id": "chat-reply",
+    "title": "チャット返信メーカー",
+    "description": "LINEやSlackの返事を、短く・丁寧・やわらかく整えます。",
+    "category": "チャット",
+    "href": "/tools/chat-reply/",
+    "status": "公開中",
+    "keywords": ["チャット返信", "LINE返信", "言い換え"]
+  },
+  {
     "id": "keigo-mail",
     "title": "敬語メール返信メーカー",
     "description": "相手のメールを貼って、自然な敬語の返信文を作れます。",

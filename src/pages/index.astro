@@ -3,20 +3,20 @@ import Layout from "../components/Layout.astro";
 import ToolCard from "../components/ToolCard.astro";
 import tools from "../data/tools.json";
 
-const publishedTools = tools.slice(0, 3);
+const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
 ---
 
 <Layout
-  title="1分ツール｜仕事や生活の小さな困りごとをすぐ解決"
-  description="敬語メール、謝罪文、お礼文など、仕事や生活の小さな困りごとをすぐ片づける無料ツール集です。"
+  title="1分ツール｜チャット返信や文章作成をすぐ整える"
+  description="チャット返信、敬語メール、謝罪文、お礼文など、仕事や生活の小さな文章作成をすぐ片づける無料ツール集です。"
 >
   <main>
     <section class="hero">
       <div class="container">
         <span class="hero__label">無料で使える小ツール集</span>
-        <h1>仕事や生活の「ちょっと困った」を1分で片づける。</h1>
+        <h1>返し方に困る文章を、1分で整える。</h1>
         <p>
-          メール文、文章整理、ちょっとした計算。毎回考えるのが面倒な作業を、
+          チャット返信、メール文、謝罪文、お礼文。毎回考えるのが面倒な文章を、
           すぐ使える小さなツールとしてまとめています。
         </p>
       </div>
@@ -27,7 +27,7 @@ const publishedTools = tools.slice(0, 3);
         <div class="section__head">
           <div>
             <h2>ツール</h2>
-            <p class="section__note">まずは仕事の文章まわりから増やしています。</p>
+            <p class="section__note">チャットやメールなど、返し方に困る文章から増やしています。</p>
           </div>
           <a class="button secondary" href="/tools/">すべて見る</a>
         </div>

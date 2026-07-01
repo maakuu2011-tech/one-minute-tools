@@ -1,0 +1,96 @@
+---
+import Layout from "../../components/Layout.astro";
+---
+
+<Layout
+  title="チャット返信メーカー｜LINE・Slackの返事を作成"
+  description="LINE、Slack、Teams、DMなどの返信文を、短め・丁寧・やわらかめなどの雰囲気に合わせて作れます。"
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero" style="padding-top: 10px;">
+        <span class="hero__label">チャット</span>
+        <h1>チャット返信メーカー</h1>
+        <p>LINE、Slack、Teams、DMなどの返事を、短く・丁寧・やわらかく整えます。</p>
+      </section>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2>入力</h2>
+          <div class="hint">相手のメッセージを貼って、返事の目的と雰囲気を選ぶだけで返信文を作れます。</div>
+
+          <div class="field">
+            <label for="incoming">相手から来たメッセージ</label>
+            <textarea id="incoming" placeholder="例：明日の打ち合わせ、30分早めることってできますか？"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="purpose">返事の目的</label>
+              <select id="purpose">
+                <option value="ok">OKする</option>
+                <option value="decline">断る</option>
+                <option value="delay">少し待ってもらう</option>
+                <option value="confirm">確認する</option>
+                <option value="thanks">お礼する</option>
+                <option value="apology">謝る</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="relationship">相手</label>
+              <select id="relationship">
+                <option value="work">仕事相手</option>
+                <option value="boss">上司</option>
+                <option value="colleague">同僚</option>
+                <option value="friend">友達</option>
+                <option value="family">家族</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>雰囲気</label>
+            <div class="segmented" data-group="tone">
+              <button type="button" data-value="polite" class="active">丁寧</button>
+              <button type="button" data-value="soft">やわらかめ</button>
+              <button type="button" data-value="casual">カジュアル</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>長さ</label>
+            <div class="segmented" data-group="length">
+              <button type="button" data-value="short" class="active">短め</button>
+              <button type="button" data-value="medium">標準</button>
+              <button type="button" data-value="long">丁寧に</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="detail">入れたい内容</label>
+            <textarea id="detail" placeholder="例：明日は15時以降なら可能。難しければ別日でもOK。"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" id="generateBtn" type="button">返信を作る</button>
+            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="clearBtn" type="button">クリア</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>出力</h2>
+          <div id="output" class="output"></div>
+          <div class="template-grid">
+            <button class="template-button" type="button" data-template="schedule">日程調整</button>
+            <button class="template-button" type="button" data-template="decline">断り</button>
+            <button class="template-button" type="button" data-template="late">返信遅れ</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline src="/scripts/chat-reply.js"></script>
+</Layout>
