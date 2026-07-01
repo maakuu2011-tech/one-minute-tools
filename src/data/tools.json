@@ -34,5 +34,275 @@
     "href": "/tools/thanks-mail/",
     "status": "公開中",
     "keywords": ["お礼メール", "文例", "敬語"]
+  },
+  {
+    "id": "decline-reply",
+    "title": "断り方メーカー",
+    "description": "誘い・依頼・営業を、角が立たない言い方で断れます。",
+    "category": "断り方",
+    "href": "/tools/decline-reply/",
+    "status": "公開中",
+    "keywords": ["断り方", "断る文例", "角が立たない"]
+  },
+  {
+    "id": "invitation-decline",
+    "title": "誘いの断り方メーカー",
+    "description": "飲み会や予定の誘いを、気まずくならない文面に整えます。",
+    "category": "断り方",
+    "href": "/tools/invitation-decline/",
+    "status": "公開中",
+    "keywords": ["誘い 断り方", "LINE 断る", "飲み会 断り方"]
+  },
+  {
+    "id": "work-request-decline",
+    "title": "仕事依頼の断り方メーカー",
+    "description": "仕事の依頼を、失礼なく断る文章に整えます。",
+    "category": "断り方",
+    "href": "/tools/work-request-decline/",
+    "status": "公開中",
+    "keywords": ["仕事 断り方", "依頼 断る", "ビジネス 断り方"]
+  },
+  {
+    "id": "sales-dm-decline",
+    "title": "営業DMの断り方メーカー",
+    "description": "営業メッセージへの返信を、短く丁寧に断れます。",
+    "category": "断り方",
+    "href": "/tools/sales-dm-decline/",
+    "status": "公開中",
+    "keywords": ["営業DM 断り方", "営業 返信", "DM 断る"]
+  },
+  {
+    "id": "follow-up-message",
+    "title": "催促文メーカー",
+    "description": "返信や対応を、感じ悪くならない形で催促できます。",
+    "category": "催促",
+    "href": "/tools/follow-up-message/",
+    "status": "公開中",
+    "keywords": ["催促文", "催促 メール", "返信 催促"]
+  },
+  {
+    "id": "reply-reminder",
+    "title": "返信催促メーカー",
+    "description": "返事がない相手に送る、やわらかい催促文を作れます。",
+    "category": "催促",
+    "href": "/tools/reply-reminder/",
+    "status": "公開中",
+    "keywords": ["返信催促", "返事がない", "催促 LINE"]
+  },
+  {
+    "id": "boss-reminder",
+    "title": "上司への催促文メーカー",
+    "description": "上司に確認をお願いする文章を、失礼なく整えます。",
+    "category": "催促",
+    "href": "/tools/boss-reminder/",
+    "status": "公開中",
+    "keywords": ["上司 催促", "上司 確認 お願い", "催促 敬語"]
+  },
+  {
+    "id": "client-reminder",
+    "title": "取引先への催促メールメーカー",
+    "description": "取引先への確認依頼や返信催促を、丁寧な文面にします。",
+    "category": "催促",
+    "href": "/tools/client-reminder/",
+    "status": "公開中",
+    "keywords": ["取引先 催促", "催促メール", "確認依頼"]
+  },
+  {
+    "id": "soft-rewrite",
+    "title": "やわらか言い換えメーカー",
+    "description": "きつく見える文章を、やわらかい表現に直します。",
+    "category": "言い換え",
+    "href": "/tools/soft-rewrite/",
+    "status": "公開中",
+    "keywords": ["やわらかい言い換え", "文章 言い換え", "きつい 表現"]
+  },
+  {
+    "id": "harsh-to-soft",
+    "title": "きつい文章をやわらかくするツール",
+    "description": "強く見える文章を、相手に伝わる穏やかな言い方へ整えます。",
+    "category": "言い換え",
+    "href": "/tools/harsh-to-soft/",
+    "status": "公開中",
+    "keywords": ["きつい文章", "やわらかくする", "言い換え"]
+  },
+  {
+    "id": "keigo-converter",
+    "title": "敬語変換メーカー",
+    "description": "普段の文章を、仕事で使いやすい敬語に整えます。",
+    "category": "言い換え",
+    "href": "/tools/keigo-converter/",
+    "status": "公開中",
+    "keywords": ["敬語変換", "敬語に直す", "ビジネス敬語"]
+  },
+  {
+    "id": "casual-converter",
+    "title": "タメ口変換メーカー",
+    "description": "硬い文章を、友達向けの自然な言い方に直します。",
+    "category": "言い換え",
+    "href": "/tools/casual-converter/",
+    "status": "公開中",
+    "keywords": ["タメ口変換", "カジュアル 言い換え", "LINE 文章"]
+  },
+  {
+    "id": "late-reply-apology",
+    "title": "返信遅れ謝罪文メーカー",
+    "description": "返信が遅れたときのお詫び文を、短く自然に作れます。",
+    "category": "謝罪",
+    "href": "/tools/late-reply-apology/",
+    "status": "公開中",
+    "keywords": ["返信遅れ 謝罪", "返信遅れてすみません", "お詫び文"]
+  },
+  {
+    "id": "meeting-thanks",
+    "title": "打ち合わせ後お礼メールメーカー",
+    "description": "商談や打ち合わせ後のお礼メールをすぐ作れます。",
+    "category": "お礼",
+    "href": "/tools/meeting-thanks/",
+    "status": "公開中",
+    "keywords": ["打ち合わせ お礼メール", "商談後 お礼", "メール 文例"]
+  },
+  {
+    "id": "interview-thanks",
+    "title": "面談後お礼メールメーカー",
+    "description": "面談や面接後のお礼メールを、丁寧な文面に整えます。",
+    "category": "お礼",
+    "href": "/tools/interview-thanks/",
+    "status": "公開中",
+    "keywords": ["面談 お礼メール", "面接 お礼", "お礼 文例"]
+  },
+  {
+    "id": "line-reply",
+    "title": "LINE返信メーカー",
+    "description": "LINEの返事を、自然で使いやすい文面に整えます。",
+    "category": "チャット",
+    "href": "/tools/line-reply/",
+    "status": "公開中",
+    "keywords": ["LINE返信", "LINE 返事", "返信 作成"]
+  },
+  {
+    "id": "slack-reply",
+    "title": "Slack返信メーカー",
+    "description": "Slackで使いやすい、短く伝わる返信文を作れます。",
+    "category": "チャット",
+    "href": "/tools/slack-reply/",
+    "status": "公開中",
+    "keywords": ["Slack 返信", "社内チャット", "ビジネスチャット"]
+  },
+  {
+    "id": "teams-reply",
+    "title": "Teams返信メーカー",
+    "description": "Teamsでの確認・お礼・依頼返信を短く整えます。",
+    "category": "チャット",
+    "href": "/tools/teams-reply/",
+    "status": "公開中",
+    "keywords": ["Teams 返信", "Teams チャット", "社内返信"]
+  },
+  {
+    "id": "dm-reply",
+    "title": "DM返信メーカー",
+    "description": "SNSや問い合わせDMへの返信を、自然な文面に整えます。",
+    "category": "チャット",
+    "href": "/tools/dm-reply/",
+    "status": "公開中",
+    "keywords": ["DM返信", "SNS DM 返信", "問い合わせ返信"]
+  },
+  {
+    "id": "schedule-adjust",
+    "title": "日程調整文メーカー",
+    "description": "候補日や変更依頼を、わかりやすい文章に整えます。",
+    "category": "日程調整",
+    "href": "/tools/schedule-adjust/",
+    "status": "公開中",
+    "keywords": ["日程調整", "候補日 メール", "予定調整"]
+  },
+  {
+    "id": "meeting-request",
+    "title": "打ち合わせ依頼文メーカー",
+    "description": "打ち合わせや相談の依頼文を、丁寧に作れます。",
+    "category": "依頼",
+    "href": "/tools/meeting-request/",
+    "status": "公開中",
+    "keywords": ["打ち合わせ依頼", "相談 メール", "依頼文"]
+  },
+  {
+    "id": "absence-message",
+    "title": "欠席連絡メーカー",
+    "description": "会議や予定を欠席するときの連絡文を作れます。",
+    "category": "連絡",
+    "href": "/tools/absence-message/",
+    "status": "公開中",
+    "keywords": ["欠席連絡", "欠席 メール", "欠席 LINE"]
+  },
+  {
+    "id": "feedback-softener",
+    "title": "指摘をやわらかくするメーカー",
+    "description": "注意や指摘を、相手が受け取りやすい表現に直します。",
+    "category": "言い換え",
+    "href": "/tools/feedback-softener/",
+    "status": "公開中",
+    "keywords": ["指摘 やわらかく", "注意 言い換え", "フィードバック"]
+  },
+  {
+    "id": "complaint-reply",
+    "title": "クレーム返信メーカー",
+    "description": "問い合わせやクレームへの初回返信を、丁寧に整えます。",
+    "category": "返信",
+    "href": "/tools/complaint-reply/",
+    "status": "公開中",
+    "keywords": ["クレーム返信", "問い合わせ返信", "謝罪 返信"]
+  },
+  {
+    "id": "review-reply",
+    "title": "口コミ返信メーカー",
+    "description": "良い口コミ・悪い口コミへの返信文を作れます。",
+    "category": "返信",
+    "href": "/tools/review-reply/",
+    "status": "公開中",
+    "keywords": ["口コミ返信", "レビュー返信", "店舗 返信"]
+  },
+  {
+    "id": "customer-support-reply",
+    "title": "問い合わせ返信メーカー",
+    "description": "お客様からの問い合わせに返す文面を整えます。",
+    "category": "返信",
+    "href": "/tools/customer-support-reply/",
+    "status": "公開中",
+    "keywords": ["問い合わせ返信", "カスタマーサポート", "返信文"]
+  },
+  {
+    "id": "deadline-extension-request",
+    "title": "期限延長お願いメーカー",
+    "description": "締切や提出期限の延長をお願いする文章を作れます。",
+    "category": "依頼",
+    "href": "/tools/deadline-extension-request/",
+    "status": "公開中",
+    "keywords": ["期限延長 お願い", "締切 延長", "提出 遅れ"]
+  },
+  {
+    "id": "payment-reminder",
+    "title": "支払い催促文メーカー",
+    "description": "未払い・入金確認の催促文を、丁寧に整えます。",
+    "category": "催促",
+    "href": "/tools/payment-reminder/",
+    "status": "公開中",
+    "keywords": ["支払い催促", "入金確認", "催促文"]
+  },
+  {
+    "id": "task-request",
+    "title": "お願い文メーカー",
+    "description": "人に何かをお願いするときの文章を、失礼なく作れます。",
+    "category": "依頼",
+    "href": "/tools/task-request/",
+    "status": "公開中",
+    "keywords": ["お願い文", "依頼文", "頼み方"]
+  },
+  {
+    "id": "status-report",
+    "title": "進捗報告メーカー",
+    "description": "作業状況や遅れを、簡潔な進捗報告に整えます。",
+    "category": "報告",
+    "href": "/tools/status-report/",
+    "status": "公開中",
+    "keywords": ["進捗報告", "状況報告", "報告文"]
   }
 ]

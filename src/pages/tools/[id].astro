@@ -1,0 +1,110 @@
+---
+import Layout from "../../components/Layout.astro";
+import tools from "../../data/tools.json";
+
+export function getStaticPaths() {
+  const customToolIds = new Set(["chat-reply", "keigo-mail", "apology-mail", "thanks-mail"]);
+  return tools
+    .filter((tool) => !customToolIds.has(tool.id))
+    .map((tool) => ({
+      params: { id: tool.id },
+      props: { tool },
+    }));
+}
+
+const { tool } = Astro.props;
+---
+
+<Layout title={`${tool.title}｜1分ツール`} description={tool.description}>
+  <main class="page">
+    <div class="container">
+      <section class="hero" style="padding-top: 10px;">
+        <span class="hero__label">{tool.category}</span>
+        <h1>{tool.title}</h1>
+        <p>{tool.description}</p>
+      </section>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2>入力</h2>
+          <div class="hint">内容を入れて、相手・雰囲気・長さを選ぶと、そのまま使いやすい文章に整えます。</div>
+
+          <div class="field">
+            <label for="incoming">元の内容・相手から来た文章</label>
+            <textarea id="incoming" placeholder="例：相手から来た文章、または伝えたい内容を入力してください"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="purpose">目的</label>
+              <select id="purpose">
+                <option value="reply">返信する</option>
+                <option value="decline">断る</option>
+                <option value="request">お願いする</option>
+                <option value="remind">催促する</option>
+                <option value="thanks">お礼する</option>
+                <option value="apology">謝る</option>
+                <option value="report">報告する</option>
+                <option value="rewrite">言い換える</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="relationship">相手</label>
+              <select id="relationship">
+                <option value="work">仕事相手</option>
+                <option value="boss">上司</option>
+                <option value="client">取引先</option>
+                <option value="customer">お客様</option>
+                <option value="friend">友達</option>
+                <option value="unknown">まだ関係が浅い相手</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>雰囲気</label>
+            <div class="segmented" data-group="tone">
+              <button type="button" data-value="polite" class="active">丁寧</button>
+              <button type="button" data-value="soft">やわらかめ</button>
+              <button type="button" data-value="casual">自然</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>長さ</label>
+            <div class="segmented" data-group="length">
+              <button type="button" data-value="short" class="active">短め</button>
+              <button type="button" data-value="medium">標準</button>
+              <button type="button" data-value="long">丁寧に</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="detail">入れたい内容</label>
+            <textarea id="detail" placeholder="例：断りたい理由、希望日、次の対応、補足したいことなど"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" id="generateBtn" type="button">文章を作る</button>
+            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="clearBtn" type="button">クリア</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>出力</h2>
+          <div id="output" class="output"></div>
+          <div class="template-grid">
+            <button class="template-button" type="button" data-template="work">仕事</button>
+            <button class="template-button" type="button" data-template="chat">チャット</button>
+            <button class="template-button" type="button" data-template="careful">丁寧</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script type="application/json" id="tool-data" set:html={JSON.stringify(tool)}></script>
+  <script is:inline src="/scripts/generic-writing-tool.js"></script>
+</Layout>
