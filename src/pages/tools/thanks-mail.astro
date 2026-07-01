@@ -2,12 +2,89 @@
 import Layout from "../../components/Layout.astro";
 ---
 
-<Layout title="お礼メールメーカー｜1分ツール" description="お礼メールメーカーは準備中です。">
+<Layout
+  title="お礼メールメーカー｜取引先・社内向けのお礼文を作成"
+  description="面談後、打ち合わせ後、紹介後、対応への感謝などのお礼メールを、相手や場面に合わせて短時間で作れます。"
+>
   <main class="page">
-    <div class="container content">
-      <h1>お礼メールメーカー</h1>
-      <p>このツールは準備中です。取引先や社内向けのお礼メールをすぐ作れるようにする予定です。</p>
-      <p><a href="/tools/keigo-mail/">敬語メール返信メーカー</a> は利用できます。</p>
+    <div class="container">
+      <section class="hero" style="padding-top: 10px;">
+        <span class="hero__label">メール</span>
+        <h1>お礼メールメーカー</h1>
+        <p>面談後、打ち合わせ後、紹介後、対応への感謝など、自然なお礼メールをすぐ作れます。</p>
+      </section>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2>入力</h2>
+          <div class="hint">お礼メールは「何へのお礼か」「印象に残ったこと」「次の一言」を入れると、定型文っぽさが減ります。</div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="scene">お礼の場面</label>
+              <select id="scene">
+                <option value="meeting">打ち合わせ後</option>
+                <option value="interview">面談・面接後</option>
+                <option value="introduction">紹介してもらった</option>
+                <option value="support">対応してもらった</option>
+                <option value="gift">贈り物・差し入れ</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="recipient">相手</label>
+              <select id="recipient">
+                <option value="external">取引先</option>
+                <option value="customer">お客様</option>
+                <option value="boss">上司</option>
+                <option value="internal">社内</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>文章の長さ</label>
+            <div class="segmented" data-group="length">
+              <button type="button" data-value="short">短め</button>
+              <button type="button" data-value="medium" class="active">標準</button>
+              <button type="button" data-value="long">丁寧</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="thanksFor">何へのお礼か</label>
+            <textarea id="thanksFor" placeholder="例：本日の打ち合わせのお時間をいただいたこと"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="detail">印象に残ったこと・具体的な内容</label>
+            <textarea id="detail" placeholder="例：課題の整理方法について具体的にご説明いただき、とても参考になりました"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="nextStep">次の一言</label>
+            <textarea id="nextStep" placeholder="例：いただいた内容をもとに、社内で確認のうえ改めてご連絡いたします"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" id="generateBtn" type="button">お礼メールを作る</button>
+            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="clearBtn" type="button">クリア</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>出力</h2>
+          <div id="output" class="output"></div>
+          <div class="template-grid">
+            <button class="template-button" type="button" data-template="meeting">打ち合わせ</button>
+            <button class="template-button" type="button" data-template="introduction">紹介</button>
+            <button class="template-button" type="button" data-template="support">対応のお礼</button>
+          </div>
+        </section>
+      </div>
     </div>
   </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline src="/scripts/thanks-mail.js"></script>
 </Layout>
