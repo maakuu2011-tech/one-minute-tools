@@ -72,7 +72,12 @@ const categories = ["すべて", ...Array.from(new Set(tools.map((tool) => tool.
           ))}
         </div>
         <div class="empty-state" id="emptyState" hidden>
-          該当するツールがありません。別の言葉で検索してください。
+          <img src="/images/mascot-girl.png" alt="1分ツールのマスコットキャラクター" />
+          <div>
+            <strong>見つかりませんでした</strong>
+            <p>別の言葉で検索するか、欲しいツールを要望として送ってください。</p>
+            <a class="button secondary" href="/contact/">欲しいツールを送る</a>
+          </div>
         </div>
       </section>
       </div>

@@ -5,8 +5,46 @@ import Layout from "../components/Layout.astro";
 <Layout title="お問い合わせ｜1分ツール" description="1分ツールへのお問い合わせページです。">
   <main class="page">
     <div class="container content">
-      <h1>お問い合わせ</h1>
-      <p>お問い合わせフォームは準備中です。公開初期はGitHub Issuesなど、管理しやすい方法を検討します。</p>
+      <h1>お問い合わせ・ツール要望</h1>
+      <p>
+        追加してほしいツールや、使いにくいところがあれば下のテンプレートを使って送ってください。
+        まずは運営しやすいように、GitHubのIssueで受け付けます。
+      </p>
+
+      <div class="request-box">
+        <h2>要望テンプレート</h2>
+        <textarea id="requestTemplate" readonly>欲しいツール:
+
+困っている場面:
+
+入力したい内容:
+
+出力してほしい文章:
+
+補足:</textarea>
+        <div class="actions">
+          <button class="button primary" id="copyRequest" type="button">テンプレートをコピー</button>
+          <a class="button secondary" href="https://github.com/maakuu2011-tech/one-minute-tools/issues" target="_blank" rel="noreferrer">GitHub Issuesを開く</a>
+        </div>
+      </div>
     </div>
   </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline>
+    const button = document.getElementById("copyRequest");
+    const textarea = document.getElementById("requestTemplate");
+    const toast = document.getElementById("toast");
+
+    button?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(textarea.value);
+      } catch {
+        textarea.select();
+        document.execCommand("copy");
+      }
+      toast.textContent = "コピーしました";
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1700);
+    });
+  </script>
 </Layout>

@@ -6,6 +6,10 @@ const emptyState = document.getElementById("emptyState");
 
 let activeCategory = "すべて";
 
+const params = new URLSearchParams(window.location.search);
+const initialQuery = params.get("q");
+const initialCategory = params.get("category");
+
 function normalize(value) {
   return value.toLowerCase().replace(/\s+/g, "");
 }
@@ -42,6 +46,18 @@ categoryButtons.forEach((button) => {
     applyFilters();
   });
 });
+
+if (initialQuery) {
+  searchInput.value = initialQuery;
+}
+
+if (initialCategory) {
+  const matched = categoryButtons.find((button) => button.dataset.category === initialCategory);
+  if (matched) {
+    activeCategory = initialCategory;
+    categoryButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === matched)));
+  }
+}
 
 searchInput.addEventListener("input", applyFilters);
 applyFilters();

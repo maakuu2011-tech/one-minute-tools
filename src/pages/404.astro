@@ -1,0 +1,26 @@
+---
+import Layout from "../components/Layout.astro";
+---
+
+<Layout title="ページが見つかりません｜1分ツール" description="1分ツールの404ページです。">
+  <main class="page">
+    <div class="container not-found">
+      <div>
+        <span class="hero__label">404</span>
+        <h1>ページが見つかりませんでした。</h1>
+        <p>
+          URLが変わったか、まだ作成されていないツールかもしれません。
+          ツール一覧から探すか、欲しいツールを要望として送ってください。
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/tools/">ツール一覧へ</a>
+          <a class="button secondary" href="/contact/">欲しいツールを送る</a>
+        </div>
+      </div>
+      <div class="mascot-card mascot-card--compact" aria-label="1分ツールのマスコット">
+        <img src="/images/mascot-girl.png" alt="1分ツールのマスコットキャラクター" />
+        <div class="mascot-card__bubble">いっしょに探しましょう。</div>
+      </div>
+    </div>
+  </main>
+</Layout>

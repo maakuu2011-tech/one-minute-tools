@@ -171,6 +171,35 @@ button {
   font-weight: 900;
 }
 
+.mascot-card--compact {
+  min-height: 240px;
+}
+
+.home-search {
+  display: grid;
+  gap: 8px;
+  max-width: 620px;
+  margin-top: 22px;
+}
+
+.home-search label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.home-search div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.home-search input {
+  min-height: 48px;
+  background: #fff;
+  font-weight: 800;
+}
+
 .section {
   padding: 26px 0;
 }
@@ -434,6 +463,10 @@ button {
 }
 
 .empty-state {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
   margin-top: 14px;
   padding: 18px;
   background: var(--panel);
@@ -441,6 +474,27 @@ button {
   border-radius: 8px;
   color: var(--muted);
   font-weight: 800;
+}
+
+.empty-state img {
+  width: 78px;
+  height: 78px;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 8px;
+  background: #eff6ff;
+}
+
+.empty-state strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 16px;
+}
+
+.empty-state p {
+  margin: 0 0 10px;
+  line-height: 1.65;
 }
 
 .tool-layout {
@@ -618,6 +672,42 @@ textarea {
   text-decoration: underline;
 }
 
+.request-box {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.request-box h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.request-box textarea {
+  min-height: 220px;
+  background: #fbfcff;
+}
+
+.not-found {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 28px;
+  align-items: center;
+}
+
+.not-found h1 {
+  margin: 18px 0 12px;
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.15;
+}
+
+.not-found p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
 .seo-content {
   margin-top: 24px;
   background: var(--panel);
@@ -733,6 +823,10 @@ textarea {
   .mascot-card img {
     width: min(190px, 100%);
   }
+
+  .not-found {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -758,6 +852,23 @@ textarea {
 
   .finder-panel {
     position: static;
+  }
+
+  .home-search {
+    max-width: none;
+  }
+
+  .home-search div {
+    grid-template-columns: 1fr;
+  }
+
+  .empty-state {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .empty-state img {
+    width: 56px;
+    height: 56px;
   }
 
   .mascot-guide {
