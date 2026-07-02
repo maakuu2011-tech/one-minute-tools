@@ -2,20 +2,76 @@
 import Layout from "../../components/Layout.astro";
 import ToolCard from "../../components/ToolCard.astro";
 import tools from "../../data/tools.json";
+
+const featuredIds = ["chat-reply", "decline-reply", "follow-up-message", "soft-rewrite", "line-reply", "keigo-mail"];
+const featuredTools = featuredIds
+  .map((id) => tools.find((tool) => tool.id === id))
+  .filter(Boolean);
+const categories = ["すべて", ...Array.from(new Set(tools.map((tool) => tool.category)))];
 ---
 
 <Layout title="ツール一覧｜1分ツール" description="1分ツールで使える無料ツールの一覧です。">
   <main class="page">
     <div class="container">
-      <div class="section__head">
+      <div class="section__head tools-head">
         <div>
           <h1>ツール一覧</h1>
-          <p class="section__note">必要なときにすぐ使える小さな道具を追加していきます。</p>
+          <p class="section__note">検索するか、カテゴリから選んでください。よく使うものは上にまとめています。</p>
         </div>
       </div>
-      <div class="tool-grid">
-        {tools.map((tool) => <ToolCard tool={tool} />)}
+
+      <section class="finder-panel" aria-label="ツール検索">
+        <div class="field finder-search">
+          <label for="toolSearch">ツール名・用途で探す</label>
+          <input id="toolSearch" type="search" placeholder="例：LINE、断り方、催促、敬語、言い換え" />
+        </div>
+
+        <div class="category-filter" aria-label="カテゴリで絞り込み">
+          {categories.map((category) => (
+            <button type="button" class="category-pill" data-category={category} aria-pressed={category === "すべて" ? "true" : "false"}>
+              {category}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section class="section tools-section">
+        <div class="section__head compact-head">
+          <div>
+            <h2>よく使うツール</h2>
+            <p class="section__note">迷ったらまずここから。</p>
+          </div>
+        </div>
+        <div class="tool-grid tool-grid--compact">
+          {featuredTools.map((tool) => <ToolCard tool={tool} />)}
+        </div>
+      </section>
+
+      <section class="section tools-section">
+        <div class="section__head compact-head">
+          <div>
+            <h2>すべてのツール</h2>
+            <p class="section__note"><span id="toolCount">{tools.length}</span>件表示中</p>
+          </div>
+        </div>
+        <div class="tool-grid tool-grid--compact" id="toolList">
+          {tools.map((tool) => (
+            <div
+              class="tool-item"
+              data-title={tool.title}
+              data-description={tool.description}
+              data-category={tool.category}
+              data-keywords={(tool.keywords || []).join(" ")}
+            >
+              <ToolCard tool={tool} />
+            </div>
+          ))}
+        </div>
+        <div class="empty-state" id="emptyState" hidden>
+          該当するツールがありません。別の言葉で検索してください。
+        </div>
+      </section>
       </div>
-    </div>
   </main>
+  <script is:inline src="/scripts/tool-finder.js"></script>
 </Layout>

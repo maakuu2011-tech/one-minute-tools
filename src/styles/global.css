@@ -190,6 +190,14 @@ button {
   gap: 14px;
 }
 
+.tool-grid--compact {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tool-item {
+  min-width: 0;
+}
+
 .tool-card {
   display: grid;
   gap: 12px;
@@ -199,6 +207,21 @@ button {
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: var(--shadow);
+}
+
+.tool-grid--compact .tool-card {
+  min-height: 168px;
+  padding: 15px;
+}
+
+.tool-grid--compact .tool-card h3 {
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.tool-grid--compact .tool-card p {
+  font-size: 14px;
+  line-height: 1.65;
 }
 
 .tool-card__category {
@@ -236,6 +259,77 @@ button {
 
 .page {
   padding: 32px 0 52px;
+}
+
+.tools-head {
+  margin-bottom: 18px;
+}
+
+.finder-panel {
+  display: grid;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin-bottom: 18px;
+  padding: 16px;
+  background: rgba(245, 247, 251, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.finder-search {
+  margin-bottom: 0;
+}
+
+.finder-search input {
+  min-height: 48px;
+  background: #fff;
+  font-weight: 800;
+}
+
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category-pill {
+  min-height: 36px;
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--line);
+  color: #172033;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.category-pill[aria-pressed="true"] {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.tools-section {
+  padding-top: 18px;
+}
+
+.compact-head {
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.empty-state {
+  margin-top: 14px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font-weight: 800;
 }
 
 .tool-layout {
@@ -506,6 +600,12 @@ textarea {
 
 @media (max-width: 900px) {
   .tool-grid,
+  .tool-grid--compact,
+  .tool-layout,
+  .category-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .tool-layout,
   .category-strip {
     grid-template-columns: 1fr;
@@ -526,6 +626,15 @@ textarea {
   .nav {
     width: 100%;
     justify-content: flex-start;
+  }
+
+  .tool-grid,
+  .tool-grid--compact {
+    grid-template-columns: 1fr;
+  }
+
+  .finder-panel {
+    position: static;
   }
 
   .form-row,
