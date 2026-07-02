@@ -1,0 +1,100 @@
+---
+import Layout from "../../components/Layout.astro";
+---
+
+<Layout
+  title="断り方メーカー｜誘い・依頼・営業を角が立たない文面に"
+  description="誘い、仕事の依頼、営業DMなどを、相手との関係に合わせて失礼なく断る文章に整えます。"
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero" style="padding-top: 10px;">
+        <span class="hero__label">断り方</span>
+        <h1>断り方メーカー</h1>
+        <p>誘い・依頼・営業DMを、角が立たない自然な断り文に整えます。</p>
+      </section>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2>入力</h2>
+          <div class="hint">断る理由は短く、相手への配慮と代案の有無を入れると印象がやわらぎます。</div>
+
+          <div class="field">
+            <label for="incoming">相手から来た内容</label>
+            <textarea id="incoming" placeholder="例：今週末の飲み会、来られそう？"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="scene">断る内容</label>
+              <select id="scene">
+                <option value="invitation">誘い</option>
+                <option value="work">仕事の依頼</option>
+                <option value="sales">営業・提案</option>
+                <option value="schedule">日程</option>
+                <option value="favor">お願いごと</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="relationship">相手</label>
+              <select id="relationship">
+                <option value="work">仕事相手</option>
+                <option value="boss">上司</option>
+                <option value="client">取引先</option>
+                <option value="friend">友達</option>
+                <option value="unknown">関係が浅い相手</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>雰囲気</label>
+            <div class="segmented" data-group="tone">
+              <button type="button" data-value="polite" class="active">丁寧</button>
+              <button type="button" data-value="soft">やわらかめ</button>
+              <button type="button" data-value="casual">自然</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>長さ</label>
+            <div class="segmented" data-group="length">
+              <button type="button" data-value="short" class="active">短め</button>
+              <button type="button" data-value="medium">標準</button>
+              <button type="button" data-value="long">丁寧に</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="reason">断る理由</label>
+            <textarea id="reason" placeholder="例：先約があり参加が難しい"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="alternative">代案・補足</label>
+            <textarea id="alternative" placeholder="例：別日であれば調整できます"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" id="generateBtn" type="button">断り文を作る</button>
+            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="clearBtn" type="button">クリア</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>出力</h2>
+          <div id="output" class="output"></div>
+          <div class="template-grid">
+            <button class="template-button" type="button" data-template="invitation">誘い</button>
+            <button class="template-button" type="button" data-template="work">仕事依頼</button>
+            <button class="template-button" type="button" data-template="sales">営業DM</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline src="/scripts/decline-reply.js"></script>
+</Layout>

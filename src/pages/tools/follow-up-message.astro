@@ -1,0 +1,100 @@
+---
+import Layout from "../../components/Layout.astro";
+---
+
+<Layout
+  title="催促文メーカー｜返信・確認を感じよくお願いする"
+  description="返事がない相手への確認、上司や取引先への催促を、感じ悪くならない丁寧な文章に整えます。"
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero" style="padding-top: 10px;">
+        <span class="hero__label">催促</span>
+        <h1>催促文メーカー</h1>
+        <p>返信・確認・対応のお願いを、相手に圧をかけすぎない文面に整えます。</p>
+      </section>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2>入力</h2>
+          <div class="hint">催促は「行き違いへの配慮」「確認したい内容」「希望期限」を入れると、感じよく伝わります。</div>
+
+          <div class="field">
+            <label for="target">確認したい内容</label>
+            <textarea id="target" placeholder="例：先日お送りした見積書について、確認状況を知りたい"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="scene">催促の内容</label>
+              <select id="scene">
+                <option value="reply">返信</option>
+                <option value="check">確認</option>
+                <option value="task">対応</option>
+                <option value="payment">入金</option>
+                <option value="approval">承認</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="relationship">相手</label>
+              <select id="relationship">
+                <option value="client">取引先</option>
+                <option value="boss">上司</option>
+                <option value="work">仕事相手</option>
+                <option value="customer">お客様</option>
+                <option value="friend">友達</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>強さ</label>
+            <div class="segmented" data-group="tone">
+              <button type="button" data-value="gentle" class="active">やさしく</button>
+              <button type="button" data-value="normal">標準</button>
+              <button type="button" data-value="firm">しっかり</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>長さ</label>
+            <div class="segmented" data-group="length">
+              <button type="button" data-value="short" class="active">短め</button>
+              <button type="button" data-value="medium">標準</button>
+              <button type="button" data-value="long">丁寧に</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="deadline">希望期限</label>
+            <textarea id="deadline" placeholder="例：可能であれば本日中にご確認いただきたい"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="note">補足</label>
+            <textarea id="note" placeholder="例：行き違いでしたら申し訳ありません"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" id="generateBtn" type="button">催促文を作る</button>
+            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="clearBtn" type="button">クリア</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>出力</h2>
+          <div id="output" class="output"></div>
+          <div class="template-grid">
+            <button class="template-button" type="button" data-template="reply">返信催促</button>
+            <button class="template-button" type="button" data-template="client">取引先</button>
+            <button class="template-button" type="button" data-template="boss">上司</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline src="/scripts/follow-up-message.js"></script>
+</Layout>

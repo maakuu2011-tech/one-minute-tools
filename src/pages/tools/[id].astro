@@ -3,7 +3,14 @@ import Layout from "../../components/Layout.astro";
 import tools from "../../data/tools.json";
 
 export function getStaticPaths() {
-  const customToolIds = new Set(["chat-reply", "keigo-mail", "apology-mail", "thanks-mail"]);
+  const customToolIds = new Set([
+    "chat-reply",
+    "keigo-mail",
+    "apology-mail",
+    "thanks-mail",
+    "decline-reply",
+    "follow-up-message",
+  ]);
   return tools
     .filter((tool) => !customToolIds.has(tool.id))
     .map((tool) => ({

@@ -4,6 +4,12 @@ import ToolCard from "../components/ToolCard.astro";
 import tools from "../data/tools.json";
 
 const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
+const categoryLinks = [
+  { label: "チャット返信", href: "/tools/chat-reply/", note: "LINE・Slackの返事" },
+  { label: "断り方", href: "/tools/decline-reply/", note: "角が立たない断り文" },
+  { label: "催促", href: "/tools/follow-up-message/", note: "返信・確認のお願い" },
+  { label: "言い換え", href: "/tools/soft-rewrite/", note: "やわらかい表現へ" },
+];
 ---
 
 <Layout
@@ -19,6 +25,19 @@ const publishedTools = tools.filter((tool) => tool.status === "公開中").slice
           チャット返信、メール文、謝罪文、お礼文。毎回考えるのが面倒な文章を、
           すぐ使える小さなツールとしてまとめています。
         </p>
+      </div>
+    </section>
+
+    <section class="section section--tight">
+      <div class="container">
+        <div class="category-strip">
+          {categoryLinks.map((item) => (
+            <a class="category-link" href={item.href}>
+              <span>{item.label}</span>
+              <small>{item.note}</small>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
 
