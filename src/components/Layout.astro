@@ -5,6 +5,16 @@ const {
   title = "1分ツール",
   description = "仕事や生活のちょっと困ったをすぐ片づける小ツール集です。",
 } = Astro.props;
+
+const siteUrl = "https://one-minute-tools.pages.dev";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "1分ツール",
+  url: siteUrl,
+  description: "チャット返信、断り方、催促文、言い換えなどをすぐ作れる無料ツール集です。",
+};
 ---
 
 <!doctype html>
@@ -14,6 +24,16 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="google-site-verification" content="zrtqkf9p1opOex4uGNK9XnGE6TKCz4spJKwI522OYLg" />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:site_name" content="1分ツール" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
     <title>{title}</title>
   </head>
   <body>
