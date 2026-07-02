@@ -9,15 +9,33 @@ const {
 
 const siteUrl = "https://one-minute-tools.pages.dev";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const organizationStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "1分ツール",
+  url: siteUrl,
+  logo: new URL("/images/mascot-girl.png", siteUrl).toString(),
+};
+
 const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "1分ツール",
+  alternateName: ["一分ツール", "one minute tools", "one-minute-tools"],
   url: siteUrl,
   description: "チャット返信、断り方、催促文、言い換えなどをすぐ作れる無料ツール集です。",
+  publisher: {
+    "@type": "Organization",
+    name: "1分ツール",
+  },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${siteUrl}/tools/?q={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
 };
 
-const structuredDataItems = [websiteStructuredData, ...structuredData];
+const structuredDataItems = [organizationStructuredData, websiteStructuredData, ...structuredData];
 ---
 
 <!doctype html>
