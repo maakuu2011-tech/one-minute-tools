@@ -1,0 +1,14 @@
+---
+const {
+  title = "使い方のコツ",
+  message = "入力した文章は、出力後に少しだけ自分の言葉に直すと自然に使えます。",
+} = Astro.props;
+---
+
+<aside class="mascot-guide" aria-label={title}>
+  <img src="/images/mascot-girl.png" alt="1分ツールのマスコットキャラクター" />
+  <div>
+    <strong>{title}</strong>
+    <p>{message}</p>
+  </div>
+</aside>

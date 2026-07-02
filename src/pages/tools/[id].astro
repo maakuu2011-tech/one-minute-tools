@@ -1,5 +1,6 @@
 ---
 import Layout from "../../components/Layout.astro";
+import MascotGuide from "../../components/MascotGuide.astro";
 import tools from "../../data/tools.json";
 
 export function getStaticPaths() {
@@ -37,6 +38,11 @@ const relatedTools = tools
         <h1>{tool.title}</h1>
         <p>{tool.description}</p>
       </section>
+
+      <MascotGuide
+        title="このツールの使い方"
+        message="まずは短めで作って、必要なら丁寧に切り替えてください。最後に自分の言葉を一言足すと自然です。"
+      />
 
       <div class="tool-layout">
         <section class="panel">

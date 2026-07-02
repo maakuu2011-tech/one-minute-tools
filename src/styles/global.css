@@ -338,6 +338,44 @@ button {
   line-height: 1.5;
 }
 
+.mascot-guide {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  margin: -4px 0 18px;
+  padding: 13px 15px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.mascot-guide img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 8px;
+  background: #eff6ff;
+}
+
+.mascot-guide strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.mascot-guide p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
 .finder-panel {
   display: grid;
   gap: 14px;
@@ -720,6 +758,15 @@ textarea {
 
   .finder-panel {
     position: static;
+  }
+
+  .mascot-guide {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .mascot-guide img {
+    width: 56px;
+    height: 56px;
   }
 
   .form-row,
