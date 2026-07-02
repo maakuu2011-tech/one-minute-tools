@@ -375,6 +375,126 @@ button {
   line-height: 1.75;
 }
 
+.minute-hero {
+  padding-bottom: 18px;
+}
+
+.minute-category-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.minute-category-row span {
+  color: #065f46;
+  background: #d1fae5;
+  border: 1px solid #a7f3d0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.minute-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.minute-grid--home {
+  margin-top: 6px;
+}
+
+.minute-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 10px;
+  min-height: 210px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.minute-card span {
+  width: fit-content;
+  color: #065f46;
+  background: #d1fae5;
+  border: 1px solid #a7f3d0;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.minute-card strong {
+  justify-self: end;
+  color: var(--orange);
+  font-size: 13px;
+}
+
+.minute-card h2,
+.minute-card h3 {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  font-size: 19px;
+  line-height: 1.45;
+}
+
+.minute-card p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.minute-content {
+  display: grid;
+  gap: 18px;
+}
+
+.minute-timer {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+}
+
+.minute-timer span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.minute-timer strong {
+  color: #c2410c;
+  font-size: 38px;
+  line-height: 1;
+}
+
+.minute-timer p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.step-list,
+.tip-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 24px;
+}
+
+.step-list li,
+.tip-list li {
+  padding-left: 4px;
+  line-height: 1.8;
+}
+
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -923,7 +1043,8 @@ textarea {
   .tool-layout,
   .category-strip,
   .use-list,
-  .example-list {
+  .example-list,
+  .minute-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -992,7 +1113,8 @@ textarea {
   }
 
   .use-list,
-  .example-list {
+  .example-list,
+  .minute-grid {
     grid-template-columns: 1fr;
   }
 

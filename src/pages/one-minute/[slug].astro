@@ -1,0 +1,83 @@
+---
+import Layout from "../../components/Layout.astro";
+import MascotGuide from "../../components/MascotGuide.astro";
+import ToolCard from "../../components/ToolCard.astro";
+import minuteContents from "../../data/minuteContents.json";
+import tools from "../../data/tools.json";
+
+export function getStaticPaths() {
+  return minuteContents.map((content) => ({
+    params: { slug: content.slug },
+    props: { content },
+  }));
+}
+
+const { content } = Astro.props;
+const relatedTools = content.relatedToolIds
+  .map((id) => tools.find((tool) => tool.id === id))
+  .filter(Boolean);
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: content.title,
+  description: content.description,
+  totalTime: "PT1M",
+  step: content.steps.map((step, index) => ({
+    "@type": "HowToStep",
+    position: index + 1,
+    text: step,
+  })),
+};
+---
+
+<Layout title={`${content.title}｜1分ツール`} description={content.description} structuredData={[howToSchema]}>
+  <main class="page">
+    <div class="container">
+      <section class="hero minute-hero">
+        <span class="hero__label">{content.category}</span>
+        <h1>{content.headline}</h1>
+        <p>{content.lead}</p>
+      </section>
+
+      <MascotGuide
+        title="1分でやるコツ"
+        message="全部を変えようとせず、ここに書いてある手順を一回だけ試すくらいで十分です。続いたら勝ちです。"
+      />
+
+      <section class="seo-content minute-content">
+        <div class="minute-timer">
+          <span>目安</span>
+          <strong>{content.time}</strong>
+          <p>タイマーをかけても、頭の中で数えるだけでもOKです。</p>
+        </div>
+
+        <h2>やること</h2>
+        <ol class="step-list">
+          {content.steps.map((step) => <li>{step}</li>)}
+        </ol>
+
+        <h2>うまくやるコツ</h2>
+        <ul class="tip-list">
+          {content.tips.map((tip) => <li>{tip}</li>)}
+        </ul>
+
+        {
+          relatedTools.length > 0 && (
+            <>
+              <h2>一緒に使えるツール</h2>
+              <div class="tool-grid tool-grid--compact">
+                {relatedTools.map((tool) => <ToolCard tool={tool} />)}
+              </div>
+            </>
+          )
+        }
+
+        <div class="related-tools">
+          <a href="/one-minute/">1分コンテンツ一覧へ</a>
+          <a href="/tools/">ツール一覧へ</a>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>

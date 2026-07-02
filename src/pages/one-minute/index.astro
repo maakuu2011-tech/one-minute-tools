@@ -1,0 +1,39 @@
+---
+import Layout from "../../components/Layout.astro";
+import minuteContents from "../../data/minuteContents.json";
+
+const categories = Array.from(new Set(minuteContents.map((item) => item.category)));
+---
+
+<Layout
+  title="1分でできること｜1分ツール"
+  description="仕事、生活、文章、集中など、1分でできる小さな行動や習慣をまとめたコンテンツ集です。"
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero minute-hero">
+        <span class="hero__label">1分コンテンツ</span>
+        <h1>1分で、ちょっとだけ前に進む。</h1>
+        <p>
+          仕事前の整理、送信前チェック、寝る前の日記。大きな改善ではなく、
+          すぐ試せる小さな行動を集めています。
+        </p>
+      </section>
+
+      <div class="minute-category-row" aria-label="カテゴリ">
+        {categories.map((category) => <span>{category}</span>)}
+      </div>
+
+      <section class="minute-grid" aria-label="1分コンテンツ一覧">
+        {minuteContents.map((item) => (
+          <a class="minute-card" href={`/one-minute/${item.slug}/`}>
+            <span>{item.category}</span>
+            <strong>{item.time}</strong>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+          </a>
+        ))}
+      </section>
+    </div>
+  </main>
+</Layout>

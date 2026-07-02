@@ -3,6 +3,7 @@ import Layout from "../components/Layout.astro";
 import ToolCard from "../components/ToolCard.astro";
 import tools from "../data/tools.json";
 import usePages from "../data/usePages.json";
+import minuteContents from "../data/minuteContents.json";
 
 const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
 const categoryLinks = [
@@ -85,6 +86,28 @@ const categoryLinks = [
               <span>{page.label}</span>
               <h3>{page.title}</h3>
               <p>{page.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2>1分でできること</h2>
+            <p class="section__note">文章作成以外にも、仕事や生活で試せる小さな行動を増やしています。</p>
+          </div>
+          <a class="button secondary" href="/one-minute/">すべて見る</a>
+        </div>
+        <div class="minute-grid minute-grid--home">
+          {minuteContents.slice(0, 4).map((item) => (
+            <a class="minute-card" href={`/one-minute/${item.slug}/`}>
+              <span>{item.category}</span>
+              <strong>{item.time}</strong>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
             </a>
           ))}
         </div>
