@@ -1,0 +1,126 @@
+---
+import Layout from "../../components/Layout.astro";
+---
+
+<Layout
+  title="やわらか言い換えメーカー｜きつい文章をやさしく整える"
+  description="強く見える文章や冷たく見える文章を、相手に伝わりやすいやわらかい表現に言い換えます。"
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero" style="padding-top: 10px;">
+        <span class="hero__label">言い換え</span>
+        <h1>やわらか言い換えメーカー</h1>
+        <p>きつく見える文章を、相手に伝わるやわらかい表現へ整えます。</p>
+      </section>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2>入力</h2>
+          <div class="hint">元の意味は残しながら、断定・命令・責める印象を弱めると、受け取られ方がやわらかくなります。</div>
+
+          <div class="field">
+            <label for="sourceText">言い換えたい文章</label>
+            <textarea id="sourceText" placeholder="例：早く確認してください。何度も同じことを言っています。"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="target">相手</label>
+              <select id="target">
+                <option value="work">仕事相手</option>
+                <option value="boss">上司</option>
+                <option value="client">取引先</option>
+                <option value="friend">友達</option>
+                <option value="customer">お客様</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="purpose">用途</label>
+              <select id="purpose">
+                <option value="request">お願い</option>
+                <option value="feedback">指摘</option>
+                <option value="decline">断り</option>
+                <option value="remind">催促</option>
+                <option value="apology">謝罪</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>やわらかさ</label>
+            <div class="segmented" data-group="softness">
+              <button type="button" data-value="light">少し</button>
+              <button type="button" data-value="normal" class="active">標準</button>
+              <button type="button" data-value="very">かなり</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>長さ</label>
+            <div class="segmented" data-group="length">
+              <button type="button" data-value="short" class="active">短め</button>
+              <button type="button" data-value="medium">標準</button>
+              <button type="button" data-value="long">丁寧に</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="note">補足したいこと</label>
+            <textarea id="note" placeholder="例：今日中に確認してほしいが、急かしすぎたくない"></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" id="generateBtn" type="button">言い換える</button>
+            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="clearBtn" type="button">クリア</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>出力</h2>
+          <div id="output" class="output"></div>
+          <div class="template-grid">
+            <button class="template-button" type="button" data-template="request">お願い</button>
+            <button class="template-button" type="button" data-template="feedback">指摘</button>
+            <button class="template-button" type="button" data-template="remind">催促</button>
+          </div>
+        </section>
+      </div>
+
+      <section class="seo-content">
+        <h2>文章をやわらかくするコツ</h2>
+        <p>
+          文章がきつく見える原因は、命令形、断定、相手を責める表現にあります。
+          「してください」を「お願いできますか」に変えるだけでも、相手が受け取りやすい印象になります。
+        </p>
+        <div class="info-grid">
+          <div>
+            <h3>使える場面</h3>
+            <ul>
+              <li>依頼や催促が強く見えそうなとき</li>
+              <li>注意や指摘をやわらかく伝えたいとき</li>
+              <li>チャットやメールの印象を整えたいとき</li>
+            </ul>
+          </div>
+          <div>
+            <h3>言い換えのポイント</h3>
+            <ul>
+              <li>命令よりお願いの形にする</li>
+              <li>相手の事情に配慮する一言を入れる</li>
+              <li>結論は残して、言い方だけ整える</li>
+            </ul>
+          </div>
+        </div>
+        <div class="related-tools">
+          <a href="/tools/harsh-to-soft/">きつい文章をやわらかくするツール</a>
+          <a href="/tools/feedback-softener/">指摘をやわらかくするメーカー</a>
+          <a href="/tools/chat-reply/">チャット返信メーカー</a>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline src="/scripts/soft-rewrite.js"></script>
+</Layout>

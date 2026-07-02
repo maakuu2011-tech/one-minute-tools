@@ -10,7 +10,10 @@ export function getStaticPaths() {
     "thanks-mail",
     "decline-reply",
     "follow-up-message",
+    "soft-rewrite",
+    "line-reply",
   ]);
+
   return tools
     .filter((tool) => !customToolIds.has(tool.id))
     .map((tool) => ({
@@ -20,6 +23,10 @@ export function getStaticPaths() {
 }
 
 const { tool } = Astro.props;
+
+const relatedTools = tools
+  .filter((item) => item.id !== tool.id && item.category === tool.category)
+  .slice(0, 3);
 ---
 
 <Layout title={`${tool.title}｜1分ツール`} description={tool.description}>
@@ -109,6 +116,43 @@ const { tool } = Astro.props;
           </div>
         </section>
       </div>
+
+      <section class="seo-content">
+        <h2>{tool.title}の使い方</h2>
+        <p>
+          {tool.title}は、毎回文章を考えるのが面倒な場面で使える無料ツールです。
+          元の内容や相手から来た文章を入れて、目的や雰囲気を選ぶだけで、短く使いやすい文章に整えられます。
+        </p>
+
+        <div class="info-grid">
+          <div>
+            <h3>おすすめの使い方</h3>
+            <ul>
+              <li>相手に送る前の下書きとして使う</li>
+              <li>出力された文章を、自分の言葉に少し直す</li>
+              <li>相手との関係に合わせて丁寧さを調整する</li>
+            </ul>
+          </div>
+          <div>
+            <h3>注意点</h3>
+            <ul>
+              <li>個人情報や機密情報は入力しない</li>
+              <li>重要な連絡は送信前に内容を確認する</li>
+              <li>謝罪や契約に関わる文章は慎重に見直す</li>
+            </ul>
+          </div>
+        </div>
+
+        {
+          relatedTools.length > 0 && (
+            <div class="related-tools">
+              {relatedTools.map((item) => (
+                <a href={item.href}>{item.title}</a>
+              ))}
+            </div>
+          )
+        }
+      </section>
     </div>
   </main>
   <div id="toast" class="toast"></div>
