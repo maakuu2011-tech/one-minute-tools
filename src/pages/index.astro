@@ -2,6 +2,7 @@
 import Layout from "../components/Layout.astro";
 import ToolCard from "../components/ToolCard.astro";
 import tools from "../data/tools.json";
+import usePages from "../data/usePages.json";
 
 const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
 const categoryLinks = [
@@ -65,6 +66,27 @@ const categoryLinks = [
         </div>
         <div class="tool-grid">
           {publishedTools.map((tool) => <ToolCard tool={tool} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2>困った場面から探す</h2>
+            <p class="section__note">検索されやすい悩みごと別に、例文と使えるツールをまとめています。</p>
+          </div>
+          <a class="button secondary" href="/use/">用途一覧へ</a>
+        </div>
+        <div class="use-list use-list--home">
+          {usePages.slice(0, 3).map((page) => (
+            <a class="use-card" href={`/use/${page.slug}/`}>
+              <span>{page.label}</span>
+              <h3>{page.title}</h3>
+              <p>{page.description}</p>
+            </a>
+          ))}
         </div>
       </div>
     </section>

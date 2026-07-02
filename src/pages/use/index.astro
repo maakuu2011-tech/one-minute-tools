@@ -1,0 +1,33 @@
+---
+import Layout from "../../components/Layout.astro";
+import usePages from "../../data/usePages.json";
+---
+
+<Layout
+  title="用途から探す｜1分ツール"
+  description="LINE返信、ビジネスメール、断り方、催促文、謝罪文など、困った場面から使える無料ツールを探せます。"
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero use-hero">
+        <span class="hero__label">用途から探す</span>
+        <h1>困った場面から、使うツールを選ぶ。</h1>
+        <p>
+          ツール名がわからなくても大丈夫です。LINEの返し方、断り方、催促文など、
+          実際に困りやすい場面から探せます。
+        </p>
+      </section>
+
+      <section class="use-list" aria-label="用途一覧">
+        {usePages.map((page) => (
+          <a class="use-card" href={`/use/${page.slug}/`}>
+            <span>{page.label}</span>
+            <h2>{page.title}</h2>
+            <p>{page.description}</p>
+            <small>{page.searchIntents.join(" / ")}</small>
+          </a>
+        ))}
+      </section>
+    </div>
+  </main>
+</Layout>

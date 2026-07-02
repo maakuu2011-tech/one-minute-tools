@@ -4,17 +4,20 @@ import "../styles/global.css";
 const {
   title = "1分ツール",
   description = "仕事や生活のちょっと困ったをすぐ片づける小ツール集です。",
+  structuredData = [],
 } = Astro.props;
 
 const siteUrl = "https://one-minute-tools.pages.dev";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
-const structuredData = {
+const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "1分ツール",
   url: siteUrl,
   description: "チャット返信、断り方、催促文、言い換えなどをすぐ作れる無料ツール集です。",
 };
+
+const structuredDataItems = [websiteStructuredData, ...structuredData];
 ---
 
 <!doctype html>
@@ -35,7 +38,7 @@ const structuredData = {
     <meta name="twitter:description" content={description} />
     <link rel="icon" href="/images/mascot-girl.png" />
     <link rel="apple-touch-icon" href="/images/mascot-girl.png" />
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    {structuredDataItems.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)}></script>)}
     <title>{title}</title>
   </head>
   <body>
@@ -50,6 +53,7 @@ const structuredData = {
         </a>
         <nav class="nav" aria-label="メインナビゲーション">
           <a href="/tools/">ツール一覧</a>
+          <a href="/use/">用途から探す</a>
           <a href="/about/">このサイトについて</a>
           <a href="/privacy/">プライバシー</a>
         </nav>

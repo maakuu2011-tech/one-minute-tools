@@ -1,0 +1,81 @@
+---
+import Layout from "../../components/Layout.astro";
+import MascotGuide from "../../components/MascotGuide.astro";
+import ToolCard from "../../components/ToolCard.astro";
+import tools from "../../data/tools.json";
+import usePages from "../../data/usePages.json";
+
+export function getStaticPaths() {
+  return usePages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const relatedTools = page.toolIds
+  .map((id) => tools.find((tool) => tool.id === id))
+  .filter(Boolean);
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: page.faq.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
+---
+
+<Layout title={`${page.title}｜1分ツール`} description={page.description} structuredData={[faqSchema]}>
+  <main class="page">
+    <div class="container">
+      <section class="hero use-hero">
+        <span class="hero__label">{page.label}</span>
+        <h1>{page.headline}</h1>
+        <p>{page.lead}</p>
+      </section>
+
+      <MascotGuide
+        title="このページの使い方"
+        message="例文をそのまま使ってもいいし、近いツールを開いて自分の状況に合わせて作り直してもOKです。"
+      />
+
+      <section class="seo-content use-content">
+        <h2>よく検索される困りごと</h2>
+        <div class="intent-list">
+          {page.searchIntents.map((item) => <span>{item}</span>)}
+        </div>
+
+        <h2>そのまま使える例文</h2>
+        <div class="example-list">
+          {page.examples.map((example) => (
+            <article class="example-card">
+              <h3>{example.situation}</h3>
+              <p>{example.text}</p>
+            </article>
+          ))}
+        </div>
+
+        <h2>この場面で使えるツール</h2>
+        <div class="tool-grid tool-grid--compact">
+          {relatedTools.map((tool) => <ToolCard tool={tool} />)}
+        </div>
+
+        <h2>よくある質問</h2>
+        <div class="faq-list">
+          {page.faq.map((item) => (
+            <details>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
