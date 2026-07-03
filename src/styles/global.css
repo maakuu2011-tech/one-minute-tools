@@ -1088,6 +1088,82 @@ button {
   color: #b91c1c;
 }
 
+.sea-battle-board {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 14px;
+  padding: 18px;
+  background:
+    linear-gradient(90deg, rgba(14, 165, 233, 0.12) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(14, 165, 233, 0.12) 1px, transparent 1px),
+    #f0f9ff;
+  background-size: 28px 28px;
+}
+
+.sea-battle-status {
+  width: min(100%, 360px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.sea-battle-status span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.sea-battle-status strong {
+  color: #0369a1;
+  font-size: 20px;
+}
+
+.sea-grid {
+  width: min(100%, 360px);
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.sea-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: #0ea5e9;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow:
+    inset 0 -4px 0 rgba(3, 105, 161, 0.28),
+    0 8px 18px rgba(14, 165, 233, 0.16);
+}
+
+.sea-cell.open {
+  cursor: default;
+}
+
+.sea-cell.miss {
+  background: #e0f2fe;
+  color: #0369a1;
+  box-shadow: inset 0 0 0 1px rgba(3, 105, 161, 0.12);
+}
+
+.sea-cell.hit {
+  background: #fb923c;
+  color: #7c2d12;
+}
+
+.sea-cell.sunk {
+  background: #fecaca;
+  color: #991b1b;
+}
+
 .ranking-panel {
   margin-top: 18px;
   padding: 18px;
