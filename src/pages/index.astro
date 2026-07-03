@@ -8,10 +8,14 @@ import games from "../data/games.json";
 import updates from "../data/siteUpdates.json";
 
 const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
-const popularToolIds = ["chat-reply", "keigo-mail", "decline-reply", "soft-rewrite"];
-const popularTools = popularToolIds
-  .map((id) => tools.find((tool) => tool.id === id))
-  .filter(Boolean);
+const popularToolItems = [
+  { id: "chat-reply", reason: "LINE・Slackの返事で一番使いやすい入口" },
+  { id: "keigo-mail", reason: "仕事メールの返信を短く整えたいときに便利" },
+  { id: "decline-reply", reason: "断りづらい誘いや依頼をやわらかくできる" },
+  { id: "soft-rewrite", reason: "冷たく見える文章を送る前に直せる" },
+]
+  .map((item) => ({ ...item, tool: tools.find((tool) => tool.id === item.id) }))
+  .filter((item) => item.tool);
 const categoryLinks = [
   { label: "チャット返信", href: "/tools/chat-reply/", note: "LINE・Slackの返事" },
   { label: "断り方", href: "/tools/decline-reply/", note: "角が立たない断り文" },
@@ -117,13 +121,22 @@ const quickEntrances = [
       <div class="container">
         <div class="section__head">
           <div>
-            <h2>よく使うツール</h2>
-            <p class="section__note">迷ったらまずここから。使う場面が多いものを前に出しています。</p>
+            <h2>人気ツール</h2>
+            <p class="section__note">迷ったらまずここから。使う場面が多いものを順位つきで並べています。</p>
           </div>
           <a class="button secondary" href="/tools/">すべて見る</a>
         </div>
-        <div class="tool-grid">
-          {popularTools.map((tool) => <ToolCard tool={tool} />)}
+        <div class="popular-tool-list">
+          {popularToolItems.map((item, index) => (
+            <a class="popular-tool" href={item.tool.href}>
+              <span class="popular-tool__rank">{index + 1}</span>
+              <div>
+                <span class="tool-card__category">{item.tool.category}</span>
+                <h3>{item.tool.title}</h3>
+                <p>{item.reason}</p>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>

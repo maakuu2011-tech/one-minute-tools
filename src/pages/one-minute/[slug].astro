@@ -13,6 +13,7 @@ export function getStaticPaths() {
 }
 
 const { content } = Astro.props;
+const seoDescription = `${content.title}は、${content.description}${content.time}で試せる手順、コツ、関連ツールをまとめています。`;
 const relatedTools = content.relatedToolIds
   .map((id) => tools.find((tool) => tool.id === id))
   .filter(Boolean);
@@ -31,7 +32,7 @@ const howToSchema = {
 };
 ---
 
-<Layout title={`${content.title}｜1分ツール`} description={content.description} structuredData={[howToSchema]}>
+<Layout title={`${content.title}｜1分でできる小さな行動`} description={seoDescription} structuredData={[howToSchema]}>
   <main class="page">
     <div class="container">
       <section class="hero minute-hero">

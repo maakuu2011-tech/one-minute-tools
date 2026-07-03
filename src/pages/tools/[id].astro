@@ -28,13 +28,14 @@ export function getStaticPaths() {
 }
 
 const { tool } = Astro.props;
+const seoDescription = `${tool.title}は、${tool.description}登録不要・無料でブラウザからすぐ使える文章作成ツールです。`;
 
 const relatedTools = tools
   .filter((item) => item.id !== tool.id && item.category === tool.category)
   .slice(0, 3);
 ---
 
-<Layout title={`${tool.title}｜1分ツール`} description={tool.description}>
+<Layout title={`${tool.title}｜無料の文章作成ツール`} description={seoDescription}>
   <main class="page">
     <div class="container">
       <section class="hero" style="padding-top: 10px;">

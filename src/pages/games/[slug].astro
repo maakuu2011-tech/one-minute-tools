@@ -12,6 +12,7 @@ export function getStaticPaths() {
 
 const { game } = Astro.props;
 const relatedGames = games.filter((item) => item.slug !== game.slug).slice(0, 3);
+const seoDescription = `${game.title}は、${game.description}登録不要・無料でブラウザからすぐ遊べる1分ミニゲームです。`;
 
 const gameSchema = {
   "@context": "https://schema.org",
@@ -23,7 +24,7 @@ const gameSchema = {
 };
 ---
 
-<Layout title={`${game.title}｜1分ツール`} description={game.description} structuredData={[gameSchema]}>
+<Layout title={`${game.title}｜無料で遊べる1分ゲーム`} description={seoDescription} structuredData={[gameSchema]}>
   <main class="page">
     <div class="container">
       <section class="hero game-hero">
@@ -71,12 +72,21 @@ const gameSchema = {
       <section class="ranking-panel" aria-labelledby="rankingTitle">
         <div class="section__head section__head--compact">
           <div>
-            <h2 id="rankingTitle">この端末のランキング</h2>
-            <p class="section__note">このブラウザに保存された上位10件です。</p>
+            <h2 id="rankingTitle">ランキング</h2>
+            <p class="section__note">この端末の記録と、準備できたら全ユーザー共通ランキングを表示します。</p>
           </div>
           <a class="button secondary" href="/games/ranking/">ランキング一覧へ</a>
         </div>
-        <ol class="ranking-list" id="rankingList"></ol>
+        <div class="ranking-columns">
+          <div>
+            <h3>みんなのランキング</h3>
+            <ol class="ranking-list" id="globalRankingList"></ol>
+          </div>
+          <div>
+            <h3>この端末のランキング</h3>
+            <ol class="ranking-list" id="rankingList"></ol>
+          </div>
+        </div>
       </section>
 
       <section class="seo-content game-content">

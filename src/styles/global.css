@@ -311,6 +311,52 @@ button {
   font-size: 14px;
 }
 
+.popular-tool-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.popular-tool-list--wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.popular-tool {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 150px;
+  padding: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.popular-tool__rank {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.popular-tool h3 {
+  margin: 10px 0 6px;
+  font-size: 19px;
+  line-height: 1.4;
+}
+
+.popular-tool p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
 .category-link {
   display: grid;
   gap: 5px;
@@ -734,6 +780,37 @@ button {
   margin: 0;
 }
 
+.game-result {
+  min-height: 430px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  padding: 24px;
+  color: var(--text);
+  text-align: center;
+}
+
+.game-result > strong {
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.game-result p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.game-result p span {
+  color: var(--blue);
+  font-size: 26px;
+}
+
+.game-result__actions {
+  justify-content: center;
+}
+
 .tap-target {
   position: absolute;
   display: grid;
@@ -1042,6 +1119,19 @@ button {
   color: var(--muted);
   font-weight: 800;
   text-align: center;
+}
+
+.ranking-columns,
+.ranking-card__lists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ranking-columns h3,
+.ranking-card__lists h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
 }
 
 .ranking-grid {
@@ -1800,7 +1890,10 @@ textarea {
   .minute-grid,
   .game-grid,
   .quick-entrance,
+  .popular-tool-list,
   .game-summary,
+  .ranking-columns,
+  .ranking-card__lists,
   .ranking-grid,
   .updates-strip {
     grid-template-columns: 1fr;

@@ -21,9 +21,13 @@ const tool = tools.find((item) => item.id === toolId);
 if (!tool) {
   throw new Error(`Tool not found: ${toolId}`);
 }
+
+const seoDescription =
+  description ||
+  `${tool.title}は、${tool.description}登録不要・無料でブラウザからすぐ使える1分ツールです。`;
 ---
 
-<Layout title={title || `${tool.title}｜1分ツール`} description={description || tool.description}>
+<Layout title={title || `${tool.title}｜無料の文章作成ツール`} description={seoDescription}>
   <main class="page">
     <div class="container">
       <section class="hero" style="padding-top: 10px;">

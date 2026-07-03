@@ -6,14 +6,14 @@ const rankingSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   name: "1分ゲームランキング",
-  description: "1分ゲームの端末内ランキングを確認できるページです。",
+  description: "1分ゲームのランキングを確認できるページです。端末内ランキングに加えて、Cloudflare D1設定後は全ユーザー共通ランキングにも対応します。",
   url: "https://one-minute-tools.pages.dev/games/ranking/",
 };
 ---
 
 <Layout
   title="1分ゲームランキング｜1分ツール"
-  description="1分タップ反射ゲーム、1分マインスイーパー、1分計算ゲームなどの端末内ランキングを確認できます。"
+  description="1分タップ反射ゲーム、1分マインスイーパー、1分計算ゲームなどのランキングを確認できます。端末内記録と全ユーザー共通ランキングに対応予定です。"
   structuredData={[rankingSchema]}
 >
   <main class="page">
@@ -22,7 +22,7 @@ const rankingSchema = {
         <span class="hero__label">ランキング</span>
         <h1>1分ゲームの記録を見る。</h1>
         <p>
-          このブラウザに保存されたゲーム別ランキングです。まずは自分のベスト更新用として使えます。
+          このブラウザに保存された記録を確認できます。Cloudflare D1をつなぐと、全ユーザー共通ランキングも表示できます。
         </p>
       </section>
 
@@ -34,7 +34,16 @@ const rankingSchema = {
               <h2>{game.title}</h2>
               <a href={`/games/${game.slug}/`}>遊ぶ</a>
             </div>
-            <ol class="ranking-list" data-ranking-board={game.slug}></ol>
+            <div class="ranking-card__lists">
+              <div>
+                <h3>みんな</h3>
+                <ol class="ranking-list" data-global-ranking-board={game.slug}></ol>
+              </div>
+              <div>
+                <h3>この端末</h3>
+                <ol class="ranking-list" data-ranking-board={game.slug}></ol>
+              </div>
+            </div>
           </article>
         ))}
       </section>

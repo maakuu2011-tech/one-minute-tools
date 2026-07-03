@@ -153,12 +153,11 @@ function endGame(message) {
   clearInterval(timerId);
   setBest(score);
   window.OneMinuteRanking?.record(gameSlug, score);
-  if (message) {
-    const notice = document.createElement("div");
-    notice.className = "mine-result";
-    notice.textContent = message;
-    board.appendChild(notice);
-  }
+  const notice = document.createElement("div");
+  notice.className = "mine-result";
+  notice.innerHTML = window.OneMinuteRanking?.resultHtml(score) || `<strong>${message || "終了！"}</strong><p>スコアは ${score} でした。</p>`;
+  board.appendChild(notice);
+  window.OneMinuteRanking?.bindResultActions(startGame);
   startButton.textContent = "もう一回";
 }
 

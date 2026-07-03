@@ -3,14 +3,20 @@ import Layout from "../../components/Layout.astro";
 import ToolCard from "../../components/ToolCard.astro";
 import tools from "../../data/tools.json";
 
-const featuredIds = ["chat-reply", "decline-reply", "follow-up-message", "soft-rewrite", "line-reply", "keigo-mail"];
-const featuredTools = featuredIds
-  .map((id) => tools.find((tool) => tool.id === id))
-  .filter(Boolean);
+const featuredItems = [
+  { id: "chat-reply", reason: "LINE・Slack・DMの返事を短く作る" },
+  { id: "decline-reply", reason: "誘い・依頼・営業を角が立たない形で断る" },
+  { id: "follow-up-message", reason: "返信がない相手に感じよく確認する" },
+  { id: "soft-rewrite", reason: "きつく見える文章をやわらかく直す" },
+  { id: "line-reply", reason: "友達や知人へのLINE返信を自然にする" },
+  { id: "keigo-mail", reason: "仕事メールを自然な敬語に整える" },
+]
+  .map((item) => ({ ...item, tool: tools.find((tool) => tool.id === item.id) }))
+  .filter((item) => item.tool);
 const categories = ["すべて", ...Array.from(new Set(tools.map((tool) => tool.category)))];
 ---
 
-<Layout title="ツール一覧｜1分ツール" description="1分ツールで使える無料ツールの一覧です。">
+<Layout title="ツール一覧｜無料で使える文章作成ツール集" description="チャット返信、敬語メール、断り方、催促文、謝罪文、言い換えなどを無料で作れる1分ツールの一覧です。用途やカテゴリから探せます。">
   <main class="page">
     <div class="container">
       <div class="section__head tools-head">
@@ -43,12 +49,21 @@ const categories = ["すべて", ...Array.from(new Set(tools.map((tool) => tool.
       <section class="section tools-section">
         <div class="section__head compact-head">
           <div>
-            <h2>よく使うツール</h2>
-            <p class="section__note">迷ったらまずここから。</p>
+            <h2>人気ツール</h2>
+            <p class="section__note">使われる場面が多い入口を、順位つきでまとめています。</p>
           </div>
         </div>
-        <div class="tool-grid tool-grid--compact">
-          {featuredTools.map((tool) => <ToolCard tool={tool} />)}
+        <div class="popular-tool-list popular-tool-list--wide">
+          {featuredItems.map((item, index) => (
+            <a class="popular-tool" href={item.tool.href}>
+              <span class="popular-tool__rank">{index + 1}</span>
+              <div>
+                <span class="tool-card__category">{item.tool.category}</span>
+                <h3>{item.tool.title}</h3>
+                <p>{item.reason}</p>
+              </div>
+            </a>
+          ))}
         </div>
       </section>
 

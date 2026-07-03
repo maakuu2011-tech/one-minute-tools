@@ -53,7 +53,8 @@ function endGame() {
   clearInterval(timerId);
   setBest(score);
   window.OneMinuteRanking?.record(gameSlug, score);
-  board.innerHTML = `<div class="game-ready"><strong>終了！</strong><p>スコアは ${score} でした。</p></div>`;
+  board.innerHTML = window.OneMinuteRanking?.resultHtml(score) || `<div class="game-ready"><strong>終了！</strong><p>スコアは ${score} でした。</p></div>`;
+  window.OneMinuteRanking?.bindResultActions(startGame);
   startButton.textContent = "もう一回";
 }
 
