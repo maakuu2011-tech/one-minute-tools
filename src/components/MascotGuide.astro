@@ -2,11 +2,21 @@
 const {
   title = "使い方のコツ",
   message = "入力した文章は、出力後に少しだけ自分の言葉に直すと自然に使えます。",
+  variant = "default",
 } = Astro.props;
+
+const images = {
+  default: "/images/mascot-girl.png",
+  game: "/images/mascot-game.png",
+  thinking: "/images/mascot-thinking.png",
+  cheer: "/images/mascot-cheer.png",
+};
+
+const image = images[variant] || images.default;
 ---
 
 <aside class="mascot-guide" aria-label={title}>
-  <img src="/images/mascot-girl.png" alt="1分ツールのマスコットキャラクター" />
+  <img src={image} alt="1分ツールのマスコットキャラクター" />
   <div>
     <strong>{title}</strong>
     <p>{message}</p>

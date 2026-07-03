@@ -58,6 +58,8 @@ const gameIcons = {
   判断力: "search",
   集中力: "rank",
   戦略: "game",
+  迷路: "maze",
+  言葉: "word",
 };
 
 const minuteIcons = {
@@ -196,7 +198,7 @@ const minuteIcons = {
           </div>
         </div>
         <div class="game-grid game-grid--home">
-          {games.slice(0, 4).map((game) => (
+          {games.slice(-4).reverse().map((game) => (
             <a class="game-card" href={`/games/${game.slug}/`}>
               <div class="card-icon-row">
                 <IconBadge name={gameIcons[game.category] || "game"} />

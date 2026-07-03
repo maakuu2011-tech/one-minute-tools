@@ -127,6 +127,7 @@
   function resultHtml(score) {
     return `
       <div class="game-result">
+        <img class="game-result__mascot" src="/images/mascot-cheer.png" alt="1分ツールのマスコットキャラクター" />
         <strong>終了！</strong>
         <p>スコアは <span>${score}</span> でした。</p>
         <div class="actions game-result__actions">

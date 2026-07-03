@@ -22,7 +22,12 @@ const gameIcons = {
   判断力: "search",
   集中力: "rank",
   戦略: "game",
+  迷路: "maze",
+  言葉: "word",
 };
+
+const mascotVariant = game.category === "言葉" ? "thinking" : "game";
+const mascotImage = mascotVariant === "thinking" ? "/images/mascot-thinking.png" : "/images/mascot-game.png";
 
 const gameSchema = {
   "@context": "https://schema.org",
@@ -46,6 +51,7 @@ const gameSchema = {
       <MascotGuide
         title="遊び方"
         message="スタートを押すと60秒で始まります。終わったらスコアを見て、気が向いたらもう一回どうぞ。"
+        variant={mascotVariant}
       />
 
       <section class="game-shell" data-game={game.slug}>
@@ -66,7 +72,7 @@ const gameSchema = {
 
         <div id="gameBoard" class="game-board" aria-live="polite">
           <div class="game-ready">
-            <img src="/images/mascot-girl.png" alt="1分ツールのマスコットキャラクター" />
+            <img src={mascotImage} alt="1分ツールのマスコットキャラクター" />
             <p>スタートを押して遊んでください。</p>
           </div>
         </div>

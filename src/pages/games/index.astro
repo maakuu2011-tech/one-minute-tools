@@ -1,6 +1,7 @@
 ---
 import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
+import MascotGuide from "../../components/MascotGuide.astro";
 import games from "../../data/games.json";
 
 const gameIcons = {
@@ -11,6 +12,8 @@ const gameIcons = {
   判断力: "search",
   集中力: "rank",
   戦略: "game",
+  迷路: "maze",
+  言葉: "word",
 };
 
 const gameListSchema = {
@@ -45,6 +48,12 @@ const gameListSchema = {
           <a class="button primary" href="/games/ranking/">ランキングを見る</a>
         </div>
       </section>
+
+      <MascotGuide
+        title="ゲーム案内"
+        message={`${games.length}本の1分ゲームがあります。迷ったら、じゃんけん反射か数字順タップからどうぞ。`}
+        variant="game"
+      />
 
       <section class="game-summary" aria-label="1分ゲームの概要">
         <div>
