@@ -8,11 +8,38 @@ import games from "../data/games.json";
 import updates from "../data/siteUpdates.json";
 
 const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
+const popularToolIds = ["chat-reply", "keigo-mail", "decline-reply", "soft-rewrite"];
+const popularTools = popularToolIds
+  .map((id) => tools.find((tool) => tool.id === id))
+  .filter(Boolean);
 const categoryLinks = [
   { label: "チャット返信", href: "/tools/chat-reply/", note: "LINE・Slackの返事" },
   { label: "断り方", href: "/tools/decline-reply/", note: "角が立たない断り文" },
   { label: "催促", href: "/tools/follow-up-message/", note: "返信・確認のお願い" },
   { label: "言い換え", href: "/tools/soft-rewrite/", note: "やわらかい表現へ" },
+];
+const quickEntrances = [
+  {
+    label: "文章を作る",
+    title: "返信・敬語・断り文をすぐ整える",
+    description: `${tools.length}本の文章ツールから、今の用件に近いものを選べます。`,
+    href: "/tools/",
+    action: "ツールを探す",
+  },
+  {
+    label: "例文を見る",
+    title: "困った場面から近い文例を探す",
+    description: "LINE返信、メール返信、断り方など、場面別の例文をまとめています。",
+    href: "/use/",
+    action: "用途から探す",
+  },
+  {
+    label: "1分遊ぶ",
+    title: "待ち時間に60秒だけ遊ぶ",
+    description: `${games.length}本のミニゲームと端末内ランキングがあります。`,
+    href: "/games/",
+    action: "ゲームを開く",
+  },
 ];
 ---
 
@@ -47,6 +74,21 @@ const categoryLinks = [
 
     <section class="section section--tight">
       <div class="container">
+        <div class="quick-entrance" aria-label="目的別の入口">
+          {quickEntrances.map((item) => (
+            <a class="quick-entrance__card" href={item.href}>
+              <span>{item.label}</span>
+              <h2>{item.title}</h2>
+              <p>{item.description}</p>
+              <strong>{item.action}</strong>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight">
+      <div class="container">
         <div class="category-strip">
           {categoryLinks.map((item) => (
             <a class="category-link" href={item.href}>
@@ -75,13 +117,27 @@ const categoryLinks = [
       <div class="container">
         <div class="section__head">
           <div>
-            <h2>ツール</h2>
-            <p class="section__note">チャットやメールなど、返し方に困る文章から増やしています。</p>
+            <h2>よく使うツール</h2>
+            <p class="section__note">迷ったらまずここから。使う場面が多いものを前に出しています。</p>
           </div>
           <a class="button secondary" href="/tools/">すべて見る</a>
         </div>
         <div class="tool-grid">
-          {publishedTools.map((tool) => <ToolCard tool={tool} />)}
+          {popularTools.map((tool) => <ToolCard tool={tool} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--compact">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2>新着ツール</h2>
+            <p class="section__note">追加した文章ツールを順番に並べています。</p>
+          </div>
+        </div>
+        <div class="tool-grid tool-grid--compact">
+          {publishedTools.slice(0, 4).map((tool) => <ToolCard tool={tool} />)}
         </div>
       </div>
     </section>

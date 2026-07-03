@@ -11,6 +11,7 @@ export function getStaticPaths() {
 }
 
 const { game } = Astro.props;
+const relatedGames = games.filter((item) => item.slug !== game.slug).slice(0, 3);
 
 const gameSchema = {
   "@context": "https://schema.org",
@@ -62,6 +63,7 @@ const gameSchema = {
         <div class="actions game-actions">
           <button class="button primary" id="gameStart" type="button">スタート</button>
           <button class="button secondary" id="gameReset" type="button">リセット</button>
+          <a class="button secondary" href="/games/ranking/">ランキング</a>
           <a class="button secondary" href="/games/">ゲーム一覧へ</a>
         </div>
       </section>
@@ -82,6 +84,26 @@ const gameSchema = {
         <ul class="tip-list">
           {game.tips.map((tip) => <li>{tip}</li>)}
         </ul>
+      </section>
+
+      <section class="section game-related" aria-label="ほかの1分ゲーム">
+        <div class="section__head">
+          <div>
+            <h2>ほかの1分ゲーム</h2>
+            <p class="section__note">もう少しだけ遊ぶなら、近いサイズのゲームもあります。</p>
+          </div>
+          <a class="button secondary" href="/games/">すべて見る</a>
+        </div>
+        <div class="game-grid game-grid--related">
+          {relatedGames.map((item) => (
+            <a class="game-card" href={`/games/${item.slug}/`}>
+              <span>{item.category}</span>
+              <strong>{item.time}</strong>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </a>
+          ))}
+        </div>
       </section>
     </div>
   </main>

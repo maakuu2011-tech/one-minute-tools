@@ -35,6 +35,21 @@ const gameListSchema = {
         </div>
       </section>
 
+      <section class="game-summary" aria-label="1分ゲームの概要">
+        <div>
+          <span>ゲーム数</span>
+          <strong>{games.length}</strong>
+        </div>
+        <div>
+          <span>プレイ時間</span>
+          <strong>60秒</strong>
+        </div>
+        <div>
+          <span>記録</span>
+          <strong>端末内</strong>
+        </div>
+      </section>
+
       <section class="game-grid" aria-label="1分ゲーム一覧">
         {games.map((game) => (
           <a class="game-card" href={`/games/${game.slug}/`}>
