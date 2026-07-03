@@ -586,6 +586,12 @@ button {
   margin-top: 18px;
 }
 
+.game-shell[data-game="minesweeper"] {
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .game-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -696,6 +702,8 @@ button {
   grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 6px;
   align-content: start;
+  justify-self: center;
+  width: min(100%, 380px);
   min-height: auto;
   padding: 14px;
   background: #f8fafc;
@@ -703,7 +711,7 @@ button {
 
 .mine-cell {
   aspect-ratio: 1;
-  min-height: 42px;
+  min-height: 0;
   border-radius: 7px;
   background: #334155;
   color: #fff;
@@ -1476,12 +1484,12 @@ textarea {
   }
 
   .minesweeper-board {
+    width: min(100%, 330px);
     gap: 5px;
     padding: 10px;
   }
 
   .mine-cell {
-    min-height: 34px;
     font-size: 16px;
   }
 
