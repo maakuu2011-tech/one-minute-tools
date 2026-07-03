@@ -1,8 +1,15 @@
 ---
+import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
 import minuteContents from "../../data/minuteContents.json";
 
 const categories = Array.from(new Set(minuteContents.map((item) => item.category)));
+const minuteIcons = {
+  生活: "minute",
+  仕事: "tool",
+  文章: "rewrite",
+  集中: "rank",
+};
 ---
 
 <Layout
@@ -27,7 +34,10 @@ const categories = Array.from(new Set(minuteContents.map((item) => item.category
       <section class="minute-grid" aria-label="1分コンテンツ一覧">
         {minuteContents.map((item) => (
           <a class="minute-card" href={`/one-minute/${item.slug}/`}>
-            <span>{item.category}</span>
+            <div class="card-icon-row">
+              <IconBadge name={minuteIcons[item.category] || "minute"} />
+              <span>{item.category}</span>
+            </div>
             <strong>{item.time}</strong>
             <h2>{item.title}</h2>
             <p>{item.description}</p>

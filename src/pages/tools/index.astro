@@ -1,15 +1,16 @@
 ---
 import Layout from "../../components/Layout.astro";
+import IconBadge from "../../components/IconBadge.astro";
 import ToolCard from "../../components/ToolCard.astro";
 import tools from "../../data/tools.json";
 
 const featuredItems = [
-  { id: "chat-reply", reason: "LINE・Slack・DMの返事を短く作る" },
-  { id: "decline-reply", reason: "誘い・依頼・営業を角が立たない形で断る" },
-  { id: "follow-up-message", reason: "返信がない相手に感じよく確認する" },
-  { id: "soft-rewrite", reason: "きつく見える文章をやわらかく直す" },
-  { id: "line-reply", reason: "友達や知人へのLINE返信を自然にする" },
-  { id: "keigo-mail", reason: "仕事メールを自然な敬語に整える" },
+  { id: "chat-reply", reason: "LINE・Slack・DMの返事を短く作る", icon: "chat" },
+  { id: "decline-reply", reason: "誘い・依頼・営業を角が立たない形で断る", icon: "decline" },
+  { id: "follow-up-message", reason: "返信がない相手に感じよく確認する", icon: "remind" },
+  { id: "soft-rewrite", reason: "きつく見える文章をやわらかく直す", icon: "rewrite" },
+  { id: "line-reply", reason: "友達や知人へのLINE返信を自然にする", icon: "chat" },
+  { id: "keigo-mail", reason: "仕事メールを自然な敬語に整える", icon: "mail" },
 ]
   .map((item) => ({ ...item, tool: tools.find((tool) => tool.id === item.id) }))
   .filter((item) => item.tool);
@@ -58,7 +59,10 @@ const categories = ["すべて", ...Array.from(new Set(tools.map((tool) => tool.
             <a class="popular-tool" href={item.tool.href}>
               <span class="popular-tool__rank">{index + 1}</span>
               <div>
-                <span class="tool-card__category">{item.tool.category}</span>
+                <div class="tool-card__top">
+                  <IconBadge name={item.icon} />
+                  <span class="tool-card__category">{item.tool.category}</span>
+                </div>
                 <h3>{item.tool.title}</h3>
                 <p>{item.reason}</p>
               </div>

@@ -1,6 +1,16 @@
 ---
+import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
 import usePages from "../../data/usePages.json";
+
+const useIcons = {
+  チャット返信: "chat",
+  メール返信: "mail",
+  断り方: "decline",
+  催促: "remind",
+  謝罪: "mail",
+  言い換え: "rewrite",
+};
 ---
 
 <Layout
@@ -21,7 +31,10 @@ import usePages from "../../data/usePages.json";
       <section class="use-list" aria-label="用途一覧">
         {usePages.map((page) => (
           <a class="use-card" href={`/use/${page.slug}/`}>
-            <span>{page.label}</span>
+            <div class="card-icon-row">
+              <IconBadge name={useIcons[page.label] || "example"} />
+              <span>{page.label}</span>
+            </div>
             <h2>{page.title}</h2>
             <p>{page.description}</p>
             <small>{page.searchIntents.join(" / ")}</small>

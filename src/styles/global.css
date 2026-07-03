@@ -259,6 +259,35 @@ button {
   line-height: 1.7;
 }
 
+.icon-badge {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 8px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: var(--blue);
+}
+
+.icon-badge svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.card-icon-row,
+.tool-card__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .category-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -282,7 +311,7 @@ button {
   box-shadow: var(--shadow);
 }
 
-.quick-entrance__card span {
+.quick-entrance__card .card-icon-row > span:not(.icon-badge) {
   width: fit-content;
   color: #1d4ed8;
   background: #dbeafe;
@@ -359,8 +388,8 @@ button {
 
 .category-link {
   display: grid;
-  gap: 5px;
-  min-height: 86px;
+  gap: 7px;
+  min-height: 112px;
   padding: 15px;
   background: var(--panel);
   border: 1px solid var(--line);
@@ -368,7 +397,7 @@ button {
   box-shadow: var(--shadow);
 }
 
-.category-link span {
+.category-link > span:not(.icon-badge) {
   color: var(--text);
   font-size: 17px;
   font-weight: 900;
@@ -405,7 +434,7 @@ button {
   box-shadow: var(--shadow);
 }
 
-.use-card span,
+.use-card .card-icon-row > span:not(.icon-badge),
 .intent-list span {
   width: fit-content;
   color: #1d4ed8;
@@ -541,7 +570,7 @@ button {
   box-shadow: var(--shadow);
 }
 
-.minute-card span {
+.minute-card .card-icon-row > span:not(.icon-badge) {
   width: fit-content;
   color: #065f46;
   background: #d1fae5;
@@ -648,7 +677,7 @@ button {
   box-shadow: var(--shadow);
 }
 
-.game-card span {
+.game-card .card-icon-row > span:not(.icon-badge) {
   width: fit-content;
   color: #6d28d9;
   background: #ede9fe;
@@ -1306,6 +1335,10 @@ button {
   padding: 5px 8px;
   font-size: 12px;
   font-weight: 900;
+}
+
+.tool-card__top {
+  flex-wrap: wrap;
 }
 
 .tool-card h3 {

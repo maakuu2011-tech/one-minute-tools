@@ -1,6 +1,7 @@
 ---
 import Layout from "../components/Layout.astro";
 import ToolCard from "../components/ToolCard.astro";
+import IconBadge from "../components/IconBadge.astro";
 import tools from "../data/tools.json";
 import usePages from "../data/usePages.json";
 import minuteContents from "../data/minuteContents.json";
@@ -9,21 +10,22 @@ import updates from "../data/siteUpdates.json";
 
 const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
 const popularToolItems = [
-  { id: "chat-reply", reason: "LINE・Slackの返事で一番使いやすい入口" },
-  { id: "keigo-mail", reason: "仕事メールの返信を短く整えたいときに便利" },
-  { id: "decline-reply", reason: "断りづらい誘いや依頼をやわらかくできる" },
-  { id: "soft-rewrite", reason: "冷たく見える文章を送る前に直せる" },
+  { id: "chat-reply", reason: "LINE・Slackの返事で一番使いやすい入口", icon: "chat" },
+  { id: "keigo-mail", reason: "仕事メールの返信を短く整えたいときに便利", icon: "mail" },
+  { id: "decline-reply", reason: "断りづらい誘いや依頼をやわらかくできる", icon: "decline" },
+  { id: "soft-rewrite", reason: "冷たく見える文章を送る前に直せる", icon: "rewrite" },
 ]
   .map((item) => ({ ...item, tool: tools.find((tool) => tool.id === item.id) }))
   .filter((item) => item.tool);
 const categoryLinks = [
-  { label: "チャット返信", href: "/tools/chat-reply/", note: "LINE・Slackの返事" },
-  { label: "断り方", href: "/tools/decline-reply/", note: "角が立たない断り文" },
-  { label: "催促", href: "/tools/follow-up-message/", note: "返信・確認のお願い" },
-  { label: "言い換え", href: "/tools/soft-rewrite/", note: "やわらかい表現へ" },
+  { label: "チャット返信", href: "/tools/chat-reply/", note: "LINE・Slackの返事", icon: "chat" },
+  { label: "断り方", href: "/tools/decline-reply/", note: "角が立たない断り文", icon: "decline" },
+  { label: "催促", href: "/tools/follow-up-message/", note: "返信・確認のお願い", icon: "remind" },
+  { label: "言い換え", href: "/tools/soft-rewrite/", note: "やわらかい表現へ", icon: "rewrite" },
 ];
 const quickEntrances = [
   {
+    icon: "tool",
     label: "文章を作る",
     title: "返信・敬語・断り文をすぐ整える",
     description: `${tools.length}本の文章ツールから、今の用件に近いものを選べます。`,
@@ -31,6 +33,7 @@ const quickEntrances = [
     action: "ツールを探す",
   },
   {
+    icon: "example",
     label: "例文を見る",
     title: "困った場面から近い文例を探す",
     description: "LINE返信、メール返信、断り方など、場面別の例文をまとめています。",
@@ -38,6 +41,7 @@ const quickEntrances = [
     action: "用途から探す",
   },
   {
+    icon: "game",
     label: "1分遊ぶ",
     title: "待ち時間に60秒だけ遊ぶ",
     description: `${games.length}本のミニゲームと端末内ランキングがあります。`,
@@ -45,6 +49,22 @@ const quickEntrances = [
     action: "ゲームを開く",
   },
 ];
+
+const gameIcons = {
+  反射神経: "game",
+  記憶: "example",
+  パズル: "tool",
+  計算: "minute",
+  判断力: "search",
+  集中力: "rank",
+};
+
+const minuteIcons = {
+  生活: "minute",
+  仕事: "tool",
+  文章: "rewrite",
+  集中: "rank",
+};
 ---
 
 <Layout
@@ -81,7 +101,10 @@ const quickEntrances = [
         <div class="quick-entrance" aria-label="目的別の入口">
           {quickEntrances.map((item) => (
             <a class="quick-entrance__card" href={item.href}>
-              <span>{item.label}</span>
+              <div class="card-icon-row">
+                <IconBadge name={item.icon} />
+                <span>{item.label}</span>
+              </div>
               <h2>{item.title}</h2>
               <p>{item.description}</p>
               <strong>{item.action}</strong>
@@ -96,6 +119,7 @@ const quickEntrances = [
         <div class="category-strip">
           {categoryLinks.map((item) => (
             <a class="category-link" href={item.href}>
+              <IconBadge name={item.icon} />
               <span>{item.label}</span>
               <small>{item.note}</small>
             </a>
@@ -131,7 +155,10 @@ const quickEntrances = [
             <a class="popular-tool" href={item.tool.href}>
               <span class="popular-tool__rank">{index + 1}</span>
               <div>
-                <span class="tool-card__category">{item.tool.category}</span>
+                <div class="tool-card__top">
+                  <IconBadge name={item.icon} />
+                  <span class="tool-card__category">{item.tool.category}</span>
+                </div>
                 <h3>{item.tool.title}</h3>
                 <p>{item.reason}</p>
               </div>
@@ -170,7 +197,10 @@ const quickEntrances = [
         <div class="game-grid game-grid--home">
           {games.slice(0, 4).map((game) => (
             <a class="game-card" href={`/games/${game.slug}/`}>
-              <span>{game.category}</span>
+              <div class="card-icon-row">
+                <IconBadge name={gameIcons[game.category] || "game"} />
+                <span>{game.category}</span>
+              </div>
               <strong>{game.time}</strong>
               <h3>{game.title}</h3>
               <p>{game.description}</p>
@@ -213,7 +243,10 @@ const quickEntrances = [
         <div class="minute-grid minute-grid--home">
           {minuteContents.slice(0, 4).map((item) => (
             <a class="minute-card" href={`/one-minute/${item.slug}/`}>
-              <span>{item.category}</span>
+              <div class="card-icon-row">
+                <IconBadge name={minuteIcons[item.category] || "minute"} />
+                <span>{item.category}</span>
+              </div>
               <strong>{item.time}</strong>
               <h3>{item.title}</h3>
               <p>{item.description}</p>

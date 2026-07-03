@@ -1,6 +1,16 @@
 ---
+import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
 import games from "../../data/games.json";
+
+const gameIcons = {
+  反射神経: "game",
+  記憶: "example",
+  パズル: "tool",
+  計算: "minute",
+  判断力: "search",
+  集中力: "rank",
+};
 
 const gameListSchema = {
   "@context": "https://schema.org",
@@ -53,7 +63,10 @@ const gameListSchema = {
       <section class="game-grid" aria-label="1分ゲーム一覧">
         {games.map((game) => (
           <a class="game-card" href={`/games/${game.slug}/`}>
-            <span>{game.category}</span>
+            <div class="card-icon-row">
+              <IconBadge name={gameIcons[game.category] || "game"} />
+              <span>{game.category}</span>
+            </div>
             <strong>{game.time}</strong>
             <h2>{game.title}</h2>
             <p>{game.description}</p>
