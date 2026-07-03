@@ -1,0 +1,47 @@
+---
+import Layout from "../../components/Layout.astro";
+import games from "../../data/games.json";
+
+const gameListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "1分ゲーム",
+  itemListElement: games.map((game, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    url: new URL(`/games/${game.slug}/`, "https://one-minute-tools.pages.dev").toString(),
+    name: game.title,
+    description: game.description,
+  })),
+};
+---
+
+<Layout
+  title="1分ゲーム｜暇つぶしに遊べるミニゲーム"
+  description="60秒で遊べる反射神経ゲームや記憶ゲームなど、短い休憩に使える暇つぶしミニゲーム集です。"
+  structuredData={[gameListSchema]}
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero game-hero">
+        <span class="hero__label">1分ゲーム</span>
+        <h1>暇つぶしに、1分だけ遊ぶ。</h1>
+        <p>
+          休憩中や待ち時間にすぐ遊べる、60秒で終わるミニゲームです。
+          スコアが出るので、ちょっとだけもう一回ができます。
+        </p>
+      </section>
+
+      <section class="game-grid" aria-label="1分ゲーム一覧">
+        {games.map((game) => (
+          <a class="game-card" href={`/games/${game.slug}/`}>
+            <span>{game.category}</span>
+            <strong>{game.time}</strong>
+            <h2>{game.title}</h2>
+            <p>{game.description}</p>
+          </a>
+        ))}
+      </section>
+    </div>
+  </main>
+</Layout>

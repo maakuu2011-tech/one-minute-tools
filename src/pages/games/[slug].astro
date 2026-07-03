@@ -1,0 +1,78 @@
+---
+import Layout from "../../components/Layout.astro";
+import MascotGuide from "../../components/MascotGuide.astro";
+import games from "../../data/games.json";
+
+export function getStaticPaths() {
+  return games.map((game) => ({
+    params: { slug: game.slug },
+    props: { game },
+  }));
+}
+
+const { game } = Astro.props;
+
+const gameSchema = {
+  "@context": "https://schema.org",
+  "@type": "Game",
+  name: game.title,
+  description: game.description,
+  url: new URL(`/games/${game.slug}/`, "https://one-minute-tools.pages.dev").toString(),
+  playMode: "SinglePlayer",
+};
+---
+
+<Layout title={`${game.title}｜1分ツール`} description={game.description} structuredData={[gameSchema]}>
+  <main class="page">
+    <div class="container">
+      <section class="hero game-hero">
+        <span class="hero__label">{game.category}</span>
+        <h1>{game.headline}</h1>
+        <p>{game.lead}</p>
+      </section>
+
+      <MascotGuide
+        title="遊び方"
+        message="スタートを押すと60秒で始まります。終わったらスコアを見て、気が向いたらもう一回どうぞ。"
+      />
+
+      <section class="game-shell" data-game={game.slug}>
+        <div class="game-stats" aria-label="ゲーム状況">
+          <div>
+            <span>残り</span>
+            <strong id="gameTime">60</strong>
+          </div>
+          <div>
+            <span>スコア</span>
+            <strong id="gameScore">0</strong>
+          </div>
+          <div>
+            <span>ベスト</span>
+            <strong id="gameBest">0</strong>
+          </div>
+        </div>
+
+        <div id="gameBoard" class="game-board" aria-live="polite">
+          <div class="game-ready">
+            <img src="/images/mascot-girl.png" alt="1分ツールのマスコットキャラクター" />
+            <p>スタートを押して遊んでください。</p>
+          </div>
+        </div>
+
+        <div class="actions game-actions">
+          <button class="button primary" id="gameStart" type="button">スタート</button>
+          <button class="button secondary" id="gameReset" type="button">リセット</button>
+          <a class="button secondary" href="/games/">ゲーム一覧へ</a>
+        </div>
+      </section>
+
+      <section class="seo-content game-content">
+        <h2>スコアを伸ばすコツ</h2>
+        <ul class="tip-list">
+          {game.tips.map((tip) => <li>{tip}</li>)}
+        </ul>
+      </section>
+    </div>
+  </main>
+  <script src={game.script} defer></script>
+</Layout>

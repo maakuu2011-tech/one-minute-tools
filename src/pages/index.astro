@@ -4,6 +4,7 @@ import ToolCard from "../components/ToolCard.astro";
 import tools from "../data/tools.json";
 import usePages from "../data/usePages.json";
 import minuteContents from "../data/minuteContents.json";
+import games from "../data/games.json";
 import updates from "../data/siteUpdates.json";
 
 const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
@@ -81,6 +82,28 @@ const categoryLinks = [
         </div>
         <div class="tool-grid">
           {publishedTools.map((tool) => <ToolCard tool={tool} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2>1分ゲーム</h2>
+            <p class="section__note">待ち時間や休憩中に、60秒だけ遊べる暇つぶしゲームです。</p>
+          </div>
+          <a class="button secondary" href="/games/">ゲーム一覧へ</a>
+        </div>
+        <div class="game-grid game-grid--home">
+          {games.map((game) => (
+            <a class="game-card" href={`/games/${game.slug}/`}>
+              <span>{game.category}</span>
+              <strong>{game.time}</strong>
+              <h3>{game.title}</h3>
+              <p>{game.description}</p>
+            </a>
+          ))}
         </div>
       </div>
     </section>
