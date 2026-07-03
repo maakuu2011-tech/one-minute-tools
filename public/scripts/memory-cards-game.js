@@ -5,6 +5,7 @@ const timeEl = document.getElementById("gameTime");
 const scoreEl = document.getElementById("gameScore");
 const bestEl = document.getElementById("gameBest");
 
+const gameSlug = "memory-cards";
 const bestKey = "one-minute-game-memory-cards-best";
 const icons = ["★", "●", "◆", "▲", "♣", "♥", "☀", "♪"];
 let timerId = null;
@@ -95,6 +96,7 @@ function endGame() {
   running = false;
   clearInterval(timerId);
   setBest(score);
+  window.OneMinuteRanking?.record(gameSlug, score);
   board.classList.remove("memory-board");
   board.innerHTML = `<div class="game-ready"><strong>終了！</strong><p>スコアは ${score} でした。</p></div>`;
   startButton.textContent = "もう一回";

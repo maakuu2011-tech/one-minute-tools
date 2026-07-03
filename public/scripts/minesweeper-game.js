@@ -9,6 +9,7 @@ const actions = document.querySelector(".game-actions");
 const size = 8;
 const mineCount = 10;
 const totalSafeCells = size * size - mineCount;
+const gameSlug = "minesweeper";
 const bestKey = "one-minute-game-minesweeper-best";
 
 let timerId = null;
@@ -151,6 +152,7 @@ function endGame(message) {
   running = false;
   clearInterval(timerId);
   setBest(score);
+  window.OneMinuteRanking?.record(gameSlug, score);
   if (message) {
     const notice = document.createElement("div");
     notice.className = "mine-result";

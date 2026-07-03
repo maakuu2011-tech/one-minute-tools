@@ -66,6 +66,17 @@ const gameSchema = {
         </div>
       </section>
 
+      <section class="ranking-panel" aria-labelledby="rankingTitle">
+        <div class="section__head section__head--compact">
+          <div>
+            <h2 id="rankingTitle">この端末のランキング</h2>
+            <p class="section__note">このブラウザに保存された上位10件です。</p>
+          </div>
+          <a class="button secondary" href="/games/ranking/">ランキング一覧へ</a>
+        </div>
+        <ol class="ranking-list" id="rankingList"></ol>
+      </section>
+
       <section class="seo-content game-content">
         <h2>スコアを伸ばすコツ</h2>
         <ul class="tip-list">
@@ -74,5 +85,7 @@ const gameSchema = {
       </section>
     </div>
   </main>
+  <script type="application/json" id="game-meta" set:html={JSON.stringify({ slug: game.slug })}></script>
+  <script src="/scripts/game-ranking.js" defer></script>
   <script src={game.script} defer></script>
 </Layout>

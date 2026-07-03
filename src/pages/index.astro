@@ -93,10 +93,13 @@ const categoryLinks = [
             <h2>1分ゲーム</h2>
             <p class="section__note">待ち時間や休憩中に、60秒だけ遊べる暇つぶしゲームです。</p>
           </div>
-          <a class="button secondary" href="/games/">ゲーム一覧へ</a>
+          <div class="actions actions--inline">
+            <a class="button secondary" href="/games/ranking/">ランキング</a>
+            <a class="button secondary" href="/games/">ゲーム一覧へ</a>
+          </div>
         </div>
         <div class="game-grid game-grid--home">
-          {games.map((game) => (
+          {games.slice(0, 4).map((game) => (
             <a class="game-card" href={`/games/${game.slug}/`}>
               <span>{game.category}</span>
               <strong>{game.time}</strong>

@@ -1,0 +1,46 @@
+---
+import Layout from "../../components/Layout.astro";
+import games from "../../data/games.json";
+
+const rankingSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "1分ゲームランキング",
+  description: "1分ゲームの端末内ランキングを確認できるページです。",
+  url: "https://one-minute-tools.pages.dev/games/ranking/",
+};
+---
+
+<Layout
+  title="1分ゲームランキング｜1分ツール"
+  description="1分タップ反射ゲーム、1分マインスイーパー、1分計算ゲームなどの端末内ランキングを確認できます。"
+  structuredData={[rankingSchema]}
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero game-hero">
+        <span class="hero__label">ランキング</span>
+        <h1>1分ゲームの記録を見る。</h1>
+        <p>
+          このブラウザに保存されたゲーム別ランキングです。まずは自分のベスト更新用として使えます。
+        </p>
+      </section>
+
+      <section class="ranking-grid" aria-label="1分ゲームランキング一覧">
+        {games.map((game) => (
+          <article class="ranking-card">
+            <div class="ranking-card__head">
+              <span>{game.category}</span>
+              <h2>{game.title}</h2>
+              <a href={`/games/${game.slug}/`}>遊ぶ</a>
+            </div>
+            <ol class="ranking-list" data-ranking-board={game.slug}></ol>
+          </article>
+        ))}
+      </section>
+    </div>
+  </main>
+  <script type="application/json" id="games-data" set:html={JSON.stringify(games)}></script>
+  <script src="/scripts/game-ranking.js" defer></script>
+  <script src="/scripts/game-ranking-page.js" defer></script>
+</Layout>
