@@ -522,6 +522,73 @@ button {
   line-height: 1.8;
 }
 
+.updates-hero {
+  padding-bottom: 18px;
+}
+
+.updates-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.update-mini,
+.update-entry {
+  display: grid;
+  gap: 9px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.update-mini span,
+.update-entry span {
+  width: fit-content;
+  color: #7c2d12;
+  background: #ffedd5;
+  border: 1px solid #fed7aa;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.update-mini time,
+.update-entry time {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.update-mini strong,
+.update-entry h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.update-mini p,
+.update-entry p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.updates-list {
+  display: grid;
+  gap: 14px;
+}
+
+.update-entry > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1071,7 +1138,8 @@ textarea {
   .category-strip,
   .use-list,
   .example-list,
-  .minute-grid {
+  .minute-grid,
+  .updates-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1145,7 +1213,8 @@ textarea {
 
   .use-list,
   .example-list,
-  .minute-grid {
+  .minute-grid,
+  .updates-strip {
     grid-template-columns: 1fr;
   }
 

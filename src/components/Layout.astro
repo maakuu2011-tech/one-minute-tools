@@ -56,6 +56,7 @@ const structuredDataItems = [organizationStructuredData, websiteStructuredData, 
     <meta name="twitter:description" content={description} />
     <link rel="icon" href="/images/mascot-girl.png" />
     <link rel="apple-touch-icon" href="/images/mascot-girl.png" />
+    <link rel="alternate" type="application/rss+xml" title="1分ツール 更新情報" href="/rss.xml" />
     {structuredDataItems.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)}></script>)}
     <title>{title}</title>
   </head>
@@ -73,6 +74,7 @@ const structuredDataItems = [organizationStructuredData, websiteStructuredData, 
           <a href="/tools/">ツール一覧</a>
           <a href="/use/">用途から探す</a>
           <a href="/one-minute/">1分コンテンツ</a>
+          <a href="/updates/">更新履歴</a>
           <a href="/about/">このサイトについて</a>
           <a href="/privacy/">プライバシー</a>
         </nav>
@@ -84,6 +86,8 @@ const structuredDataItems = [organizationStructuredData, websiteStructuredData, 
         <div>© 1分ツール</div>
         <div class="footer-links">
           <a href="/about/">このサイトについて</a>
+          <a href="/updates/">更新履歴</a>
+          <a href="/rss.xml">RSS</a>
           <a href="/privacy/">プライバシーポリシー</a>
           <a href="/contact/">お問い合わせ</a>
         </div>

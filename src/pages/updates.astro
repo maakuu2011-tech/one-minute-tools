@@ -1,0 +1,49 @@
+---
+import Layout from "../components/Layout.astro";
+import updates from "../data/siteUpdates.json";
+
+const updateSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "1分ツールの更新履歴",
+  itemListElement: updates.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    url: new URL(item.href, "https://one-minute-tools.pages.dev").toString(),
+    name: item.title,
+    description: item.description,
+  })),
+};
+---
+
+<Layout
+  title="更新履歴｜1分ツール"
+  description="1分ツールの新しいツール、1分コンテンツ、サイト改善の更新履歴です。"
+  structuredData={[updateSchema]}
+>
+  <main class="page">
+    <div class="container">
+      <section class="hero updates-hero">
+        <span class="hero__label">更新履歴</span>
+        <h1>1分ツールの追加・改善ログ</h1>
+        <p>
+          新しく追加したツール、1分コンテンツ、探しやすさの改善をまとめています。
+          最近増えたものをざっと確認できます。
+        </p>
+      </section>
+
+      <section class="updates-list" aria-label="更新履歴一覧">
+        {updates.map((item) => (
+          <article class="update-entry">
+            <div>
+              <time datetime={item.date}>{item.date}</time>
+              <span>{item.category}</span>
+            </div>
+            <h2><a href={item.href}>{item.title}</a></h2>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </section>
+    </div>
+  </main>
+</Layout>

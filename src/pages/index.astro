@@ -4,6 +4,7 @@ import ToolCard from "../components/ToolCard.astro";
 import tools from "../data/tools.json";
 import usePages from "../data/usePages.json";
 import minuteContents from "../data/minuteContents.json";
+import updates from "../data/siteUpdates.json";
 
 const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
 const categoryLinks = [
@@ -120,6 +121,28 @@ const categoryLinks = [
               <span>{item.category}</span>
               <strong>{item.time}</strong>
               <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2>最近の更新</h2>
+            <p class="section__note">新しいツールや1分コンテンツ、サイト改善を追加しています。</p>
+          </div>
+          <a class="button secondary" href="/updates/">更新履歴へ</a>
+        </div>
+        <div class="updates-strip">
+          {updates.slice(0, 3).map((item) => (
+            <a class="update-mini" href={item.href}>
+              <span>{item.category}</span>
+              <time datetime={item.date}>{item.date}</time>
+              <strong>{item.title}</strong>
               <p>{item.description}</p>
             </a>
           ))}
