@@ -96,6 +96,10 @@ button {
   font-weight: 800;
 }
 
+.nav a {
+  white-space: nowrap;
+}
+
 .hero {
   padding: 56px 0 26px;
 }
@@ -2130,15 +2134,86 @@ textarea {
     width: min(100% - 28px, 1120px);
   }
 
-  .site-header__inner,
+  .site-header__inner {
+    min-height: auto;
+    padding: 12px 0 10px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
   .section__head {
     align-items: flex-start;
     flex-direction: column;
   }
 
+  .brand {
+    gap: 10px;
+  }
+
+  .brand__mark {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+
+  .brand__name {
+    font-size: 20px;
+  }
+
+  .brand__note {
+    font-size: 12px;
+  }
+
   .nav {
     width: 100%;
-    justify-content: flex-start;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    font-size: 13px;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+  }
+
+  .nav a.nav__optional {
+    display: none;
+  }
+
+  .hero {
+    padding: 36px 0 18px;
+  }
+
+  .hero h1 {
+    margin: 16px 0 12px;
+    font-size: clamp(34px, 10vw, 42px);
+    line-height: 1.16;
+  }
+
+  .hero p {
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .hero__label {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .hero .mascot-card {
+    display: none;
   }
 
   .tool-grid,
