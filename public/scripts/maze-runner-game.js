@@ -20,6 +20,7 @@ const moves = {
   down: [1, 0],
   left: [0, -1],
 };
+const openFallbackLayout = ["S......", ".......", ".......", ".......", ".......", ".......", "......G"];
 
 let timerId = null;
 let score = 0;
@@ -41,8 +42,43 @@ function renderStats() {
   bestEl.textContent = localStorage.getItem(bestKey) || "0";
 }
 
+function findPoint(source, marker) {
+  for (let row = 0; row < source.length; row += 1) {
+    const col = source[row].indexOf(marker);
+    if (col !== -1) return { row, col };
+  }
+  return null;
+}
+
+function isReachable(source) {
+  const start = findPoint(source, "S");
+  const finish = findPoint(source, "G");
+  if (!start || !finish) return false;
+
+  const queue = [start];
+  const visited = new Set([`${start.row}:${start.col}`]);
+
+  while (queue.length) {
+    const current = queue.shift();
+    if (current.row === finish.row && current.col === finish.col) return true;
+
+    Object.values(moves).forEach(([rowDelta, colDelta]) => {
+      const next = { row: current.row + rowDelta, col: current.col + colDelta };
+      const key = `${next.row}:${next.col}`;
+      if (next.row < 0 || next.row >= size || next.col < 0 || next.col >= size) return;
+      if (visited.has(key) || source[next.row][next.col] === "#") return;
+      visited.add(key);
+      queue.push(next);
+    });
+  }
+
+  return false;
+}
+
 function pickLayout() {
-  const source = layouts[Math.floor(Math.random() * layouts.length)];
+  const playableLayouts = layouts.filter(isReachable);
+  const candidates = playableLayouts.length ? playableLayouts : [openFallbackLayout];
+  const source = candidates[Math.floor(Math.random() * candidates.length)];
   maze = source.map((row) => row.split(""));
   source.forEach((row, rowIndex) => {
     [...row].forEach((cell, colIndex) => {

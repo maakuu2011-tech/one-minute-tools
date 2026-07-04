@@ -23,6 +23,13 @@ const categoryLinks = [
   { label: "催促", href: "/tools/follow-up-message/", note: "返信・確認のお願い", icon: "remind" },
   { label: "言い換え", href: "/tools/soft-rewrite/", note: "やわらかい表現へ", icon: "rewrite" },
 ];
+const searchSuggestions = [
+  { label: "LINE返信", href: "/tools/line-reply/" },
+  { label: "断り方", href: "/tools/decline-reply/" },
+  { label: "催促", href: "/tools/follow-up-message/" },
+  { label: "謝罪", href: "/tools/apology-mail/" },
+  { label: "1分ゲーム", href: "/games/" },
+];
 const quickEntrances = [
   {
     icon: "tool",
@@ -67,6 +74,7 @@ const minuteIcons = {
   仕事: "tool",
   文章: "rewrite",
   集中: "rank",
+  メモ: "example",
 };
 ---
 
@@ -91,6 +99,9 @@ const minuteIcons = {
               <button class="button primary" type="submit">探す</button>
             </div>
           </form>
+          <div class="home-suggestion-row" aria-label="よく使う入口">
+            {searchSuggestions.map((item) => <a href={item.href}>{item.label}</a>)}
+          </div>
         </div>
         <div class="mascot-card" aria-label="1分ツールのマスコット">
           <img src="/images/mascot-girl.png" alt="1分ツールのマスコットキャラクター" />

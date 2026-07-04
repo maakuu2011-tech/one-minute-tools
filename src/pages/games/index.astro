@@ -16,6 +16,15 @@ const gameIcons = {
   言葉: "word",
 };
 
+const featuredGames = ["janken-reaction", "number-order", "sea-battle"]
+  .map((slug) => games.find((game) => game.slug === slug))
+  .filter(Boolean);
+const categories = Array.from(new Set(games.map((game) => game.category)));
+const groupedGames = categories.map((category) => ({
+  category,
+  games: games.filter((game) => game.category === category),
+}));
+
 const gameListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
@@ -70,17 +79,69 @@ const gameListSchema = {
         </div>
       </section>
 
-      <section class="game-grid" aria-label="1分ゲーム一覧">
-        {games.map((game) => (
-          <a class="game-card" href={`/games/${game.slug}/`}>
-            <div class="card-icon-row">
-              <IconBadge name={gameIcons[game.category] || "game"} />
-              <span>{game.category}</span>
+      <section class="section section--tight">
+        <div class="section__head">
+          <div>
+            <h2>まず遊ぶなら</h2>
+            <p class="section__note">ルールがすぐわかるものを先に置いています。</p>
+          </div>
+        </div>
+        <div class="game-grid game-grid--featured">
+          {featuredGames.map((game) => (
+            <a class="game-card game-card--featured" href={`/games/${game.slug}/`}>
+              <div class="card-icon-row">
+                <IconBadge name={gameIcons[game.category] || "game"} />
+                <span>{game.category}</span>
+              </div>
+              <strong>{game.time}</strong>
+              <h2>{game.title}</h2>
+              <p>{game.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="section section--tight" aria-label="1分ゲームカテゴリ">
+        <div class="section__head">
+          <div>
+            <h2>カテゴリから探す</h2>
+            <p class="section__note">気分に合わせて、反射・記憶・パズル・言葉などから選べます。</p>
+          </div>
+        </div>
+        <div class="game-category-strip">
+          {groupedGames.map((group) => (
+            <a href={`#game-category-${group.category}`}>
+              <IconBadge name={gameIcons[group.category] || "game"} />
+              <span>{group.category}</span>
+              <small>{group.games.length}本</small>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="game-category-list" aria-label="1分ゲーム一覧">
+        {groupedGames.map((group) => (
+          <section class="game-category-section" id={`game-category-${group.category}`}>
+            <div class="section__head section__head--compact">
+              <div>
+                <h2>{group.category}</h2>
+                <p class="section__note">{group.games.length}本のゲームがあります。</p>
+              </div>
             </div>
-            <strong>{game.time}</strong>
-            <h2>{game.title}</h2>
-            <p>{game.description}</p>
-          </a>
+            <div class="game-grid">
+              {group.games.map((game) => (
+                <a class="game-card" href={`/games/${game.slug}/`}>
+                  <div class="card-icon-row">
+                    <IconBadge name={gameIcons[game.category] || "game"} />
+                    <span>{game.category}</span>
+                  </div>
+                  <strong>{game.time}</strong>
+                  <h3>{game.title}</h3>
+                  <p>{game.description}</p>
+                </a>
+              ))}
+            </div>
+          </section>
         ))}
       </section>
     </div>

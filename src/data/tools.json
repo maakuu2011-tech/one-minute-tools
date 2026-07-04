@@ -304,5 +304,77 @@
     "href": "/tools/status-report/",
     "status": "公開中",
     "keywords": ["進捗報告", "状況報告", "報告文"]
+  },
+  {
+    "id": "health-absence-message",
+    "title": "体調不良連絡メーカー",
+    "description": "体調不良で休む・遅れる連絡を、短く失礼のない文章に整えます。",
+    "category": "連絡",
+    "href": "/tools/health-absence-message/",
+    "status": "公開中",
+    "keywords": ["体調不良 連絡", "欠勤 連絡", "休む メール"]
+  },
+  {
+    "id": "late-arrival-message",
+    "title": "遅刻連絡メーカー",
+    "description": "遅刻や到着遅れを伝える文章を、理由と到着目安つきで整えます。",
+    "category": "連絡",
+    "href": "/tools/late-arrival-message/",
+    "status": "公開中",
+    "keywords": ["遅刻 連絡", "到着 遅れる", "遅れます 返信"]
+  },
+  {
+    "id": "paid-leave-request",
+    "title": "有給申請文メーカー",
+    "description": "有給休暇や休みの相談を、上司に送りやすい文面に整えます。",
+    "category": "依頼",
+    "href": "/tools/paid-leave-request/",
+    "status": "公開中",
+    "keywords": ["有給 申請 メール", "休み 相談", "上司 休暇 連絡"]
+  },
+  {
+    "id": "document-send-mail",
+    "title": "資料送付メールメーカー",
+    "description": "資料やファイルを送るときの案内文を、簡潔で丁寧に作れます。",
+    "category": "メール",
+    "href": "/tools/document-send-mail/",
+    "status": "公開中",
+    "keywords": ["資料送付 メール", "ファイル送付", "添付 メール"]
+  },
+  {
+    "id": "confirmation-request",
+    "title": "確認依頼文メーカー",
+    "description": "内容確認やチェックをお願いする文章を、相手が動きやすい形に整えます。",
+    "category": "依頼",
+    "href": "/tools/confirmation-request/",
+    "status": "公開中",
+    "keywords": ["確認依頼", "チェック お願い", "確認してください 敬語"]
+  },
+  {
+    "id": "estimate-request",
+    "title": "見積もり依頼文メーカー",
+    "description": "見積もりや料金確認の依頼文を、条件が伝わる形で作れます。",
+    "category": "依頼",
+    "href": "/tools/estimate-request/",
+    "status": "公開中",
+    "keywords": ["見積もり依頼", "料金確認 メール", "見積依頼 文例"]
+  },
+  {
+    "id": "handover-note",
+    "title": "引き継ぎメモメーカー",
+    "description": "作業の状況・注意点・次にやることを、読みやすい引き継ぎ文に整えます。",
+    "category": "報告",
+    "href": "/tools/handover-note/",
+    "status": "公開中",
+    "keywords": ["引き継ぎ メモ", "業務 引き継ぎ", "申し送り"]
+  },
+  {
+    "id": "trouble-report",
+    "title": "トラブル報告メーカー",
+    "description": "不具合や問題発生の報告を、事実・影響・対応に分けて整理します。",
+    "category": "報告",
+    "href": "/tools/trouble-report/",
+    "status": "公開中",
+    "keywords": ["トラブル報告", "不具合 報告", "問題発生 連絡"]
   }
 ]

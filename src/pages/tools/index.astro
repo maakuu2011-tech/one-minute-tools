@@ -11,6 +11,8 @@ const featuredItems = [
   { id: "soft-rewrite", reason: "きつく見える文章をやわらかく直す", icon: "rewrite" },
   { id: "line-reply", reason: "友達や知人へのLINE返信を自然にする", icon: "chat" },
   { id: "keigo-mail", reason: "仕事メールを自然な敬語に整える", icon: "mail" },
+  { id: "confirmation-request", reason: "確認してほしい内容を相手が動きやすい文面にする", icon: "tool" },
+  { id: "health-absence-message", reason: "体調不良や欠勤連絡を短く失礼なく送る", icon: "chat" },
 ]
   .map((item) => ({ ...item, tool: tools.find((tool) => tool.id === item.id) }))
   .filter((item) => item.tool);

@@ -204,6 +204,27 @@ button {
   font-weight: 800;
 }
 
+.home-suggestion-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.home-suggestion-row a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 900;
+  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
+}
+
 .section {
   padding: 26px 0;
 }
@@ -665,6 +686,10 @@ button {
   margin-top: 6px;
 }
 
+.game-grid--featured {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .game-grid--related {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -711,6 +736,46 @@ button {
   margin: 0;
   color: var(--muted);
   line-height: 1.75;
+}
+
+.game-card--featured {
+  border-color: #bfdbfe;
+  background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+}
+
+.game-category-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.game-category-strip a {
+  display: grid;
+  gap: 7px;
+  min-height: 112px;
+  padding: 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.game-category-strip span {
+  font-weight: 900;
+}
+
+.game-category-strip small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.game-category-list {
+  display: grid;
+  gap: 24px;
+}
+
+.game-category-section {
+  scroll-margin-top: 18px;
 }
 
 .game-shell {
@@ -2095,6 +2160,7 @@ textarea {
   .tool-grid--compact,
   .tool-layout,
   .category-strip,
+  .game-category-strip,
   .use-list,
   .example-list,
   .minute-grid,
@@ -2104,7 +2170,8 @@ textarea {
   }
 
   .tool-layout,
-  .category-strip {
+  .category-strip,
+  .game-category-strip {
     grid-template-columns: 1fr;
   }
 
@@ -2248,6 +2315,7 @@ textarea {
   .game-grid,
   .quick-entrance,
   .popular-tool-list,
+  .game-category-strip,
   .game-summary,
   .ranking-columns,
   .ranking-card__lists,
