@@ -10,7 +10,52 @@ const useIcons = {
   催促: "remind",
   謝罪: "mail",
   言い換え: "rewrite",
+  確認依頼: "tool",
+  欠勤連絡: "chat",
+  遅刻連絡: "chat",
+  資料送付: "mail",
+  期限延長: "remind",
+  進捗報告: "rank",
+  引き継ぎ: "example",
+  見積依頼: "tool",
 };
+
+const featuredSlugs = [
+  "line-reply-examples",
+  "confirmation-request-examples",
+  "absence-message-examples",
+  "decline-without-offense",
+];
+
+const featuredPages = featuredSlugs
+  .map((slug) => usePages.find((page) => page.slug === slug))
+  .filter(Boolean);
+
+const groups = [
+  {
+    title: "返事・言い換え",
+    description: "LINE、メール、きつい文章の言い換えなど、毎日使いやすい場面です。",
+    labels: ["チャット返信", "メール返信", "言い換え"],
+  },
+  {
+    title: "お願い・確認",
+    description: "確認依頼、見積もり、期限延長など、相手に動いてもらう文章です。",
+    labels: ["確認依頼", "見積依頼", "期限延長", "催促"],
+  },
+  {
+    title: "連絡・報告",
+    description: "欠勤、遅刻、資料送付、進捗報告、引き継ぎなど仕事で使う連絡です。",
+    labels: ["欠勤連絡", "遅刻連絡", "資料送付", "進捗報告", "引き継ぎ"],
+  },
+  {
+    title: "謝罪・断り方",
+    description: "失礼なく断る、お詫びするなど、言い方に気を使う場面です。",
+    labels: ["謝罪", "断り方"],
+  },
+].map((group) => ({
+  ...group,
+  pages: usePages.filter((page) => group.labels.includes(page.label)),
+}));
 ---
 
 <Layout
@@ -28,18 +73,54 @@ const useIcons = {
         </p>
       </section>
 
-      <section class="use-list" aria-label="用途一覧">
-        {usePages.map((page) => (
-          <a class="use-card" href={`/use/${page.slug}/`}>
-            <div class="card-icon-row">
-              <IconBadge name={useIcons[page.label] || "example"} />
-              <span>{page.label}</span>
-            </div>
-            <h2>{page.title}</h2>
-            <p>{page.description}</p>
-            <small>{page.searchIntents.join(" / ")}</small>
-          </a>
-        ))}
+      <section class="section section--tight" aria-label="よく使う用途">
+        <div class="section__head">
+          <div>
+            <h2>まず見るなら</h2>
+            <p class="section__note">検索されやすく、実際に使う頻度も高いページです。</p>
+          </div>
+        </div>
+        <div class="use-list use-list--featured">
+          {featuredPages.map((page) => (
+            <a class="use-card use-card--featured" href={`/use/${page.slug}/`}>
+              <div class="card-icon-row">
+                <IconBadge name={useIcons[page.label] || "example"} />
+                <span>{page.label}</span>
+              </div>
+              <h2>{page.title}</h2>
+              <p>{page.description}</p>
+              <small>{page.searchIntents.join(" / ")}</small>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="section section--tight" aria-label="用途カテゴリ">
+        <div class="use-group-list">
+          {groups.map((group) => (
+            <section class="use-group">
+              <div class="section__head section__head--compact">
+                <div>
+                  <h2>{group.title}</h2>
+                  <p class="section__note">{group.description}</p>
+                </div>
+              </div>
+              <div class="use-list">
+                {group.pages.map((page) => (
+                  <a class="use-card" href={`/use/${page.slug}/`}>
+                    <div class="card-icon-row">
+                      <IconBadge name={useIcons[page.label] || "example"} />
+                      <span>{page.label}</span>
+                    </div>
+                    <h2>{page.title}</h2>
+                    <p>{page.description}</p>
+                    <small>{page.searchIntents.join(" / ")}</small>
+                  </a>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       </section>
     </div>
   </main>

@@ -18,6 +18,20 @@ const relatedTools = page.toolIds
   .map((id) => tools.find((tool) => tool.id === id))
   .filter(Boolean);
 
+const relatedUsePages = usePages
+  .filter((item) => item.slug !== page.slug)
+  .filter((item) =>
+    item.label === page.label ||
+    item.toolIds.some((id) => page.toolIds.includes(id)) ||
+    item.searchIntents.some((intent) =>
+      page.searchIntents.some((current) => current.split(" ")[0] && intent.includes(current.split(" ")[0]))
+    )
+  )
+  .slice(0, 3);
+
+const fallbackUsePages = usePages.filter((item) => item.slug !== page.slug).slice(0, 3);
+const nextUsePages = relatedUsePages.length ? relatedUsePages : fallbackUsePages;
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -65,6 +79,17 @@ const faqSchema = {
         <h2>この場面で使えるツール</h2>
         <div class="tool-grid tool-grid--compact">
           {relatedTools.map((tool) => <ToolCard tool={tool} />)}
+        </div>
+
+        <h2>近い困りごと</h2>
+        <div class="use-list use-list--related">
+          {nextUsePages.map((item) => (
+            <a class="use-card use-card--mini" href={`/use/${item.slug}/`}>
+              <span>{item.label}</span>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </a>
+          ))}
         </div>
 
         <h2>よくある質問</h2>

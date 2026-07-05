@@ -448,6 +448,23 @@ button {
   margin-top: 6px;
 }
 
+.use-list--featured {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.use-list--related {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.use-group-list {
+  display: grid;
+  gap: 26px;
+}
+
+.use-group {
+  scroll-margin-top: 18px;
+}
+
 .use-card {
   display: grid;
   gap: 9px;
@@ -459,7 +476,17 @@ button {
   box-shadow: var(--shadow);
 }
 
+.use-card--featured {
+  border-color: #bfdbfe;
+  background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+}
+
+.use-card--mini {
+  min-height: 150px;
+}
+
 .use-card .card-icon-row > span:not(.icon-badge),
+.use-card--mini > span,
 .intent-list span {
   width: fit-content;
   color: #1d4ed8;
@@ -2162,6 +2189,8 @@ textarea {
   .category-strip,
   .game-category-strip,
   .use-list,
+  .use-list--featured,
+  .use-list--related,
   .example-list,
   .minute-grid,
   .game-grid,
@@ -2310,6 +2339,8 @@ textarea {
   }
 
   .use-list,
+  .use-list--featured,
+  .use-list--related,
   .example-list,
   .minute-grid,
   .game-grid,
