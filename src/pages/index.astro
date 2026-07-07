@@ -24,12 +24,36 @@ const categoryLinks = [
   { label: "言い換え", href: "/tools/soft-rewrite/", note: "やわらかい表現へ", icon: "rewrite" },
 ];
 const searchSuggestions = [
-  { label: "LINE返信", href: "/tools/line-reply/" },
-  { label: "断り方", href: "/tools/decline-reply/" },
-  { label: "催促", href: "/tools/follow-up-message/" },
-  { label: "謝罪", href: "/tools/apology-mail/" },
+  { label: "LINE返信", href: "/use/line-reply-examples/" },
+  { label: "確認依頼", href: "/use/confirmation-request-examples/" },
+  { label: "休み連絡", href: "/use/absence-message-examples/" },
+  { label: "日程調整", href: "/use/schedule-adjust-examples/" },
+  { label: "断り方", href: "/use/decline-without-offense/" },
   { label: "1分ゲーム", href: "/games/" },
 ];
+const priorityUseSlugs = [
+  "confirmation-request-examples",
+  "absence-message-examples",
+  "paid-leave-request-examples",
+  "schedule-adjust-examples",
+  "payment-reminder-examples",
+  "thanks-mail-examples",
+  "customer-support-reply-examples",
+  "decline-without-offense",
+];
+const priorityUsePages = priorityUseSlugs
+  .map((slug) => usePages.find((page) => page.slug === slug))
+  .filter(Boolean);
+const useIconMap = {
+  確認依頼: "search",
+  休み連絡: "chat",
+  有給申請: "example",
+  日程調整: "minute",
+  支払い催促: "remind",
+  お礼: "mail",
+  問い合わせ返信: "chat",
+  断り方: "decline",
+};
 const quickEntrances = [
   {
     icon: "tool",
@@ -136,6 +160,31 @@ const minuteIcons = {
               <IconBadge name={item.icon} />
               <span>{item.label}</span>
               <small>{item.note}</small>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2>よく使う用途から探す</h2>
+            <p class="section__note">検索されやすい文章の悩みを、例文と作成ツールへ直接つなげています。</p>
+          </div>
+          <a class="button secondary" href="/use/">用途一覧へ</a>
+        </div>
+        <div class="home-use-grid">
+          {priorityUsePages.map((page) => (
+            <a class="home-use-card" href={`/use/${page.slug}/`}>
+              <div class="card-icon-row">
+                <IconBadge name={useIconMap[page.label] || "example"} />
+                <span>{page.label}</span>
+              </div>
+              <h3>{page.title}</h3>
+              <p>{page.description}</p>
+              <small>{page.searchIntents?.[0] || "例文を探す"}</small>
             </a>
           ))}
         </div>
