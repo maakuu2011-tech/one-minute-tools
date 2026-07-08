@@ -13,10 +13,13 @@ export function getStaticPaths() {
 }
 
 const { page } = Astro.props;
+const siteUrl = "https://one-minute-tools.pages.dev";
+const pageUrl = new URL(`/use/${page.slug}/`, siteUrl).toString();
 const seoDescription = `${page.title}。${page.description}そのまま使える例文、よくある質問、関連する無料ツールをまとめています。`;
 const relatedTools = page.toolIds
   .map((id) => tools.find((tool) => tool.id === id))
   .filter(Boolean);
+const primaryTool = relatedTools[0];
 
 const relatedUsePages = usePages
   .filter((item) => item.slug !== page.slug)
@@ -44,11 +47,62 @@ const faqSchema = {
     },
   })),
 };
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "1分ツール",
+      item: siteUrl,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "用途から探す",
+      item: new URL("/use/", siteUrl).toString(),
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: page.title,
+      item: pageUrl,
+    },
+  ],
+};
+
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: page.title,
+  description: seoDescription,
+  url: pageUrl,
+  inLanguage: "ja",
+  isPartOf: {
+    "@type": "WebSite",
+    name: "1分ツール",
+    url: siteUrl,
+  },
+};
 ---
 
-<Layout title={`${page.title}｜例文と無料ツール`} description={seoDescription} structuredData={[faqSchema]}>
+<Layout
+  title={`${page.title}｜例文と無料ツール`}
+  description={seoDescription}
+  structuredData={[webPageSchema, breadcrumbSchema, faqSchema]}
+>
   <main class="page">
     <div class="container">
+      <nav class="breadcrumb" aria-label="パンくずリスト">
+        <a href="/">1分ツール</a>
+        <span>/</span>
+        <a href="/use/">用途から探す</a>
+        <span>/</span>
+        <span>{page.label}</span>
+      </nav>
+
       <section class="hero use-hero">
         <span class="hero__label">{page.label}</span>
         <h1>{page.headline}</h1>
@@ -74,6 +128,29 @@ const faqSchema = {
               <p>{example.text}</p>
             </article>
           ))}
+        </div>
+
+        <h2>次にやること</h2>
+        <div class="next-action-grid">
+          {
+            primaryTool && (
+              <a class="next-action-card" href={primaryTool.href}>
+                <span>作る</span>
+                <strong>{primaryTool.title}を開く</strong>
+                <p>近い文面を入力して、自分の状況に合う文章へ整えます。</p>
+              </a>
+            )
+          }
+          <a class="next-action-card" href="/use/">
+            <span>探す</span>
+            <strong>別の困りごとを見る</strong>
+            <p>似た場面の例文から、もっと近い言い方を探せます。</p>
+          </a>
+          <a class="next-action-card" href="/tools/">
+            <span>一覧</span>
+            <strong>文章ツール一覧へ</strong>
+            <p>チャット、メール、断り方、催促などから直接選べます。</p>
+          </a>
         </div>
 
         <h2>この場面で使えるツール</h2>
