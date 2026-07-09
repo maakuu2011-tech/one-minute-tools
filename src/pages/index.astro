@@ -277,13 +277,13 @@ const minuteIcons = {
       <div class="container">
         <div class="section__head">
           <div>
-            <h2>困った場面から探す</h2>
-            <p class="section__note">検索されやすい悩みごと別に、例文と使えるツールをまとめています。</p>
+            <h2>新しく追加した用途</h2>
+            <p class="section__note">検索されやすい悩みごと別に、例文と使えるツールを追加しています。</p>
           </div>
           <a class="button secondary" href="/use/">用途一覧へ</a>
         </div>
         <div class="use-list use-list--home">
-          {usePages.slice(0, 3).map((page) => (
+          {usePages.slice(-6).reverse().map((page) => (
             <a class="use-card" href={`/use/${page.slug}/`}>
               <span>{page.label}</span>
               <h3>{page.title}</h3>
