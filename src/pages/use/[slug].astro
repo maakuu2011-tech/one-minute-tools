@@ -126,6 +126,7 @@ const webPageSchema = {
             <article class="example-card">
               <h3>{example.situation}</h3>
               <p>{example.text}</p>
+              <button class="example-copy-button" type="button" data-copy-text={example.text}>コピー</button>
             </article>
           ))}
         </div>
@@ -181,4 +182,6 @@ const webPageSchema = {
       </section>
     </div>
   </main>
+  <div id="toast" class="toast"></div>
+  <script is:inline src="/scripts/use-example-copy.js"></script>
 </Layout>

@@ -603,6 +603,9 @@ button {
 }
 
 .example-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
   padding: 16px;
   background: #fbfcff;
   border: 1px solid var(--line);
@@ -610,7 +613,7 @@ button {
 }
 
 .example-card h3 {
-  margin: 0 0 10px;
+  margin: 0;
   font-size: 16px;
 }
 
@@ -619,6 +622,22 @@ button {
   color: var(--text);
   font-weight: 800;
   line-height: 1.8;
+}
+
+.example-copy-button {
+  justify-self: start;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.example-copy-button:hover {
+  background: #dbeafe;
 }
 
 .next-action-grid {
