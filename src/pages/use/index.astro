@@ -34,13 +34,22 @@ const useIcons = {
   DM返信: "chat",
   指摘の言い換え: "rewrite",
   仕事依頼の断り方: "decline",
+  面接日程調整: "minute",
+  面接辞退: "decline",
+  内定辞退: "decline",
+  請求書送付: "mail",
+  納期遅延連絡: "remind",
+  アポイント依頼: "minute",
+  議事録共有: "example",
+  退職挨拶: "mail",
 };
 
 const featuredSlugs = [
   "line-reply-examples",
   "confirmation-request-examples",
   "absence-message-examples",
-  "paid-leave-request-examples",
+  "interview-schedule-mail-examples",
+  "invoice-send-mail-examples",
   "decline-without-offense",
 ];
 
@@ -57,17 +66,17 @@ const groups = [
   {
     title: "お願い・確認",
     description: "確認依頼、見積もり、打ち合わせ依頼、日程調整、期限延長など、相手に動いてもらう文章です。",
-    labels: ["お願い文", "確認依頼", "見積依頼", "打ち合わせ依頼", "日程調整", "期限延長", "催促"],
+    labels: ["お願い文", "確認依頼", "見積依頼", "打ち合わせ依頼", "アポイント依頼", "日程調整", "面接日程調整", "期限延長", "催促"],
   },
   {
     title: "連絡・報告",
     description: "欠勤、有給申請、遅刻、資料送付、進捗報告、引き継ぎなど仕事で使う連絡です。",
-    labels: ["欠勤連絡", "体調不良連絡", "有給申請", "遅刻連絡", "資料送付", "進捗報告", "トラブル報告", "引き継ぎ"],
+    labels: ["欠勤連絡", "体調不良連絡", "有給申請", "遅刻連絡", "資料送付", "請求書送付", "進捗報告", "トラブル報告", "引き継ぎ", "議事録共有", "退職挨拶"],
   },
   {
     title: "配慮が必要な文章",
     description: "失礼なく断る、お詫びする、クレームへ返信するなど、言い方に気を使う場面です。",
-    labels: ["謝罪", "クレーム返信", "断り方", "仕事依頼の断り方", "支払い催促", "お礼メール"],
+    labels: ["謝罪", "クレーム返信", "断り方", "仕事依頼の断り方", "面接辞退", "内定辞退", "納期遅延連絡", "支払い催促", "お礼メール"],
   },
 ].map((group) => ({
   ...group,
@@ -97,7 +106,7 @@ const groups = [
             <p class="section__note">検索されやすく、実際に使う頻度も高いページです。</p>
           </div>
         </div>
-        <div class="use-list use-list--featured">
+        <div class="use-list use-list--featured" id="featuredUseList">
           {featuredPages.map((page) => (
             <a class="use-card use-card--featured" href={`/use/${page.slug}/`}>
               <div class="card-icon-row">
@@ -112,10 +121,26 @@ const groups = [
         </div>
       </section>
 
+      <section class="finder-panel use-finder" aria-label="用途検索">
+        <div class="field finder-search">
+          <label for="useSearch">困っていることを入力</label>
+          <input id="useSearch" type="search" placeholder="例：面接、請求書、退職、返信、断り方" />
+        </div>
+        <div class="category-filter" aria-label="用途カテゴリで絞り込み">
+          <button type="button" class="category-pill use-category-pill" data-use-category="すべて" aria-pressed="true">すべて</button>
+          {groups.map((group) => (
+            <button type="button" class="category-pill use-category-pill" data-use-category={group.title} aria-pressed="false">
+              {group.title}
+            </button>
+          ))}
+        </div>
+        <p class="section__note"><span id="useCount">{usePages.length}</span>件から探せます</p>
+      </section>
+
       <section class="section section--tight" aria-label="用途カテゴリ">
         <div class="use-group-list">
           {groups.map((group) => (
-            <section class="use-group">
+            <section class="use-group" data-use-group={group.title}>
               <div class="section__head section__head--compact">
                 <div>
                   <h2>{group.title}</h2>
@@ -124,7 +149,14 @@ const groups = [
               </div>
               <div class="use-list">
                 {group.pages.map((page) => (
-                  <a class="use-card" href={`/use/${page.slug}/`}>
+                  <a
+                    class="use-card use-filter-item"
+                    href={`/use/${page.slug}/`}
+                    data-use-title={page.title}
+                    data-use-description={page.description}
+                    data-use-label={page.label}
+                    data-use-keywords={page.searchIntents.join(" ")}
+                  >
                     <div class="card-icon-row">
                       <IconBadge name={useIcons[page.label] || "example"} />
                       <span>{page.label}</span>
@@ -138,7 +170,15 @@ const groups = [
             </section>
           ))}
         </div>
+        <div class="empty-state" id="useEmptyState" hidden>
+          <img src="/images/mascot-thinking.png" alt="1分ツールのマスコットキャラクター" />
+          <div>
+            <strong>該当する例文が見つかりませんでした</strong>
+            <p>短い言葉に変えるか、すべてのカテゴリに戻して探してください。</p>
+          </div>
+        </div>
       </section>
     </div>
   </main>
+  <script is:inline src="/scripts/use-finder.js"></script>
 </Layout>
