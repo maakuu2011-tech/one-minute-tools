@@ -55,7 +55,7 @@ const relatedTools = tools
           <div class="hint">内容を入れて、相手・雰囲気・長さを選ぶと、そのまま使いやすい文章に整えます。</div>
 
           <div class="field">
-            <label for="incoming">元の内容・相手から来た文章</label>
+            <label for="incoming" id="incomingLabel">元の内容・相手から来た文章</label>
             <textarea id="incoming" placeholder="例：相手から来た文章、または伝えたい内容を入力してください"></textarea>
           </div>
 
@@ -106,7 +106,7 @@ const relatedTools = tools
           </div>
 
           <div class="field">
-            <label for="detail">入れたい内容</label>
+            <label for="detail" id="detailLabel">入れたい内容</label>
             <textarea id="detail" placeholder="例：断りたい理由、希望日、次の対応、補足したいことなど"></textarea>
           </div>
 
@@ -121,9 +121,9 @@ const relatedTools = tools
           <h2>出力</h2>
           <div id="output" class="output"></div>
           <div class="template-grid">
-            <button class="template-button" type="button" data-template="work">仕事</button>
-            <button class="template-button" type="button" data-template="chat">チャット</button>
-            <button class="template-button" type="button" data-template="careful">丁寧</button>
+            <button class="template-button" type="button" data-template-index="0">見本1</button>
+            <button class="template-button" type="button" data-template-index="1">見本2</button>
+            <button class="template-button" type="button" data-template-index="2">見本3</button>
           </div>
         </section>
       </div>
