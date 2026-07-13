@@ -225,6 +225,36 @@ button {
   box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
 }
 
+.trust-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.trust-strip > div {
+  display: grid;
+  gap: 4px;
+  min-height: 82px;
+  align-content: center;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+.trust-strip strong {
+  color: #065f46;
+  font-size: 14px;
+}
+
+.trust-strip span {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .section {
   padding: 26px 0;
 }
@@ -363,6 +393,40 @@ button {
   margin-top: auto;
   color: var(--blue);
   font-size: 14px;
+}
+
+.secondary-content-banner {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.secondary-content-banner img {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+}
+
+.secondary-content-banner span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.secondary-content-banner h2 {
+  margin: 4px 0;
+  font-size: 20px;
+}
+
+.secondary-content-banner p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
 .popular-tool-list {
@@ -2338,6 +2402,10 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .trust-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .mascot-card {
     min-height: 220px;
   }
@@ -2414,6 +2482,10 @@ textarea {
     display: none;
   }
 
+  .nav a.nav__secondary {
+    display: none;
+  }
+
   .hero {
     padding: 36px 0 18px;
   }
@@ -2436,6 +2508,30 @@ textarea {
 
   .hero .mascot-card {
     display: none;
+  }
+
+  .trust-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .trust-strip > div {
+    min-height: 74px;
+    padding: 12px;
+  }
+
+  .secondary-content-banner {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .secondary-content-banner img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .secondary-content-banner .actions {
+    grid-column: 1 / -1;
   }
 
   .tool-grid,

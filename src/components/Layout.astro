@@ -3,7 +3,7 @@ import "../styles/global.css";
 
 const {
   title = "1分ツール",
-  description = "仕事や生活のちょっと困ったをすぐ片づける小ツール集です。",
+  description = "仕事の返信、メール、断り文、催促文などを1分で作れる無料の文章作成ツール集です。",
   structuredData = [],
 } = Astro.props;
 
@@ -23,7 +23,7 @@ const websiteStructuredData = {
   name: "1分ツール",
   alternateName: ["一分ツール", "one minute tools", "one-minute-tools"],
   url: siteUrl,
-  description: "チャット返信、断り方、催促文、言い換えなどをすぐ作れる無料ツール集です。",
+  description: "仕事のチャット返信、敬語メール、断り文、催促文、謝罪文を1分で作れる無料の文章作成ツール集です。",
   publisher: {
     "@type": "Organization",
     name: "1分ツール",
@@ -67,14 +67,14 @@ const structuredDataItems = [organizationStructuredData, websiteStructuredData, 
           <span class="brand__mark">1</span>
           <span>
             <span class="brand__name">1分ツール</span>
-            <span class="brand__note">案内役つきの小さな道具箱</span>
+            <span class="brand__note">仕事の文章を1分で整える</span>
           </span>
         </a>
         <nav class="nav" aria-label="メインナビゲーション">
-          <a href="/tools/">ツール</a>
-          <a href="/use/">用途</a>
-          <a href="/games/">ゲーム</a>
-          <a class="nav__optional" href="/one-minute/">1分</a>
+          <a href="/tools/">文章ツール</a>
+          <a href="/use/">場面別の例文</a>
+          <a class="nav__optional" href="/one-minute/">1分コンテンツ</a>
+          <a class="nav__secondary" href="/games/">ゲーム</a>
           <a class="nav__optional" href="/updates/">更新</a>
           <a class="nav__optional" href="/about/">このサイト</a>
           <a class="nav__optional" href="/privacy/">プライバシー</a>

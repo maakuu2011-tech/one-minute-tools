@@ -1,14 +1,11 @@
 ---
 import Layout from "../components/Layout.astro";
-import ToolCard from "../components/ToolCard.astro";
 import IconBadge from "../components/IconBadge.astro";
 import tools from "../data/tools.json";
 import usePages from "../data/usePages.json";
 import minuteContents from "../data/minuteContents.json";
 import games from "../data/games.json";
-import updates from "../data/siteUpdates.json";
 
-const publishedTools = tools.filter((tool) => tool.status === "公開中").slice(0, 6);
 const popularToolItems = [
   { id: "chat-reply", reason: "LINE・Slackの返事で一番使いやすい入口", icon: "chat" },
   { id: "keigo-mail", reason: "仕事メールの返信を短く整えたいときに便利", icon: "mail" },
@@ -29,7 +26,8 @@ const searchSuggestions = [
   { label: "休み連絡", href: "/use/absence-message-examples/" },
   { label: "日程調整", href: "/use/schedule-adjust-examples/" },
   { label: "断り方", href: "/use/decline-without-offense/" },
-  { label: "1分ゲーム", href: "/games/" },
+  { label: "謝罪メール", href: "/tools/apology-mail/" },
+  { label: "お礼メール", href: "/tools/thanks-mail/" },
 ];
 const priorityUseSlugs = [
   "confirmation-request-examples",
@@ -56,42 +54,30 @@ const useIconMap = {
 };
 const quickEntrances = [
   {
-    icon: "tool",
-    label: "文章を作る",
-    title: "返信・敬語・断り文をすぐ整える",
-    description: `${tools.length}本の文章ツールから、今の用件に近いものを選べます。`,
-    href: "/tools/",
-    action: "ツールを探す",
+    icon: "chat",
+    label: "返信する",
+    title: "チャットの返事を短く整える",
+    description: "相手の文と伝えたい内容を入れて、LINEやSlackで使える返事を作れます。",
+    href: "/tools/chat-reply/",
+    action: "返信文を作る",
+  },
+  {
+    icon: "mail",
+    label: "メールを作る",
+    title: "仕事メールを丁寧な文章にする",
+    description: "敬語、謝罪、催促、お礼など、仕事で使うメールを用件に合わせて作れます。",
+    href: "/tools/keigo-mail/",
+    action: "メール文を作る",
   },
   {
     icon: "example",
-    label: "例文を見る",
-    title: "困った場面から近い文例を探す",
-    description: "LINE返信、メール返信、断り方など、場面別の例文をまとめています。",
+    label: "場面から探す",
+    title: "今の状況に近い例文を見つける",
+    description: `${usePages.length}件の仕事・連絡場面から、コピペできる例文と作成ツールを探せます。`,
     href: "/use/",
-    action: "用途から探す",
-  },
-  {
-    icon: "game",
-    label: "1分遊ぶ",
-    title: "待ち時間に60秒だけ遊ぶ",
-    description: `${games.length}本のミニゲームと端末内ランキングがあります。`,
-    href: "/games/",
-    action: "ゲームを開く",
+    action: "場面別の例文を見る",
   },
 ];
-
-const gameIcons = {
-  反射神経: "game",
-  記憶: "example",
-  パズル: "tool",
-  計算: "minute",
-  判断力: "search",
-  集中力: "rank",
-  戦略: "game",
-  迷路: "maze",
-  言葉: "word",
-};
 
 const minuteIcons = {
   生活: "minute",
@@ -103,18 +89,18 @@ const minuteIcons = {
 ---
 
 <Layout
-  title="1分ツール｜チャット返信や文章作成をすぐ整える"
-  description="チャット返信、敬語メール、謝罪文、お礼文など、仕事や生活の小さな文章作成をすぐ片づける無料ツール集です。"
+  title="1分ツール｜仕事の返信・メール・言い回しを無料で作成"
+  description="仕事のチャット返信、敬語メール、断り文、催促文、謝罪文を1分で作成。登録不要・無料で、入力内容はブラウザ内だけで処理されます。"
 >
   <main>
     <section class="hero">
       <div class="container hero__grid">
         <div>
-          <span class="hero__label">無料で使える小ツール集</span>
-          <h1>返し方に困る文章を、1分で整える。</h1>
+          <span class="hero__label">登録不要・無料の文章作成ツール</span>
+          <h1>仕事の返信・メールを、1分で使える文章に。</h1>
           <p>
-            チャット返信、メール文、謝罪文、お礼文。毎回考えるのが面倒な文章を、
-            すぐ使える小さなツールとしてまとめています。
+            チャット返信、敬語メール、断り文、催促文、謝罪文。
+            相手と用件に合わせて、コピペして使える自然な文章を作れます。
           </p>
           <form class="home-search" action="/tools/" method="get" role="search">
             <label for="homeToolSearch">使いたいツールを探す</label>
@@ -129,8 +115,17 @@ const minuteIcons = {
         </div>
         <div class="mascot-card" aria-label="1分ツールのマスコット">
           <img src="/images/mascot-girl.png" alt="1分ツールのマスコットキャラクター" />
-          <div class="mascot-card__bubble">文章づくり、手伝います。</div>
+          <div class="mascot-card__bubble">今の用件に合う文章を一緒に作ります。</div>
         </div>
+      </div>
+    </section>
+
+    <section class="section section--tight" aria-label="サービスの特徴">
+      <div class="container trust-strip">
+        <div><strong>登録不要</strong><span>すぐ使えます</span></div>
+        <div><strong>無料</strong><span>料金はかかりません</span></div>
+        <div><strong>ブラウザ内処理</strong><span>入力文を保存しません</span></div>
+        <div><strong>編集して送れる</strong><span>結果をその場で調整できます</span></div>
       </div>
     </section>
 
@@ -191,19 +186,6 @@ const minuteIcons = {
       </div>
     </section>
 
-    <section class="section section--brand">
-      <div class="container brand-summary">
-        <div>
-          <span class="hero__label">1分ツールとは</span>
-          <h2>1分ツールは、1分で使える小さな道具箱です。</h2>
-        </div>
-        <p>
-          1分ツールは、チャット返信、敬語メール、断り方、催促文、謝罪文、1分でできる小さな行動をまとめた無料サイトです。
-          毎回考えるのが面倒な文章や、少しだけ前に進みたい作業を、すぐ試せる形で増やしています。
-        </p>
-      </div>
-    </section>
-
     <section class="section">
       <div class="container">
         <div class="section__head">
@@ -231,66 +213,15 @@ const minuteIcons = {
       </div>
     </section>
 
-    <section class="section section--compact">
-      <div class="container">
-        <div class="section__head">
-          <div>
-            <h2>新着ツール</h2>
-            <p class="section__note">追加した文章ツールを順番に並べています。</p>
-          </div>
+    <section class="section section--brand">
+      <div class="container brand-summary">
+        <div>
+          <span class="hero__label">安心して使うために</span>
+          <h2>入力した文章は、外部へ送信・保存しません。</h2>
         </div>
-        <div class="tool-grid tool-grid--compact">
-          {publishedTools.slice(0, 4).map((tool) => <ToolCard tool={tool} />)}
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section__head">
-          <div>
-            <h2>1分ゲーム</h2>
-            <p class="section__note">待ち時間や休憩中に、60秒だけ遊べる暇つぶしゲームです。</p>
-          </div>
-          <div class="actions actions--inline">
-            <a class="button secondary" href="/games/ranking/">ランキング</a>
-            <a class="button secondary" href="/games/">ゲーム一覧へ</a>
-          </div>
-        </div>
-        <div class="game-grid game-grid--home">
-          {games.slice(-4).reverse().map((game) => (
-            <a class="game-card" href={`/games/${game.slug}/`}>
-              <div class="card-icon-row">
-                <IconBadge name={gameIcons[game.category] || "game"} />
-                <span>{game.category}</span>
-              </div>
-              <strong>{game.time}</strong>
-              <h3>{game.title}</h3>
-              <p>{game.description}</p>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section__head">
-          <div>
-            <h2>新しく追加した用途</h2>
-            <p class="section__note">検索されやすい悩みごと別に、例文と使えるツールを追加しています。</p>
-          </div>
-          <a class="button secondary" href="/use/">用途一覧へ</a>
-        </div>
-        <div class="use-list use-list--home">
-          {usePages.slice(-6).reverse().map((page) => (
-            <a class="use-card" href={`/use/${page.slug}/`}>
-              <span>{page.label}</span>
-              <h3>{page.title}</h3>
-              <p>{page.description}</p>
-            </a>
-          ))}
-        </div>
+        <p>
+          文章の作成処理はこのブラウザ内で行います。作った文はそのまま送らず、宛名、日付、事実関係、相手との関係に合っているかを確認してからお使いください。
+        </p>
       </div>
     </section>
 
@@ -304,7 +235,7 @@ const minuteIcons = {
           <a class="button secondary" href="/one-minute/">すべて見る</a>
         </div>
         <div class="minute-grid minute-grid--home">
-          {minuteContents.slice(0, 4).map((item) => (
+          {minuteContents.slice(0, 3).map((item) => (
             <a class="minute-card" href={`/one-minute/${item.slug}/`}>
               <div class="card-icon-row">
                 <IconBadge name={minuteIcons[item.category] || "minute"} />
@@ -319,24 +250,17 @@ const minuteIcons = {
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="section__head">
-          <div>
-            <h2>最近の更新</h2>
-            <p class="section__note">新しいツールや1分コンテンツ、サイト改善を追加しています。</p>
-          </div>
-          <a class="button secondary" href="/updates/">更新履歴へ</a>
+    <section class="section section--compact">
+      <div class="container secondary-content-banner">
+        <img src="/images/mascot-game.png" alt="ゲームを案内するマスコットキャラクター" />
+        <div>
+          <span>休憩用コンテンツ</span>
+          <h2>文章作成の合間に、1分だけ遊ぶ。</h2>
+          <p>{games.length}本のミニゲームと端末内ランキングも用意しています。</p>
         </div>
-        <div class="updates-strip">
-          {updates.slice(0, 3).map((item) => (
-            <a class="update-mini" href={item.href}>
-              <span>{item.category}</span>
-              <time datetime={item.date}>{item.date}</time>
-              <strong>{item.title}</strong>
-              <p>{item.description}</p>
-            </a>
-          ))}
+        <div class="actions actions--inline">
+          <a class="button secondary" href="/games/">ゲーム一覧</a>
+          <a class="button secondary" href="/games/ranking/">ランキング</a>
         </div>
       </div>
     </section>
