@@ -120,6 +120,23 @@ const webPageSchema = {
           {page.searchIntents.map((item) => <span>{item}</span>)}
         </div>
 
+        {
+          page.subjectLines?.length > 0 && (
+            <>
+              <h2>使いやすい件名例</h2>
+              <p class="section__note">氏名、日付、会社名、対象名を自分の内容に置き換えてください。</p>
+              <div class="subject-line-list">
+                {page.subjectLines.map((subject) => (
+                  <div class="subject-line-item">
+                    <span>{subject}</span>
+                    <button class="example-copy-button" type="button" data-copy-text={subject}>コピー</button>
+                  </div>
+                ))}
+              </div>
+            </>
+          )
+        }
+
         <h2>そのまま使える例文</h2>
         <div class="example-list">
           {page.examples.map((example) => (
@@ -169,6 +186,22 @@ const webPageSchema = {
             </a>
           ))}
         </div>
+
+        {
+          page.checklist?.length > 0 && (
+            <>
+              <h2>送信前のチェック</h2>
+              <div class="send-checklist">
+                {page.checklist.map((item) => (
+                  <label>
+                    <input type="checkbox" />
+                    <span>{item}</span>
+                  </label>
+                ))}
+              </div>
+            </>
+          )
+        }
 
         <h2>よくある質問</h2>
         <div class="faq-list">

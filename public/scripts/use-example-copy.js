@@ -48,7 +48,7 @@ document.addEventListener("click", async (event) => {
 
   try {
     const copied = await copyText(button.dataset.copyText || "");
-    showToast(copied ? "例文をコピーしました" : "コピーできませんでした");
+    showToast(copied ? "コピーしました" : "コピーできませんでした");
   } catch {
     showToast("コピーできませんでした");
   }
