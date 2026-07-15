@@ -1,6 +1,7 @@
 ---
 import Layout from "../components/Layout.astro";
 import updates from "../data/siteUpdates.json";
+import { SITE_URL } from "../../site.config.mjs";
 
 const updateSchema = {
   "@context": "https://schema.org",
@@ -9,7 +10,7 @@ const updateSchema = {
   itemListElement: updates.map((item, index) => ({
     "@type": "ListItem",
     position: index + 1,
-    url: new URL(item.href, "https://one-minute-tools.pages.dev").toString(),
+    url: new URL(item.href, SITE_URL).toString(),
     name: item.title,
     description: item.description,
   })),

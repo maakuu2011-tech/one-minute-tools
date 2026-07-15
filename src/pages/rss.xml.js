@@ -1,6 +1,7 @@
 import updates from "../data/siteUpdates.json";
+import { SITE_URL } from "../../site.config.mjs";
 
-const siteUrl = "https://one-minute-tools.pages.dev";
+const siteUrl = SITE_URL;
 
 function escapeXml(value) {
   return String(value)

@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { SITE_URL } from "../../site.config.mjs";
 
 const {
   title = "1分ツール",
@@ -7,7 +8,7 @@ const {
   structuredData = [],
 } = Astro.props;
 
-const siteUrl = "https://one-minute-tools.pages.dev";
+const siteUrl = SITE_URL;
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const organizationStructuredData = {
   "@context": "https://schema.org",

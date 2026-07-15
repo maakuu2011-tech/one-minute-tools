@@ -4,6 +4,7 @@ import MascotGuide from "../../components/MascotGuide.astro";
 import ToolCard from "../../components/ToolCard.astro";
 import tools from "../../data/tools.json";
 import usePages from "../../data/usePages.json";
+import { SITE_URL } from "../../../site.config.mjs";
 
 export function getStaticPaths() {
   return usePages.map((page) => ({
@@ -13,7 +14,7 @@ export function getStaticPaths() {
 }
 
 const { page } = Astro.props;
-const siteUrl = "https://one-minute-tools.pages.dev";
+const siteUrl = SITE_URL;
 const pageUrl = new URL(`/use/${page.slug}/`, siteUrl).toString();
 const seoDescription = `${page.title}。${page.description}そのまま使える例文、よくある質問、関連する無料ツールをまとめています。`;
 const relatedTools = page.toolIds

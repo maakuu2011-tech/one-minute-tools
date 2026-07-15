@@ -3,6 +3,7 @@ import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
 import MascotGuide from "../../components/MascotGuide.astro";
 import games from "../../data/games.json";
+import { SITE_URL } from "../../../site.config.mjs";
 
 const gameIcons = {
   反射神経: "game",
@@ -32,7 +33,7 @@ const gameListSchema = {
   itemListElement: games.map((game, index) => ({
     "@type": "ListItem",
     position: index + 1,
-    url: new URL(`/games/${game.slug}/`, "https://one-minute-tools.pages.dev").toString(),
+    url: new URL(`/games/${game.slug}/`, SITE_URL).toString(),
     name: game.title,
     description: game.description,
   })),

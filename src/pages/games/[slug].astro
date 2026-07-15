@@ -3,6 +3,7 @@ import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
 import MascotGuide from "../../components/MascotGuide.astro";
 import games from "../../data/games.json";
+import { SITE_URL } from "../../../site.config.mjs";
 
 export function getStaticPaths() {
   return games.map((game) => ({
@@ -34,7 +35,7 @@ const gameSchema = {
   "@type": "Game",
   name: game.title,
   description: game.description,
-  url: new URL(`/games/${game.slug}/`, "https://one-minute-tools.pages.dev").toString(),
+  url: new URL(`/games/${game.slug}/`, SITE_URL).toString(),
   playMode: "SinglePlayer",
 };
 ---

@@ -1,7 +1,8 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import { SITE_URL } from "./site.config.mjs";
 
 export default defineConfig({
-  site: "https://one-minute-tools.pages.dev",
+  site: SITE_URL,
   integrations: [sitemap()],
 });

@@ -1,13 +1,14 @@
 ---
 import Layout from "../../components/Layout.astro";
 import games from "../../data/games.json";
+import { SITE_URL } from "../../../site.config.mjs";
 
 const rankingSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   name: "1分ゲームランキング",
   description: "1分ゲームのランキングを確認できるページです。端末内ランキングに加えて、Cloudflare D1設定後は全ユーザー共通ランキングにも対応します。",
-  url: "https://one-minute-tools.pages.dev/games/ranking/",
+  url: new URL("/games/ranking/", SITE_URL).toString(),
 };
 ---
 
