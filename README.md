@@ -4,6 +4,7 @@
 
 - 本番サイト: https://1mintool.com/
 - 運用状況: [`docs/project-status.md`](docs/project-status.md)
+- 運営基準: [`docs/site-operations.md`](docs/site-operations.md)
 - Codex運用ガイド: [`AGENTS.md`](AGENTS.md)
 
 ## 開発
