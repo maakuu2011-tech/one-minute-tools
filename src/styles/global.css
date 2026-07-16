@@ -652,6 +652,73 @@ button {
 
 .use-content h2 {
   margin: 8px 0 0;
+  scroll-margin-top: 18px;
+}
+
+.use-page-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  margin: 18px 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.use-page-nav strong {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.use-page-nav a {
+  color: #1d4ed8;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.key-point-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.key-point-list li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.key-point-list li > span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  background: #2563eb;
+  border-radius: 50%;
+  font-weight: 900;
+}
+
+.key-point-list strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.key-point-list p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
 }
 
 .intent-list {
@@ -686,6 +753,19 @@ button {
   color: var(--text);
   font-weight: 800;
   line-height: 1.8;
+}
+
+.example-card .example-card__point {
+  padding-top: 10px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+.example-card__point strong {
+  color: var(--text);
 }
 
 .example-copy-button {
@@ -2544,13 +2624,17 @@ textarea {
 
   .hero h1 {
     margin: 16px 0 12px;
-    font-size: clamp(34px, 10vw, 42px);
+    max-width: 100%;
+    font-size: clamp(30px, 8.5vw, 36px);
     line-height: 1.16;
+    overflow-wrap: anywhere;
   }
 
   .hero p {
+    max-width: 100%;
     font-size: 16px;
     line-height: 1.85;
+    overflow-wrap: anywhere;
   }
 
   .hero__label {
@@ -2632,6 +2716,10 @@ textarea {
   }
 
   .send-checklist {
+    grid-template-columns: 1fr;
+  }
+
+  .key-point-list {
     grid-template-columns: 1fr;
   }
 

@@ -115,6 +115,15 @@ const webPageSchema = {
         message="例文をそのまま使ってもいいし、近いツールを開いて自分の状況に合わせて作り直してもOKです。"
       />
 
+      <nav class="use-page-nav" aria-label="このページ内の目次">
+        <strong>すぐ見る</strong>
+        {page.keyPoints?.length > 0 && <a href="#key-points">伝えるポイント</a>}
+        {page.subjectLines?.length > 0 && <a href="#subject-lines">件名例</a>}
+        <a href="#examples">例文</a>
+        {page.checklist?.length > 0 && <a href="#checklist">送信前チェック</a>}
+        <a href="#faq">よくある質問</a>
+      </nav>
+
       <section class="seo-content use-content">
         <h2>よく検索される困りごと</h2>
         <div class="intent-list">
@@ -122,15 +131,39 @@ const webPageSchema = {
         </div>
 
         {
+          page.keyPoints?.length > 0 && (
+            <>
+              <h2 id="key-points">最初に伝えるポイント</h2>
+              <ol class="key-point-list">
+                {page.keyPoints.map((item, index) => (
+                  <li>
+                    <span>{index + 1}</span>
+                    <div>
+                      <strong>{item.title}</strong>
+                      <p>{item.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )
+        }
+
+        {
           page.subjectLines?.length > 0 && (
             <>
-              <h2>使いやすい件名例</h2>
+              <h2 id="subject-lines">使いやすい件名例</h2>
               <p class="section__note">氏名、日付、会社名、対象名を自分の内容に置き換えてください。</p>
               <div class="subject-line-list">
                 {page.subjectLines.map((subject) => (
                   <div class="subject-line-item">
                     <span>{subject}</span>
-                    <button class="example-copy-button" type="button" data-copy-text={subject}>コピー</button>
+                    <button
+                      class="example-copy-button"
+                      type="button"
+                      data-copy-text={subject}
+                      aria-label={`件名「${subject}」をコピー`}
+                    >件名をコピー</button>
                   </div>
                 ))}
               </div>
@@ -138,13 +171,19 @@ const webPageSchema = {
           )
         }
 
-        <h2>そのまま使える例文</h2>
+        <h2 id="examples">そのまま使える例文</h2>
         <div class="example-list">
           {page.examples.map((example) => (
             <article class="example-card">
               <h3>{example.situation}</h3>
               <p>{example.text}</p>
-              <button class="example-copy-button" type="button" data-copy-text={example.text}>コピー</button>
+              {example.point && <p class="example-card__point"><strong>使い分け:</strong> {example.point}</p>}
+              <button
+                class="example-copy-button"
+                type="button"
+                data-copy-text={example.text}
+                aria-label={`${example.situation}の例文をコピー`}
+              >文面をコピー</button>
             </article>
           ))}
         </div>
@@ -191,7 +230,7 @@ const webPageSchema = {
         {
           page.checklist?.length > 0 && (
             <>
-              <h2>送信前のチェック</h2>
+              <h2 id="checklist">送信前のチェック</h2>
               <div class="send-checklist">
                 {page.checklist.map((item) => (
                   <label>
@@ -204,7 +243,7 @@ const webPageSchema = {
           )
         }
 
-        <h2>よくある質問</h2>
+        <h2 id="faq">よくある質問</h2>
         <div class="faq-list">
           {page.faq.map((item) => (
             <details>
