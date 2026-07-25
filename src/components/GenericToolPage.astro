@@ -14,6 +14,8 @@ const {
   situations = [],
   tips = [],
   related = [],
+  examples = [],
+  faq = [],
 } = Astro.props;
 
 const tool = tools.find((item) => item.id === toolId);
@@ -25,9 +27,28 @@ if (!tool) {
 const seoDescription =
   description ||
   `${tool.title}は、${tool.description}登録不要・無料でブラウザからすぐ使える1分ツールです。`;
+
+const faqSchema = faq.length
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faq.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
+    }
+  : null;
 ---
 
-<Layout title={title || `${tool.title}｜無料の文章作成ツール`} description={seoDescription}>
+<Layout
+  title={title || `${tool.title}｜無料の文章作成ツール`}
+  description={seoDescription}
+  structuredData={faqSchema ? [faqSchema] : []}
+>
   <main class="page">
     <div class="container">
       <section class="hero" style="padding-top: 10px;">
@@ -38,13 +59,25 @@ const seoDescription =
 
       <MascotGuide title={guideTitle} message={guideMessage} />
 
-      <div class="tool-layout">
+      {
+        (examples.length > 0 || faq.length > 0) && (
+          <nav class="use-page-nav" aria-label="このページ内の目次">
+            <strong>すぐ見る</strong>
+            <a href="#tool">文章を作る</a>
+            {examples.length > 0 && <a href="#examples">完成例</a>}
+            <a href="#usage">使い方</a>
+            {faq.length > 0 && <a href="#faq">よくある質問</a>}
+          </nav>
+        )
+      }
+
+      <div class="tool-layout" id="tool">
         <section class="panel">
           <h2>入力</h2>
           <div class="hint">内容を入れて、相手・雰囲気・長さを選ぶと、そのまま使いやすい文章に整えます。</div>
 
           <div class="field">
-            <label for="incoming">元の内容・相手から来た文章</label>
+            <label for="incoming" id="incomingLabel">元の内容・相手から来た文章</label>
             <textarea id="incoming" placeholder="例：相手から来た文章、または伝えたい内容を入力してください"></textarea>
           </div>
 
@@ -95,7 +128,7 @@ const seoDescription =
           </div>
 
           <div class="field">
-            <label for="detail">入れたい内容</label>
+            <label for="detail" id="detailLabel">入れたい内容</label>
             <textarea id="detail" placeholder="例：理由、希望日、次の対応、補足したいことなど"></textarea>
           </div>
 
@@ -117,7 +150,7 @@ const seoDescription =
         </section>
       </div>
 
-      <section class="seo-content">
+      <section class="seo-content" id="usage">
         <h2>{usageTitle}</h2>
         <p>{usageLead}</p>
         <div class="info-grid">
@@ -135,6 +168,35 @@ const seoDescription =
           </div>
         </div>
         {
+          examples.length > 0 && (
+            <>
+              <h2 id="examples">そのまま使える完成例</h2>
+              <p class="section__note">固有名詞、日時、数字を自分の状況に置き換え、内容を確認してから送ってください。</p>
+              <div class="example-list">
+                {examples.map((example) => (
+                  <article class="example-card">
+                    <h3>{example.situation}</h3>
+                    <p>{example.text}</p>
+                    {example.point && (
+                      <p class="example-card__point">
+                        <strong>使うポイント：</strong> {example.point}
+                      </p>
+                    )}
+                    <button
+                      class="example-copy-button"
+                      type="button"
+                      data-copy-text={example.text}
+                      aria-label={`${example.situation}の例文をコピー`}
+                    >
+                      例文をコピー
+                    </button>
+                  </article>
+                ))}
+              </div>
+            </>
+          )
+        }
+        {
           related.length > 0 && (
             <div class="related-tools">
               {related.map((item) => (
@@ -143,10 +205,26 @@ const seoDescription =
             </div>
           )
         }
+        {
+          faq.length > 0 && (
+            <>
+              <h2 id="faq">よくある質問</h2>
+              <div class="faq-list">
+                {faq.map((item) => (
+                  <details>
+                    <summary>{item.question}</summary>
+                    <p>{item.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </>
+          )
+        }
       </section>
     </div>
   </main>
   <div id="toast" class="toast"></div>
   <script type="application/json" id="tool-data" set:html={JSON.stringify(tool)}></script>
   <script is:inline src="/scripts/generic-writing-tool.js"></script>
+  {examples.length > 0 && <script is:inline src="/scripts/use-example-copy.js"></script>}
 </Layout>

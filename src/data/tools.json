@@ -128,7 +128,7 @@
   {
     "id": "keigo-converter",
     "title": "敬語変換メーカー",
-    "description": "普段の文章を、仕事で使いやすい敬語に整えます。",
+    "description": "普段の文章を、上司や取引先に使いやすい自然なビジネス敬語へ整えます。",
     "category": "言い換え",
     "href": "/tools/keigo-converter/",
     "status": "公開中",
@@ -163,8 +163,8 @@
   },
   {
     "id": "interview-thanks",
-    "title": "面談後お礼メールメーカー",
-    "description": "面談や面接後のお礼メールを、丁寧な文面に整えます。",
+    "title": "面接・面談後お礼メールメーカー",
+    "description": "面接や面談後に当日送れる、短く自然なお礼メールを作れます。",
     "category": "お礼",
     "href": "/tools/interview-thanks/",
     "status": "公開中",

@@ -2,6 +2,7 @@
 import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
 import usePages from "../../data/usePages.json";
+import { SITE_URL } from "../../../site.config.mjs";
 
 const useIcons = {
   チャット返信: "chat",
@@ -46,11 +47,11 @@ const useIcons = {
 
 const featuredSlugs = [
   "line-reply-examples",
-  "confirmation-request-examples",
-  "absence-message-examples",
-  "interview-schedule-mail-examples",
+  "interview-decline-mail-examples",
+  "paid-leave-request-examples",
+  "deadline-extension-request-examples",
   "invoice-send-mail-examples",
-  "decline-without-offense",
+  "feedback-softener-examples",
 ];
 
 const featuredPages = featuredSlugs
@@ -82,28 +83,47 @@ const groups = [
   ...group,
   pages: usePages.filter((page) => group.labels.includes(page.label)),
 }));
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "仕事のメール・LINE返信例文集",
+  description: "ビジネスメール、LINE返信、面接辞退、有給申請、催促、謝罪など、仕事や日常で使える場面別の例文集です。",
+  url: new URL("/use/", SITE_URL).toString(),
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: usePages.length,
+    itemListElement: featuredPages.map((page, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: page.title,
+      url: new URL(`/use/${page.slug}/`, SITE_URL).toString(),
+    })),
+  },
+};
 ---
 
 <Layout
-  title="用途から探す｜1分ツール"
-  description="LINE返信、ビジネスメール、断り方、催促文、謝罪文など、困った場面ごとの例文と無料ツールを探せます。"
+  title="仕事のメール・LINE返信例文集｜場面から探せる1分ツール"
+  description="LINE返信、面接辞退、有給申請、ビジネスメール、催促、謝罪など、仕事や日常でそのまま使える例文を場面から探せます。"
+  structuredData={[collectionSchema]}
 >
   <main class="page">
     <div class="container">
       <section class="hero use-hero">
         <span class="hero__label">用途から探す</span>
-        <h1>困った場面から、使うツールを選ぶ。</h1>
+        <h1>仕事のメール・LINE返信例文を、困った場面から探す。</h1>
         <p>
-          ツール名がわからなくても大丈夫です。LINEの返し方、断り方、催促文など、
-          実際に困りやすい場面から探せます。
+          面接辞退、有給申請、LINEの返し方、催促、謝罪など、実際に困りやすい場面ごとに
+          完成文と送信前のポイントを確認できます。例文はコピーして、自分の状況に合わせて直せます。
         </p>
       </section>
 
       <section class="section section--tight" aria-label="よく使う用途">
         <div class="section__head">
           <div>
-            <h2>まず見るなら</h2>
-            <p class="section__note">検索されやすく、実際に使う頻度も高いページです。</p>
+            <h2>よく使われる例文</h2>
+            <p class="section__note">仕事や日常で急いで文章を用意したいときに、まず確認したいページです。</p>
           </div>
         </div>
         <div class="use-list use-list--featured" id="featuredUseList">

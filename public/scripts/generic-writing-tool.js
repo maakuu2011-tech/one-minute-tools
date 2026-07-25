@@ -92,6 +92,16 @@ const toolProfiles = {
       ["お願いする", "可能でしたら、こちらをご確認いただけますと幸いです。", "同僚にチャットで軽く確認をお願いしたいです。", "friend", "casual"],
     ],
   },
+  "keigo-converter": {
+    purpose: "rewrite", relationship: "client", includeSubject: false,
+    incomingLabel: "敬語に直したい文章", detailLabel: "相手・期限・残したい内容",
+    incomingPlaceholder: "例：資料を見て、明日までに返事してください", detailPlaceholder: "例：取引先へ送る。明日17時までに確認をお願いしたい",
+    templates: [
+      ["確認をお願い", "資料を見て、明日までに返事してください。", "取引先へ、明日17時までの確認をお願いしたい。", "client", "polite", "medium"],
+      ["上司へ報告", "資料はできました。あとで送ります。", "上司へ、本日17時までに最終版を共有すると伝えたい。", "boss", "polite", "short"],
+      ["催促をやわらかく", "まだ返事がないので、早く確認してください。", "取引先へ、行き違いに配慮しながら確認状況を聞きたい。", "client", "soft", "medium"],
+    ],
+  },
   "meeting-thanks": {
     purpose: "thanks", relationship: "client", subject: "本日のお打ち合わせのお礼",
     incomingLabel: "打ち合わせの内容", detailLabel: "特に感謝したいこと・次の対応",
@@ -449,6 +459,25 @@ function rewriteOriginal(incoming, detail) {
       .replaceAll("可能でしたら、", "できたら、")
       .replaceAll("？。", "？")
       .replaceAll("！。", "！");
+  }
+  if (tool.id === "keigo-converter") {
+    return cleanText(base)
+      .replaceAll("まだ返事がないので、早く確認してください", "先日お送りした件について、現在のご確認状況をお伺いできますでしょうか")
+      .replaceAll("資料を見て、明日までに返事してください", "資料をご確認のうえ、明日までにご返信いただけますでしょうか")
+      .replaceAll("資料はできました。あとで送ります", "資料の作成が完了いたしました。最終確認後、改めてお送りいたします")
+      .replaceAll("見てください", "ご確認いただけますでしょうか")
+      .replaceAll("確認してください", "ご確認いただけますでしょうか")
+      .replaceAll("返事してください", "ご返信いただけますでしょうか")
+      .replaceAll("教えてください", "お知らせいただけますでしょうか")
+      .replaceAll("送ってください", "お送りいただけますでしょうか")
+      .replaceAll("やってください", "ご対応いただけますでしょうか")
+      .replaceAll("早く", "可能でしたら早めに")
+      .replaceAll("できません", "対応が難しい状況です")
+      .replaceAll("無理です", "今回は難しい状況です")
+      .replaceAll("ありがとう", "ありがとうございます")
+      .replaceAll("すみません", "申し訳ございません")
+      .replaceAll("あとで", "確認後")
+      .replaceAll("？。", "？");
   }
   return cleanText(base)
     .replaceAll("早く", "可能でしたら早めに")
