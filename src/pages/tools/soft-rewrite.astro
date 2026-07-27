@@ -1,29 +1,108 @@
 ---
 import Layout from "../../components/Layout.astro";
 import MascotGuide from "../../components/MascotGuide.astro";
+
+const examples = [
+  {
+    situation: "確認を急いでほしいとき",
+    before: "早く確認してください。",
+    after: "お忙しいところ恐れ入ります。可能でしたら、本日中にご確認いただけますでしょうか。",
+    point: "期限は残しつつ、「早く」という命令的な表現を具体的なお願いに変えます。",
+  },
+  {
+    situation: "間違いを修正してほしいとき",
+    before: "ここが間違っています。すぐ直してください。",
+    after: "こちらの箇所について、一部確認が必要なようです。お手数ですが、可能でしたら早めにご修正いただけますでしょうか。",
+    point: "相手を責めず、確認できた状態と次にしてほしい行動を分けて伝えます。",
+  },
+  {
+    situation: "返事を催促したいとき",
+    before: "まだ返事がありません。いつ対応できますか？",
+    after: "行き違いでしたら申し訳ありません。現在のご確認状況と、ご対応可能な時期をお知らせいただけますでしょうか。",
+    point: "未返信を責める代わりに、行き違いへの配慮と確認事項を示します。",
+  },
+  {
+    situation: "進め方を変えてほしいとき",
+    before: "このやり方では困ります。別の方法でやってください。",
+    after: "現在の方法では対応が難しいため、別の進め方について一度ご相談できますでしょうか。",
+    point: "拒否だけで終わらせず、相談や代案へつながる形に整えます。",
+  },
+];
+
+const faq = [
+  {
+    question: "命令文をやわらかくする一番簡単な方法は？",
+    answer: "「してください」を「していただけますでしょうか」に変え、必要なら理由や期限を一文だけ添えます。依頼内容まで曖昧にしないことが大切です。",
+  },
+  {
+    question: "やわらかくすると、お願いが伝わりにくくなりませんか？",
+    answer: "期限、対象、してほしい行動は残します。弱めるのは命令や責める印象であり、要件そのものではありません。",
+  },
+  {
+    question: "上司や取引先にもそのまま送れますか？",
+    answer: "相手に合わせた敬語に整えますが、送信前に氏名、日付、期限、事実関係を確認してください。重要な依頼は社内ルールも優先します。",
+  },
+  {
+    question: "友達へのLINEにも使えますか？",
+    answer: "相手で「友達」を選ぶと、敬語を使いすぎない短いお願いに整えます。距離感に合わせて最後に自分の言葉へ直してください。",
+  },
+];
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "命令文をやわらかく言い換えるツール",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    isAccessibleForFree: true,
+    description: "命令口調やきつく見える文章を、要件を残したまま丁寧でやわらかい日本語へ言い換える無料ツールです。",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  },
+];
 ---
 
 <Layout
-  title="やわらか言い換えメーカー｜きつい文章をやさしく整える"
-  description="強く見える文章や冷たく見える文章を、相手に伝わりやすいやわらかい表現に言い換えます。"
+  title="命令文をやわらかく言い換える無料ツール｜きつい表現を丁寧に"
+  description="「早く確認して」「すぐ直してください」などの命令口調やきつい文章を、要件や期限を残したまま丁寧でやわらかい日本語へ言い換えます。"
+  structuredData={structuredData}
 >
   <main class="page">
     <div class="container">
       <section class="hero" style="padding-top: 10px;">
-        <span class="hero__label">言い換え</span>
-        <h1>やわらか言い換えメーカー</h1>
-        <p>きつく見える文章を、相手に伝わるやわらかい表現へ整えます。</p>
+        <span class="hero__label">命令・きつい表現の言い換え</span>
+        <h1>命令文をやわらかく言い換えるツール</h1>
+        <p>してほしい内容や期限は残し、命令・断定・責める印象だけをやわらげます。</p>
       </section>
 
       <MascotGuide
         title="言い換えのコツ"
-        message="意味は変えずに、命令や断定だけを弱めると伝わりやすくなります。"
+        message="お願いを曖昧にせず、「何を・いつまでに」は残しましょう。送る前に日付と事実関係も確認してください。"
       />
 
-      <div class="tool-layout">
+      <nav class="use-page-nav" aria-label="このページ内の目次">
+        <strong>このページでできること</strong>
+        <a href="#rewrite-tool">文章を言い換える</a>
+        <a href="#rewrite-examples">言い換え例を見る</a>
+        <a href="#rewrite-guide">やわらかくするコツ</a>
+        <a href="#rewrite-faq">よくある質問</a>
+      </nav>
+
+      <div class="tool-layout" id="rewrite-tool">
         <section class="panel">
-          <h2>入力</h2>
-          <div class="hint">元の意味は残しながら、断定・命令・責める印象を弱めると、受け取られ方がやわらかくなります。</div>
+          <h2>元の文章</h2>
+          <div class="hint">命令口調やきつく見える文章をそのまま貼り付けてください。入力した要件を残して言い換えます。</div>
 
           <div class="field">
             <label for="sourceText">言い換えたい文章</label>
@@ -79,43 +158,82 @@ import MascotGuide from "../../components/MascotGuide.astro";
 
           <div class="actions">
             <button class="button primary" id="generateBtn" type="button">言い換える</button>
-            <button class="button secondary" id="copyBtn" type="button">コピー</button>
+            <button class="button secondary" id="copyBtn" type="button">結果をコピー</button>
             <button class="button secondary" id="clearBtn" type="button">クリア</button>
           </div>
         </section>
 
-        <section class="panel">
-          <h2>出力</h2>
-          <div id="output" class="output"></div>
+        <section class="panel" aria-live="polite">
+          <h2>やわらかくした文章</h2>
+          <div id="output" class="output" aria-label="言い換え結果"></div>
           <div class="template-grid">
-            <button class="template-button" type="button" data-template="request">お願い</button>
-            <button class="template-button" type="button" data-template="feedback">指摘</button>
-            <button class="template-button" type="button" data-template="remind">催促</button>
+            <button class="template-button" type="button" data-template="request">確認依頼の例</button>
+            <button class="template-button" type="button" data-template="feedback">修正依頼の例</button>
+            <button class="template-button" type="button" data-template="remind">催促の例</button>
           </div>
         </section>
       </div>
 
-      <section class="seo-content">
-        <h2>文章をやわらかくするコツ</h2>
+      <section class="seo-content" id="rewrite-examples">
+        <h2>命令文・きつい文章の言い換え例</h2>
+        <p>そのまま使う場合は、相手の名前、対象、期限を実際の内容に置き換えてください。</p>
+        <div class="example-list">
+          {examples.map((example) => (
+            <article class="example-card">
+              <h3>{example.situation}</h3>
+              <p><strong>言い換え前：</strong>{example.before}</p>
+              <p><strong>言い換え後：</strong>{example.after}</p>
+              <p class="example-card__point"><strong>ポイント：</strong>{example.point}</p>
+              <button
+                class="example-copy-button"
+                type="button"
+                data-copy-text={example.after}
+                aria-label={`${example.situation}の言い換え後をコピー`}
+              >
+                コピー
+              </button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="seo-content" id="rewrite-guide">
+        <h2>命令口調をやわらかくする4つのコツ</h2>
         <p>
-          文章がきつく見える原因は、命令形、断定、相手を責める表現にあります。
-          「してください」を「お願いできますか」に変えるだけでも、相手が受け取りやすい印象になります。
+          「してください」を消すだけでは、何をしてほしいか分からなくなることがあります。
+          要件を残しながら、相手が動きやすいお願いの形へ整えるのが基本です。
         </p>
         <div class="info-grid">
           <div>
-            <h3>使える場面</h3>
+            <h3>1. 結論と期限は残す</h3>
             <ul>
-              <li>依頼や催促が強く見えそうなとき</li>
-              <li>注意や指摘をやわらかく伝えたいとき</li>
-              <li>チャットやメールの印象を整えたいとき</li>
+              <li>確認してほしい対象を書く</li>
+              <li>必要なら「本日中」などの期限を示す</li>
+              <li>相手が次にする行動を曖昧にしない</li>
             </ul>
           </div>
           <div>
-            <h3>言い換えのポイント</h3>
+            <h3>2. 命令をお願いへ変える</h3>
             <ul>
-              <li>命令よりお願いの形にする</li>
-              <li>相手の事情に配慮する一言を入れる</li>
-              <li>結論は残して、言い方だけ整える</li>
+              <li>「確認してください」→「ご確認いただけますか」</li>
+              <li>「すぐ直して」→「可能でしたら早めにご修正ください」</li>
+              <li>「必ず返信して」→「〇日までにご返信をお願いします」</li>
+            </ul>
+          </div>
+          <div>
+            <h3>3. 人ではなく事実を伝える</h3>
+            <ul>
+              <li>「あなたのミス」ではなく確認できた状態を書く</li>
+              <li>間違いを断定せず、確認が必要な箇所を示す</li>
+              <li>直してほしい点を一度に詰め込みすぎない</li>
+            </ul>
+          </div>
+          <div>
+            <h3>4. 送信前に確認する</h3>
+            <ul>
+              <li>相手、日付、期限、対象に誤りがないか</li>
+              <li>依頼内容が弱まりすぎていないか</li>
+              <li>重要な内容は自分の言葉で読み直したか</li>
             </ul>
           </div>
         </div>
@@ -125,8 +243,21 @@ import MascotGuide from "../../components/MascotGuide.astro";
           <a href="/tools/chat-reply/">チャット返信メーカー</a>
         </div>
       </section>
+
+      <section class="seo-content" id="rewrite-faq">
+        <h2>命令文の言い換えでよくある質問</h2>
+        <div class="faq-list">
+          {faq.map((item) => (
+            <details>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
     </div>
   </main>
   <div id="toast" class="toast"></div>
   <script is:inline src="/scripts/soft-rewrite.js"></script>
+  <script is:inline src="/scripts/use-example-copy.js"></script>
 </Layout>
