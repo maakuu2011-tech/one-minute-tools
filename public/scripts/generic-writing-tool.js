@@ -465,6 +465,11 @@ function rewriteOriginal(incoming, detail) {
       .replaceAll("まだ返事がないので、早く確認してください", "先日お送りした件について、現在のご確認状況をお伺いできますでしょうか")
       .replaceAll("資料を見て、明日までに返事してください", "資料をご確認のうえ、明日までにご返信いただけますでしょうか")
       .replaceAll("資料はできました。あとで送ります", "資料の作成が完了いたしました。最終確認後、改めてお送りいたします")
+      .replaceAll("了解しました", "承知いたしました")
+      .replaceAll("わかりました", "承知いたしました")
+      .replaceAll("わかりません", "確認のうえ、改めてご連絡いたします")
+      .replaceAll("できました", "完了いたしました")
+      .replaceAll("あとで連絡します", "確認後、改めてご連絡いたします")
       .replaceAll("見てください", "ご確認いただけますでしょうか")
       .replaceAll("確認してください", "ご確認いただけますでしょうか")
       .replaceAll("返事してください", "ご返信いただけますでしょうか")
@@ -486,6 +491,23 @@ function rewriteOriginal(incoming, detail) {
     .replaceAll("無理です", "今回は難しい状況です")
     .replaceAll("ちゃんと", "念のため")
     .replaceAll("なぜ", "差し支えなければ、理由を");
+}
+
+function rewriteDetail(detail) {
+  if (!detail || tool.id !== "keigo-converter") return "";
+
+  let text = cleanText(detail)
+    .replace(/^(取引先|上司|仕事相手|お客様|友達|まだ関係が浅い相手)(へ|に)[、,]?\s*/, "")
+    .replace(/^送る相手は(取引先|上司|仕事相手|お客様|友達)です[。.]?\s*/, "")
+    .replace(/(.+?)まで(?:の|に)確認をお願いしたい[。.]?$/, "$1までにご確認いただけますでしょうか")
+    .replace(/(.+?)までに(.+?)を共有すると伝えたい[。.]?$/, "$1までに$2を共有いたします")
+    .replace(/(.+?)までに確認して連絡すると伝えたい[。.]?$/, "$1までに確認のうえ、改めてご連絡いたします")
+    .replace(/行き違いに配慮しながら確認状況を聞きたい[。.]?$/, "行き違いでしたら申し訳ございません。現在のご確認状況をお伺いできますでしょうか")
+    .replace(/(.+)と伝えたい[。.]?$/, "$1")
+    .trim();
+
+  if (!text) return "";
+  return splitSentences(text).map(politeSentence).join("\n");
 }
 
 function splitSentences(value) {
@@ -571,7 +593,20 @@ function bodyLines(purpose, incoming, detail) {
   const conciseCore = polishedCore.length ? polishedCore.join("\n") : cleanText(core);
 
   if (purpose === "rewrite") {
-    return [rewriteOriginal(incoming, detail)];
+    let rewritten = rewriteOriginal(incoming, detail);
+    const rewrittenDetail = rewriteDetail(detail);
+    const specificDeadline = detail.match(/((?:本日|今日|明日|今週|来週)\s*\d{1,2}時(?:\d{1,2}分)?(?:ごろ|頃)?まで)/)?.[1];
+    if (specificDeadline && /(?:本日|今日|明日|今週|来週)までに/.test(rewritten)) {
+      rewritten = rewritten.replace(/(?:本日|今日|明日|今週|来週)までに/, `${specificDeadline}に`);
+      return [rewritten];
+    }
+    if (
+      rewritten === "確認のうえ、改めてご連絡いたします" &&
+      rewrittenDetail.includes("確認のうえ、改めてご連絡いたします")
+    ) {
+      return [rewrittenDetail];
+    }
+    return rewrittenDetail ? [rewritten, rewrittenDetail] : [rewritten];
   }
 
   if (purpose === "decline") {
