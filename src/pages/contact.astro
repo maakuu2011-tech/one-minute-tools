@@ -1,19 +1,7 @@
 ---
 import Layout from "../components/Layout.astro";
----
 
-<Layout title="お問い合わせ｜1分ツール" description="1分ツールへのお問い合わせページです。">
-  <main class="page">
-    <div class="container content">
-      <h1>お問い合わせ・ツール要望</h1>
-      <p>
-        追加してほしいツールや、使いにくいところがあれば下のテンプレートを使って送ってください。
-        まずは運営しやすいように、GitHubのIssueで受け付けます。
-      </p>
-
-      <div class="request-box">
-        <h2>要望テンプレート</h2>
-        <textarea id="requestTemplate" readonly>欲しいツール:
+const requestTemplate = `欲しいツール:
 
 困っている場面:
 
@@ -21,15 +9,55 @@ import Layout from "../components/Layout.astro";
 
 出力してほしい文章:
 
-補足:</textarea>
+使っていたページのURL:
+
+補足:`;
+
+const newIssueUrl = new URL("https://github.com/maakuu2011-tech/one-minute-tools/issues/new");
+newIssueUrl.search = new URLSearchParams({
+  title: "【ツール要望】",
+  body: requestTemplate,
+}).toString();
+---
+
+<Layout title="お問い合わせ・ツール要望｜1分ツール" description="1分ツールへのツール要望や不具合報告を、GitHub Issuesから送る方法をご案内します。">
+  <main class="page">
+    <div class="container content">
+      <h1>お問い合わせ・ツール要望</h1>
+      <p>
+        追加してほしいツール、使いにくいところ、例文の不足、不具合があれば、GitHub Issuesからお知らせください。
+        いただいた内容は、既存ツールと例文の改善を判断する材料にします。
+      </p>
+
+      <div class="notice-card">
+        <strong>送信前にご確認ください</strong>
+        <p>
+          GitHubアカウントでのログインが必要です。投稿した内容はインターネット上で公開されるため、氏名、メールアドレス、会社名、実際のメール本文などの個人情報・機密情報は書かないでください。
+        </p>
+      </div>
+
+      <div class="request-box">
+        <h2>1. 要望内容を整理する</h2>
+        <p>下の項目が分かると、困っている場面に合う改善を検討しやすくなります。分からない項目は空欄で構いません。</p>
+        <textarea id="requestTemplate" aria-label="ツール要望テンプレート" readonly>{requestTemplate}</textarea>
         <div class="actions">
           <button class="button primary" id="copyRequest" type="button">テンプレートをコピー</button>
-          <a class="button secondary" href="https://github.com/maakuu2011-tech/one-minute-tools/issues" target="_blank" rel="noreferrer">GitHub Issuesを開く</a>
+        </div>
+      </div>
+
+      <div class="request-box">
+        <h2>2. GitHubから送る</h2>
+        <p>
+          「新しい要望を作成」を押すと、上の項目が入ったGitHubの投稿画面を開きます。内容を記入し、公開してよい情報だけになっているか確認してから送信してください。
+        </p>
+        <div class="actions">
+          <a class="button primary" href={newIssueUrl.toString()} target="_blank" rel="noreferrer">新しい要望を作成</a>
+          <a class="button secondary" href="https://github.com/maakuu2011-tech/one-minute-tools/issues" target="_blank" rel="noreferrer">過去の要望を見る</a>
         </div>
       </div>
     </div>
   </main>
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script is:inline>
     const button = document.getElementById("copyRequest");
     const textarea = document.getElementById("requestTemplate");

@@ -2391,6 +2391,30 @@ textarea {
   background: #fbfcff;
 }
 
+.request-box p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.notice-card {
+  display: grid;
+  gap: 6px;
+  margin-top: 18px;
+  padding: 16px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+}
+
+.notice-card strong {
+  color: #9a3412;
+}
+
+.notice-card p {
+  margin: 0;
+  color: #7c2d12;
+}
+
 .not-found {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;
