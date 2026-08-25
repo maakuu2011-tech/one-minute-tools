@@ -389,6 +389,9 @@ function isChatLike() {
 }
 
 function opener(purpose) {
+  if (tool.id === "sales-dm-decline" && purpose === "decline") {
+    return "ご提案いただきありがとうございます。";
+  }
   const friend = el.relationship.value === "friend";
   const casual = state.tone === "casual" || friend;
   if (casual) {
@@ -416,6 +419,7 @@ function opener(purpose) {
 }
 
 function closing() {
+  if (tool.id === "sales-dm-decline") return "";
   const friend = el.relationship.value === "friend";
   if (friend || state.tone === "casual") {
     if (state.length === "short") return "";
@@ -610,6 +614,33 @@ function bodyLines(purpose, incoming, detail) {
   }
 
   if (purpose === "decline") {
+    if (tool.id === "sales-dm-decline") {
+      if (/資料/.test(detail) && /(送って|送付|ほしい|受け取り)/.test(detail)) {
+        return [
+          "現時点では打ち合わせのお時間を設けることが難しい状況です。",
+          "まずはサービス概要と料金が分かる資料をお送りいただけますでしょうか。必要になりましたら、こちらから改めてご連絡いたします。",
+        ];
+      }
+      if (/今後/.test(detail) && /(不要|控えて|停止|断り)/.test(detail)) {
+        return [
+          "検討の予定がないため、今回は辞退いたします。",
+          "恐れ入りますが、今後の営業のご案内はお控えくださいますようお願いいたします。",
+        ];
+      }
+      if (/予算|費用/.test(detail)) {
+        return [
+          "現在の予算と優先事項を踏まえ、今回は導入を見送らせていただきます。",
+          "ご期待に沿えず恐縮ですが、何卒ご了承ください。",
+        ];
+      }
+      if (/導入予定|検討予定|見送/.test(detail)) {
+        return ["現時点では導入の予定がないため、今回は見送らせていただきます。"];
+      }
+      return [
+        humanizeCore(detail || "現時点では導入の予定がありません。", "decline").join("\n"),
+        "今回は見送らせていただきます。",
+      ];
+    }
     const reason = core || "今回は都合が合わず、対応が難しい状況です。";
     const polishedReason = humanizeCore(reason, "decline").join("\n");
     return state.length === "short"
