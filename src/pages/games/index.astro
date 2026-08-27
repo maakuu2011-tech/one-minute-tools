@@ -55,7 +55,8 @@ const gameListSchema = {
           反射、記憶、パズル、計算など、60秒でスコアが出るミニゲームを選べます。
         </p>
         <div class="actions">
-          <a class="button primary" href="/games/ranking/">ランキングを見る</a>
+          <a class="button primary" href="/games/janken-reaction/">じゃんけん反射をすぐ遊ぶ</a>
+          <a class="button secondary" href="#game-categories">ゲームを選ぶ</a>
         </div>
       </section>
 
@@ -102,12 +103,13 @@ const gameListSchema = {
         </div>
       </section>
 
-      <section class="section section--tight" aria-label="1分ゲームカテゴリ">
+      <section class="section section--tight" id="game-categories" aria-label="1分ゲームカテゴリ">
         <div class="section__head">
           <div>
             <h2>カテゴリから探す</h2>
             <p class="section__note">気分に合わせて、反射・記憶・パズル・言葉などから選べます。</p>
           </div>
+          <a class="button secondary" href="/games/ranking/">この端末の記録を見る</a>
         </div>
         <div class="game-category-strip">
           {groupedGames.map((group) => (
