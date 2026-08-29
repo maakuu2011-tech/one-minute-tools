@@ -451,6 +451,9 @@ function soften(text) {
 
 function rewriteOriginal(incoming, detail) {
   const base = incoming || detail || "伝えたい内容を、相手に配慮した表現に整えたいです。";
+  if (tool.id === "harsh-to-soft") {
+    return rewriteHarshToSoft(incoming, detail);
+  }
   if (tool.id === "casual-converter") {
     return cleanText(base)
       .replaceAll("ご都合のよい", "都合のいい")
@@ -495,6 +498,64 @@ function rewriteOriginal(incoming, detail) {
     .replaceAll("無理です", "今回は難しい状況です")
     .replaceAll("ちゃんと", "念のため")
     .replaceAll("なぜ", "差し支えなければ、理由を");
+}
+
+function rewriteHarshToSoft(incoming, detail) {
+  const source = cleanText(incoming);
+  const request = cleanText(detail);
+
+  if (/(確認していない|未確認)/.test(source) && /確認/.test(request)) {
+    const deadline = request.match(/(今日中|本日中|明日中|今週中|来週中|午前中|午後中|\d{1,2}時(?:\d{1,2}分)?(?:ごろ|頃)?まで)/)?.[1];
+    const timing = deadline ? `${deadline}に` : "お手すきの際に";
+    return `お忙しいところ恐れ入ります。現在の確認状況を、${timing}ご共有いただけますでしょうか。`;
+  }
+
+  if (/進捗/.test(request) || /まだ.+(終わ|でき).*(早く|急い)/.test(source)) {
+    const deadline = request.match(/(今日中|本日中|明日中|今週中|来週中|午前中|午後中|\d{1,2}時(?:\d{1,2}分)?(?:ごろ|頃)?まで)/)?.[1];
+    const timing = deadline ? `${deadline}に` : "お手すきの際に";
+    return `お忙しいところ恐れ入ります。現在の進捗状況を、${timing}ご共有いただけますでしょうか。`;
+  }
+
+  if (/分かりにく|わかりにく|ちゃんと.*直|修正/.test(`${source} ${request}`)) {
+    const changes = request
+      .replace(/(?:修正|直)してほしい(?:です)?[。.]?$/, "ご修正いただけますでしょうか")
+      .replace(/(?:修正|直)してください[。.]?$/, "ご修正いただけますでしょうか");
+    if (changes && changes !== request) {
+      return `内容をより分かりやすくするため、${changes.replace(/[。.]?$/, "。")}`;
+    }
+    return "内容をより分かりやすくするため、要点を整理したうえでご修正いただけますでしょうか。";
+  }
+
+  if (/無理|難しい|別(?:の)?案/.test(`${source} ${request}`)) {
+    return "この方法での対応は難しい状況です。恐れ入りますが、別の案をご相談させていただけますでしょうか。";
+  }
+
+  let rewritten = source || request || "伝えたい内容を、相手に配慮した表現に整えたいです。";
+  rewritten = rewritten
+    .replace(/まだ(.+?)(?:終わって|できて)いないのですか/g, "$1の現在の状況を確認させてください")
+    .replace(/なぜ(.+?)ないのですか/g, "$1ない理由を差し支えない範囲で教えていただけますでしょうか")
+    .replace(/どうして(.+?)ないのですか/g, "$1ない事情を差し支えない範囲で教えていただけますでしょうか")
+    .replaceAll("早くしてください", "可能でしたら早めにご対応いただけますでしょうか")
+    .replaceAll("急いでください", "可能でしたら早めにご対応いただけますでしょうか")
+    .replaceAll("ちゃんと", "")
+    .replaceAll("してください", "していただけますでしょうか")
+    .replaceAll("無理です", "難しい状況です")
+    .replaceAll("できません", "対応が難しい状況です")
+    .replaceAll("？。", "？")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (request && request !== source && !rewritten.includes(request)) {
+    let politeRequest = request
+      .replace(/してほしい(?:です)?[。.]?$/, "していただけますでしょうか")
+      .replace(/確認したい(?:です)?[。.]?$/, "確認させていただけますでしょうか")
+      .replace(/(.+)を知りたい(?:です)?[。.]?$/, "$1をご共有いただけますでしょうか")
+      .replace(/相談したい(?:です)?[。.]?$/, "ご相談させていただけますでしょうか");
+    if (!/[。！？!?]$/.test(politeRequest)) politeRequest += "。";
+    rewritten = `${rewritten}\n${politeRequest}`;
+  }
+
+  return rewritten;
 }
 
 function rewriteDetail(detail) {
