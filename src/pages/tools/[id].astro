@@ -20,6 +20,8 @@ export function getStaticPaths() {
     "sales-dm-decline",
     "boss-reminder",
     "deadline-extension-request",
+    "schedule-adjust",
+    "task-request",
   ]);
 
   return tools
@@ -171,5 +173,5 @@ const relatedTools = tools
   </main>
   <div id="toast" class="toast"></div>
   <script type="application/json" id="tool-data" set:html={JSON.stringify(tool)}></script>
-  <script is:inline src="/scripts/generic-writing-tool.js?v=20260829"></script>
+  <script is:inline src="/scripts/generic-writing-tool.js?v=20260905"></script>
 </Layout>

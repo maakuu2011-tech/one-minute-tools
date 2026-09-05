@@ -666,6 +666,49 @@ function humanizeCore(source, purpose) {
 function bodyLines(purpose, incoming, detail) {
   const parts = [profile?.useIncoming === false ? "" : incoming, detail].filter(Boolean);
   const core = parts.length ? parts.join("。") : "用件について確認したうえで、あらためてご連絡します。";
+
+  if (purpose === "request" && tool.id === "schedule-adjust") {
+    const lines = [];
+    if (incoming) {
+      const request = cleanText(incoming)
+        .replace(/(?:を)?したい(?:です)?$/, "をお願いできますでしょうか")
+        .replace(/設定したい(?:です)?$/, "設定をお願いできますでしょうか");
+      lines.push(/[。！？!?]$/.test(request) ? request : `${request}。`);
+    }
+    if (detail) {
+      splitSentences(detail).forEach((sentence) => {
+        const candidateList = sentence.replace(/^候補(?:日時)?は/, "").replace(/です$/, "");
+        const isCandidateList = /^候補(?:日時)?は/.test(sentence)
+          || (!/(変更|希望|から)/.test(sentence) && /\d.+[、,].*\d/.test(sentence));
+        if (isCandidateList) {
+          lines.push(`候補日時は${candidateList}です。`);
+        } else {
+          lines.push(politeSentence(sentence));
+        }
+      });
+    }
+    const asksAvailability = /都合.+日時|お知らせ|教えて/.test(`${incoming} ${detail}`);
+    lines.push(asksAvailability
+      ? "難しい場合は、別の候補を2〜3個いただけますと幸いです。"
+      : "ご都合のよい日時をお知らせいただけますでしょうか。難しい場合は、別の候補を2〜3個いただけますと幸いです。");
+    return lines;
+  }
+
+  if (purpose === "request" && tool.id === "task-request") {
+    const lines = incoming ? [politeSentence(incoming)] : [];
+    splitSentences(detail).forEach((sentence) => {
+      if (/^(?:本日|今日|明日|今週|来週)?\d{1,2}時(?:\d{1,2}分)?(?:ごろ|頃)?まで$/.test(sentence) || /^(?:本日中|今日中|明日中|今週中|来週中|午前中|午後中)$/.test(sentence)) {
+        lines.push(`希望期限は${sentence}です。`);
+      } else if (/ため$/.test(sentence)) {
+        lines.push(`理由は${sentence}です。`);
+      } else {
+        lines.push(politeSentence(sentence));
+      }
+    });
+    lines.push("難しい場合は、対応可能な時刻をお知らせください。");
+    return lines;
+  }
+
   const polishedCore = humanizeCore(core, purpose);
   const conciseCore = polishedCore.length ? polishedCore.join("\n") : cleanText(core);
 
