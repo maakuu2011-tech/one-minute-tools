@@ -12,6 +12,7 @@ export function getStaticPaths() {
     "decline-reply",
     "follow-up-message",
     "soft-rewrite",
+    "casual-converter",
     "line-reply",
     "keigo-converter",
     "interview-thanks",
@@ -173,5 +174,5 @@ const relatedTools = tools
   </main>
   <div id="toast" class="toast"></div>
   <script type="application/json" id="tool-data" set:html={JSON.stringify(tool)}></script>
-  <script is:inline src="/scripts/generic-writing-tool.js?v=20260905"></script>
+  <script is:inline src="/scripts/generic-writing-tool.js?v=20260907"></script>
 </Layout>
