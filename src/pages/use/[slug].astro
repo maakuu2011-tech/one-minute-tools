@@ -16,7 +16,8 @@ export function getStaticPaths() {
 const { page } = Astro.props;
 const siteUrl = SITE_URL;
 const pageUrl = new URL(`/use/${page.slug}/`, siteUrl).toString();
-const seoDescription = `${page.title}。${page.description}そのまま使える例文、よくある質問、関連する無料ツールをまとめています。`;
+const pageHeading = page.title.split("｜")[0];
+const seoDescription = `${page.description}そのまま使える例文、送信前の確認事項、関連する無料ツールをまとめています。`;
 const relatedTools = page.toolIds
   .map((id) => tools.find((tool) => tool.id === id))
   .filter(Boolean);
@@ -90,7 +91,7 @@ const webPageSchema = {
 ---
 
 <Layout
-  title={`${page.title}｜例文と無料ツール`}
+  title={`${page.title}｜1分ツール`}
   description={seoDescription}
   structuredData={[webPageSchema, breadcrumbSchema, faqSchema]}
 >
@@ -106,7 +107,8 @@ const webPageSchema = {
 
       <section class="hero use-hero">
         <span class="hero__label">{page.label}</span>
-        <h1>{page.headline}</h1>
+        <h1>{pageHeading}</h1>
+        <p class="use-hero__summary">{page.headline}</p>
         <p>{page.lead}</p>
       </section>
 
