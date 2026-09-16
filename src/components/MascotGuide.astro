@@ -16,7 +16,14 @@ const image = images[variant] || images.default;
 ---
 
 <aside class="mascot-guide" aria-label={title}>
-  <img src={image} alt="1分ツールのマスコットキャラクター" />
+  <img
+    src={image}
+    alt="1分ツールのマスコットキャラクター"
+    width="460"
+    height="460"
+    loading="lazy"
+    decoding="async"
+  />
   <div>
     <strong>{title}</strong>
     <p>{message}</p>
