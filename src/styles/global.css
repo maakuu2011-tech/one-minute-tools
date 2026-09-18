@@ -1821,19 +1821,6 @@ button {
   text-align: center;
 }
 
-.ranking-columns,
-.ranking-card__lists {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.ranking-columns h3,
-.ranking-card__lists h3 {
-  margin: 0 0 8px;
-  font-size: 15px;
-}
-
 .ranking-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2738,8 +2725,6 @@ textarea {
   .popular-tool-list,
   .game-category-strip,
   .game-summary,
-  .ranking-columns,
-  .ranking-card__lists,
   .ranking-grid,
   .updates-strip {
     grid-template-columns: 1fr;

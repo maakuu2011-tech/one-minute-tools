@@ -81,7 +81,7 @@ const gameSchema = {
         <div class="actions game-actions">
           <button class="button primary" id="gameStart" type="button">スタート</button>
           <button class="button secondary" id="gameReset" type="button">リセット</button>
-          <a class="button secondary" href="/games/ranking/">ランキング</a>
+          <a class="button secondary" href="/games/ranking/">この端末の記録</a>
           <a class="button secondary" href="/games/">ゲーム一覧へ</a>
         </div>
       </section>
@@ -89,21 +89,12 @@ const gameSchema = {
       <section class="ranking-panel" aria-labelledby="rankingTitle">
         <div class="section__head section__head--compact">
           <div>
-            <h2 id="rankingTitle">ランキング</h2>
-            <p class="section__note">この端末の記録と、準備できたら全ユーザー共通ランキングを表示します。</p>
+            <h2 id="rankingTitle">この端末のランキング</h2>
+            <p class="section__note">このブラウザで遊んだ上位10件を保存します。名前の入力や会員登録は不要です。</p>
           </div>
           <a class="button secondary" href="/games/ranking/">ランキング一覧へ</a>
         </div>
-        <div class="ranking-columns">
-          <div>
-            <h3>みんなのランキング</h3>
-            <ol class="ranking-list" id="globalRankingList"></ol>
-          </div>
-          <div>
-            <h3>この端末のランキング</h3>
-            <ol class="ranking-list" id="rankingList"></ol>
-          </div>
-        </div>
+        <ol class="ranking-list" id="rankingList"></ol>
       </section>
 
       <section class="seo-content game-content">
