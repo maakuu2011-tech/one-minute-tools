@@ -173,7 +173,7 @@ const toolProfiles = {
     ],
   },
   "absence-message": {
-    purpose: "report", relationship: "boss", subject: "会議欠席のご連絡",
+    purpose: "report", relationship: "boss", subject: "欠席のご連絡",
     incomingLabel: "欠席する予定・理由", detailLabel: "代わりの対応・確認事項",
     incomingPlaceholder: "例：本日15時の定例会議を欠席する", detailPlaceholder: "例：別件対応のため。議事録を後で確認する",
     templates: [
@@ -389,6 +389,7 @@ function isChatLike() {
 }
 
 function opener(purpose) {
+  if (tool.id === "absence-message" && purpose === "report") return "";
   if (tool.id === "sales-dm-decline" && purpose === "decline") {
     return "ご提案いただきありがとうございます。";
   }
@@ -422,6 +423,7 @@ function closing() {
   if (tool.id === "sales-dm-decline") return "";
   const friend = el.relationship.value === "friend";
   if (friend || state.tone === "casual") {
+    if (tool.id === "absence-message" && el.purpose.value === "report") return "";
     if (state.length === "short") return "";
     return "また確認して連絡します。";
   }
@@ -677,6 +679,52 @@ function humanizeCore(source, purpose) {
   return sentences.map(politeSentence);
 }
 
+function absenceBodyLines(incoming, detail) {
+  const casual = state.tone === "casual" || el.relationship.value === "friend";
+  const lines = [];
+
+  if (incoming) {
+    let absence = cleanText(incoming)
+      .replace(/について[、,]?\s*/, "は、")
+      .replace(/を欠席(?:する|します|したい(?:です)?)/, casual ? "を欠席します" : "を欠席いたします")
+      .replace(/に参加でき(?:ない|ません)/, casual ? "には参加できません" : "には参加できないため、欠席いたします")
+      .replace(/参加を見送(?:る|ります)/, casual ? "参加を見送ります" : "参加を見送らせていただきます");
+    if (!/[。！？!?]$/.test(absence)) absence += "。";
+    lines.push(absence);
+  }
+
+  splitSentences(detail).forEach((sentence) => {
+    let follow = sentence;
+    if (/ため$/.test(follow)) {
+      follow = `${follow}です`;
+    } else if (/議事録.*(?:後で|あとで).*確認(?:する|します)$/.test(follow)) {
+      follow = casual ? "終了後に議事録を確認します" : "終了後に議事録を確認いたします";
+    } else if (/(?:後で|あとで).*議事録.*確認(?:する|します)$/.test(follow)) {
+      follow = casual ? "終了後に議事録を確認します" : "終了後に議事録を確認いたします";
+    } else if (/資料.*確認(?:する|します)$/.test(follow)) {
+      follow = follow.replace(/確認(?:する|します)$/, casual ? "確認します" : "確認いたします");
+    } else if (/代理.*出席(?:する|します)$/.test(follow)) {
+      follow = follow.replace(/出席(?:する|します)$/, casual ? "出席します" : "出席いたします");
+    } else if (/再調整.*(?:したい|お願いしたい)(?:です)?$/.test(follow)) {
+      follow = casual
+        ? "別の日程を相談させてください"
+        : "改めて日程をご相談させていただけますでしょうか";
+    } else if (!casual) {
+      follow = follow
+        .replace(/確認(?:する|します)$/, "確認いたします")
+        .replace(/共有(?:する|します)$/, "共有いたします")
+        .replace(/対応(?:する|します)$/, "対応いたします");
+    }
+    if (!/[。！？!?]$/.test(follow)) follow += "。";
+    lines.push(follow);
+  });
+
+  if (!lines.length) {
+    lines.push(casual ? "予定を欠席します。" : "予定を欠席いたします。");
+  }
+  return lines;
+}
+
 function bodyLines(purpose, incoming, detail) {
   const parts = [profile?.useIncoming === false ? "" : incoming, detail].filter(Boolean);
   const core = parts.length ? parts.join("。") : "用件について確認したうえで、あらためてご連絡します。";
@@ -817,6 +865,7 @@ function bodyLines(purpose, incoming, detail) {
   }
 
   if (purpose === "report") {
+    if (tool.id === "absence-message") return absenceBodyLines(incoming, detail);
     return state.length === "short"
       ? [conciseCore]
       : [conciseCore, "現時点で大きな懸念があれば、あわせて共有いたします。", "次の対応が決まり次第、続けてご報告します。"];
