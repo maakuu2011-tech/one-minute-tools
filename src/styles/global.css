@@ -1096,39 +1096,21 @@ button {
   background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
 }
 
-.game-category-strip {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+.game-category-filter {
   gap: 10px;
 }
 
-.game-category-strip a {
-  display: grid;
-  gap: 7px;
-  min-height: 112px;
-  padding: 14px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
+.game-category-filter .category-pill {
+  min-height: 42px;
+  padding: 9px 13px;
 }
 
-.game-category-strip span {
-  font-weight: 900;
+.game-catalog {
+  margin-top: 0;
 }
 
-.game-category-strip small {
-  color: var(--muted);
-  font-weight: 800;
-}
-
-.game-category-list {
-  display: grid;
-  gap: 24px;
-}
-
-.game-category-section {
-  scroll-margin-top: 18px;
+.game-filter-item[hidden] {
+  display: none;
 }
 
 .game-shell {
@@ -2524,7 +2506,6 @@ textarea {
   .tool-grid--compact,
   .tool-layout,
   .category-strip,
-  .game-category-strip,
   .use-list,
   .use-list--featured,
   .use-list--related,
@@ -2538,8 +2519,7 @@ textarea {
   }
 
   .tool-layout,
-  .category-strip,
-  .game-category-strip {
+  .category-strip {
     grid-template-columns: 1fr;
   }
 
@@ -2723,7 +2703,6 @@ textarea {
   .game-grid,
   .quick-entrance,
   .popular-tool-list,
-  .game-category-strip,
   .game-summary,
   .ranking-grid,
   .updates-strip {

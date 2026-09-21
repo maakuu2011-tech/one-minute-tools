@@ -21,10 +21,9 @@ const featuredGames = ["janken-reaction", "number-order", "sea-battle"]
   .map((slug) => games.find((game) => game.slug === slug))
   .filter(Boolean);
 const categories = Array.from(new Set(games.map((game) => game.category)));
-const groupedGames = categories.map((category) => ({
-  category,
-  games: games.filter((game) => game.category === category),
-}));
+const gameCounts = Object.fromEntries(
+  categories.map((category) => [category, games.filter((game) => game.category === category).length]),
+);
 
 const gameListSchema = {
   "@context": "https://schema.org",
@@ -107,46 +106,44 @@ const gameListSchema = {
         <div class="section__head">
           <div>
             <h2>カテゴリから探す</h2>
-            <p class="section__note">気分に合わせて、反射・記憶・パズル・言葉などから選べます。</p>
+            <p class="section__note">押すと、そのカテゴリのゲームだけを下に表示します。</p>
           </div>
           <a class="button secondary" href="/games/ranking/">この端末の記録を見る</a>
         </div>
-        <div class="game-category-strip">
-          {groupedGames.map((group) => (
-            <a href={`#game-category-${group.category}`}>
-              <IconBadge name={gameIcons[group.category] || "game"} />
-              <span>{group.category}</span>
-              <small>{group.games.length}本</small>
-            </a>
+        <div class="category-filter game-category-filter" aria-label="ゲームカテゴリで絞り込み">
+          <button type="button" class="category-pill game-category-pill" data-game-category="すべて" aria-pressed="true">
+            すべて {games.length}本
+          </button>
+          {categories.map((category) => (
+            <button type="button" class="category-pill game-category-pill" data-game-category={category} aria-pressed="false">
+              {category} {gameCounts[category]}本
+            </button>
           ))}
         </div>
       </section>
 
-      <section class="game-category-list" aria-label="1分ゲーム一覧">
-        {groupedGames.map((group) => (
-          <section class="game-category-section" id={`game-category-${group.category}`}>
-            <div class="section__head section__head--compact">
-              <div>
-                <h2>{group.category}</h2>
-                <p class="section__note">{group.games.length}本のゲームがあります。</p>
+      <section class="section section--tight game-catalog" aria-label="1分ゲーム一覧">
+        <div class="section__head section__head--compact">
+          <div>
+            <h2>ゲーム一覧</h2>
+            <p class="section__note" aria-live="polite"><span id="gameCount">{games.length}</span>本を表示しています。</p>
+          </div>
+        </div>
+        <div class="game-grid" id="gameList">
+          {games.map((game) => (
+            <a class="game-card game-filter-item" href={`/games/${game.slug}/`} data-game-category={game.category}>
+              <div class="card-icon-row">
+                <IconBadge name={gameIcons[game.category] || "game"} />
+                <span>{game.category}</span>
               </div>
-            </div>
-            <div class="game-grid">
-              {group.games.map((game) => (
-                <a class="game-card" href={`/games/${game.slug}/`}>
-                  <div class="card-icon-row">
-                    <IconBadge name={gameIcons[game.category] || "game"} />
-                    <span>{game.category}</span>
-                  </div>
-                  <strong>{game.time}</strong>
-                  <h3>{game.title}</h3>
-                  <p>{game.description}</p>
-                </a>
-              ))}
-            </div>
-          </section>
-        ))}
+              <strong>{game.time}</strong>
+              <h3>{game.title}</h3>
+              <p>{game.description}</p>
+            </a>
+          ))}
+        </div>
       </section>
     </div>
   </main>
+  <script is:inline src="/scripts/game-finder.js"></script>
 </Layout>
