@@ -390,6 +390,7 @@ function isChatLike() {
 
 function opener(purpose) {
   if (tool.id === "absence-message" && purpose === "report") return "";
+  if (tool.id === "dm-reply" && purpose === "reply") return "";
   if (tool.id === "sales-dm-decline" && purpose === "decline") {
     return "ご提案いただきありがとうございます。";
   }
@@ -725,9 +726,63 @@ function absenceBodyLines(incoming, detail) {
   return lines;
 }
 
+function dmReplyBodyLines(incoming, detail) {
+  const casual = state.tone === "casual" || el.relationship.value === "friend";
+  const source = `${incoming} ${detail}`;
+  const lines = [];
+
+  if (/コラボ|タイアップ|取材|案件|仕事.*依頼|依頼.*提案/.test(source)) {
+    lines.push(casual ? "声をかけてくれてありがとう。" : "お声がけいただきありがとうございます。");
+    if (/条件|希望日|日程|報酬|内容|詳細/.test(detail)) {
+      lines.push(casual
+        ? "検討したいので、企画内容、条件、希望日を教えてください。"
+        : "内容を検討したいため、企画の概要、条件、希望日をお知らせいただけますでしょうか。");
+    } else {
+      lines.push(casual ? "内容を確認して、改めて返信します。" : "内容を確認のうえ、改めて返信いたします。");
+    }
+    return lines;
+  }
+
+  if (/商品|サービス|料金|在庫|仕様|問い合わせ|質問|詳しく|教えて/.test(incoming)) {
+    lines.push(casual ? "問い合わせありがとう。" : "お問い合わせありがとうございます。");
+    if (/詳細ページ|商品ページ|プロフィール|リンク|URL/.test(detail)) {
+      lines.push(casual
+        ? "詳しい内容は商品詳細ページを確認してください。分からないことがあれば、気軽に聞いてください。"
+        : "詳しい内容は商品詳細ページをご確認ください。ご不明な点がありましたら、確認したい内容をお知らせください。");
+      return lines;
+    }
+  }
+
+  if (/確認|調べ|回答|返信/.test(detail) && /明日|本日|今日|\d{1,2}時|まで/.test(detail)) {
+    if (!lines.length) lines.push(casual ? "連絡ありがとう。" : "ご連絡ありがとうございます。");
+    let schedule = detail
+      .replace(/問い合わせへのお礼[。.]?/g, "")
+      .replace(/確認が必要なため[、,]?/g, "確認が必要なため、")
+      .replace(/お時間をいただきたい(?:です)?/g, "お時間をください")
+      .trim();
+    lines.push(casual ? politeSentence(schedule) : politeSentence(schedule).replace(/お時間をください。?$/, "お時間をいただけますと幸いです。"));
+    return lines;
+  }
+
+  const usefulDetail = detail && !/^(?:短く)?自然に返したい[。.]?$/.test(detail);
+  if (usefulDetail) {
+    if (!lines.length) lines.push(casual ? "連絡ありがとう。" : "ご連絡ありがとうございます。");
+    lines.push(...humanizeCore(detail, "reply"));
+    return lines;
+  }
+
+  if (!lines.length) lines.push(casual ? "連絡ありがとう。" : "ご連絡ありがとうございます。");
+  lines.push(casual ? "内容を確認して、改めて返信します。" : "内容を確認のうえ、改めて返信いたします。");
+  return lines;
+}
+
 function bodyLines(purpose, incoming, detail) {
   const parts = [profile?.useIncoming === false ? "" : incoming, detail].filter(Boolean);
   const core = parts.length ? parts.join("。") : "用件について確認したうえで、あらためてご連絡します。";
+
+  if (purpose === "reply" && tool.id === "dm-reply") {
+    return dmReplyBodyLines(incoming, detail);
+  }
 
   if (purpose === "request" && tool.id === "schedule-adjust") {
     const lines = [];
