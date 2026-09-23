@@ -733,12 +733,34 @@ function dmReplyBodyLines(incoming, detail) {
 
   if (/コラボ|タイアップ|取材|案件|仕事.*依頼|依頼.*提案/.test(source)) {
     lines.push(casual ? "声をかけてくれてありがとう。" : "お声がけいただきありがとうございます。");
-    if (/条件|希望日|日程|報酬|内容|詳細/.test(detail)) {
+    const asksForDetails = /条件|希望日|日程|報酬|内容|詳細|媒体|予算|金額/.test(detail);
+    const replySchedule = detail.match(/((?:本日|今日|明日|明後日|\d{1,2}月\d{1,2}日)[^。！？]{0,12}?まで)(?:に)?(?:改めて)?(?:返信|回答|連絡)/);
+    if (asksForDetails) {
+      const requestedDetails = [];
+      if (/企画(?:の)?概要|企画内容|内容|詳細/.test(detail)) requestedDetails.push(casual ? "企画内容" : "企画の概要");
+      if (/掲載(?:予定の)?媒体|媒体/.test(detail)) requestedDetails.push(casual ? "掲載する媒体" : "掲載予定の媒体");
+      if (/希望日|日程/.test(detail)) requestedDetails.push("希望日");
+      if (/報酬|予算|金額/.test(detail)) requestedDetails.push(casual ? "報酬などの条件" : "報酬を含む条件");
+      if (!requestedDetails.length && /条件/.test(detail)) requestedDetails.push("条件");
+
+      const detailList = [...new Set(requestedDetails)];
+      const lastDetail = detailList.pop();
+      const joinedDetails = detailList.length ? `${detailList.join("、")}、${lastDetail}` : lastDetail;
       lines.push(casual
-        ? "検討したいので、企画内容、条件、希望日を教えてください。"
-        : "内容を検討したいため、企画の概要、条件、希望日をお知らせいただけますでしょうか。");
+        ? `検討したいので、${joinedDetails}を教えてください。`
+        : `内容を検討したいため、${joinedDetails}をお知らせいただけますでしょうか。`);
+    } else if (replySchedule) {
+      lines.push(casual
+        ? `内容を確認して、${replySchedule[1]}に返信します。`
+        : `内容を確認のうえ、${replySchedule[1]}に返信いたします。`);
     } else {
       lines.push(casual ? "内容を確認して、改めて返信します。" : "内容を確認のうえ、改めて返信いたします。");
+    }
+
+    if (replySchedule && asksForDetails) {
+      lines.push(casual
+        ? `確認後、${replySchedule[1]}に返信します。`
+        : `確認後、${replySchedule[1]}に返信いたします。`);
     }
     return lines;
   }
