@@ -706,10 +706,11 @@ function absenceBodyLines(incoming, detail) {
       follow = follow.replace(/確認(?:する|します)$/, casual ? "確認します" : "確認いたします");
     } else if (/代理.*出席(?:する|します)$/.test(follow)) {
       follow = follow.replace(/出席(?:する|します)$/, casual ? "出席します" : "出席いたします");
-    } else if (/再調整.*(?:したい|お願いしたい)(?:です)?$/.test(follow)) {
-      follow = casual
-        ? "別の日程を相談させてください"
-        : "改めて日程をご相談させていただけますでしょうか";
+    } else if (/再調整(?:を)?(?:お願い)?したい(?:です)?$/.test(follow)) {
+      follow = follow.replace(
+        /再調整(?:を)?(?:お願い)?したい(?:です)?$/,
+        casual ? "再調整をお願いできますか" : "再調整をお願いできますでしょうか"
+      );
     } else if (!casual) {
       follow = follow
         .replace(/確認(?:する|します)$/, "確認いたします")
