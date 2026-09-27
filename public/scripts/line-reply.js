@@ -44,20 +44,42 @@ function extractTiming(text) {
   const normalized = text.replace(/\s+/g, "");
   const date = normalized.match(/(?:\d{1,2}月\d{1,2}日|今日|明日|明後日|今週末?|来週末?|再来週|[月火水木金土日](?:曜|曜日))/)?.[0] ?? "";
   const time = normalized.match(/(?:午前|午後|夕方|夜)?\d{1,2}(?::\d{2}|時(?:半|\d{1,2}分)?)/)?.[0] ?? "";
+  const limit = normalized.match(/(?:までに?|頃|ごろ)/)?.[0] ?? "";
 
-  if (date && time) return `${date}${time}`;
-  return date || time;
+  if (date && !time && /(?:どこか|いつか)/.test(normalized)) return "";
+
+  if (date && time) return `${date}${time}${limit}`;
+  return `${date || time}${limit}`;
+}
+
+function detailLines(timing) {
+  const detail = el.detail.value.trim();
+  if (!detail) return [];
+
+  return detail
+    .split(/[。！？!?]+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .filter((line) => {
+      if (el.purpose.value !== "ok" || !timing) return true;
+      const coreTiming = timing.replace(/(?:までに?|頃|ごろ)$/, "");
+      return !(line.includes(coreTiming) && /(?:空いて|大丈夫|行け|参加でき)/.test(line));
+    })
+    .map((line) => `${line}。`);
 }
 
 function baseLine() {
   const polite = state.tone === "polite" || el.relationship.value === "work" || el.relationship.value === "acquaintance";
   const soft = state.tone === "soft" || el.relationship.value === "partner";
   const incoming = el.incoming.value.trim();
-  const timing = extractTiming(incoming);
+  const timing = extractTiming(el.detail.value) || extractTiming(incoming);
   const mentionsSentItem = /送(?:った|って|付|信)|資料|内容|確認|見た[？?]?/.test(incoming);
 
   if (el.purpose.value === "ok") {
-    if (timing) return polite ? `${timing}で大丈夫です。` : soft ? `${timing}なら大丈夫だよ、ありがとう。` : `${timing}で大丈夫だよ。`;
+    if (timing) {
+      const timingPhrase = /までに?$/.test(timing) ? `${timing.replace(/に$/, "")}で` : `${timing}なら`;
+      return polite ? `${timingPhrase}大丈夫です。` : soft ? `${timingPhrase}大丈夫だよ、ありがとう。` : `${timingPhrase}大丈夫だよ。`;
+    }
     return polite ? "大丈夫です。" : soft ? "いいよ、ありがとう。" : "いいよ。";
   }
   if (el.purpose.value === "decline") {
@@ -92,9 +114,9 @@ function ending() {
 }
 
 function generate() {
-  const detail = el.detail.value.trim();
-  const parts = [baseLine()];
-  if (detail) parts.push(detail);
+  const timing = extractTiming(el.detail.value) || extractTiming(el.incoming.value);
+  const base = baseLine();
+  const parts = [base, ...detailLines(timing)];
   if (state.length === "long") {
     if (el.purpose.value === "decline") parts.push("誘ってくれたのにごめんね。");
     if (el.purpose.value === "ok") parts.push("楽しみにしてる。");
