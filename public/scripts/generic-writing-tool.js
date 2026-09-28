@@ -799,6 +799,44 @@ function dmReplyBodyLines(incoming, detail) {
   return lines;
 }
 
+function paidLeaveBodyLines(incoming, detail) {
+  const casual = state.tone === "casual" || el.relationship.value === "friend";
+  const lines = [];
+
+  if (incoming) {
+    let request = cleanText(incoming)
+      .replace(/有給休暇を(?:取得し|取り)たい(?:です)?/g, casual ? "有給休暇を取りたいです" : "有給休暇を取得したく、ご相談いたします")
+      .replace(/休暇を(?:取得し|取り)たい(?:です)?/g, casual ? "休暇を取りたいです" : "休暇を取得したく、ご相談いたします")
+      .replace(/(午前休|午後休|半休)を(?:取得し|取り)たい(?:です)?/g, casual ? "$1を取りたいです" : "$1を取得したく、ご相談いたします")
+      .replace(/休みたい(?:です)?/g, casual ? "休みたいです" : "休暇を取得したく、ご相談いたします");
+    if (!/[。！？!?]$/.test(request)) request += "。";
+    lines.push(request);
+  } else {
+    lines.push(casual ? "休暇を取りたいです。" : "休暇を取得したく、ご相談いたします。");
+  }
+
+  splitSentences(detail).forEach((sentence) => {
+    let follow = sentence;
+    if (!casual) {
+      if (/ため$/.test(follow)) follow += "です";
+      follow = follow
+        .replace(/完了(?:する|します|予定です)?$/, "完了いたします")
+        .replace(/共有(?:する|します|予定です)?$/, "共有いたします")
+        .replace(/引き継(?:ぐ|ぎます|ぐ予定です)$/, "引き継ぎます")
+        .replace(/勤務(?:する|します|予定です)?$/, "勤務いたします")
+        .replace(/確認(?:する|します|する予定です)?$/, "確認いたします")
+        .replace(/対応(?:する|します|する予定です)?$/, "対応いたします")
+        .replace(/確認できる$/, "確認できます")
+        .replace(/連絡可能$/, "連絡を確認できます")
+        .replace(/連絡不可$/, "連絡を確認できません");
+    }
+    if (!/[。！？!?]$/.test(follow)) follow += "。";
+    lines.push(follow);
+  });
+
+  return lines;
+}
+
 function bodyLines(purpose, incoming, detail) {
   const parts = [profile?.useIncoming === false ? "" : incoming, detail].filter(Boolean);
   const core = parts.length ? parts.join("。") : "用件について確認したうえで、あらためてご連絡します。";
@@ -847,6 +885,10 @@ function bodyLines(purpose, incoming, detail) {
     });
     lines.push("難しい場合は、対応可能な時刻をお知らせください。");
     return lines;
+  }
+
+  if (purpose === "request" && tool.id === "paid-leave-request") {
+    return paidLeaveBodyLines(incoming, detail);
   }
 
   const polishedCore = humanizeCore(core, purpose);
