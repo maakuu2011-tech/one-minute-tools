@@ -837,6 +837,56 @@ function paidLeaveBodyLines(incoming, detail) {
   return lines;
 }
 
+function meetingRequestBodyLines(incoming, detail) {
+  const casual = state.tone === "casual" || el.relationship.value === "friend";
+  const lines = [];
+
+  if (incoming) {
+    let request = cleanText(incoming).replace(/[。！？!?]+$/, "");
+    if (!casual) {
+      request = request
+        .replace(/(.+?)について(?:一度)?(?:ご)?相談したい(?:です)?$/, "$1についてご相談したく、ご連絡いたしました")
+        .replace(/(.+?)について(?:一度)?(?:お)?打ち合わせ(?:を)?(?:したい|お願いしたい)(?:です)?$/, "$1についてお打ち合わせをお願いしたく、ご連絡いたしました")
+        .replace(/(.+?)説明の機会をいただきたい(?:です)?$/, "$1説明の機会をいただけますでしょうか");
+    }
+    lines.push(politeSentence(request));
+  } else {
+    lines.push(casual
+      ? "打ち合わせをお願いしたいです。"
+      : "お打ち合わせをお願いしたく、ご連絡いたしました。");
+  }
+
+  splitSentences(detail).forEach((sentence) => {
+    const candidateList = sentence.replace(/^候補(?:日時|日)?は/, "").replace(/です$/, "");
+    const isCandidateList = /^候補(?:日時|日)?は/.test(sentence)
+      || (!/(変更|希望|から)/.test(sentence) && /(?:月|日|時).*(?:、|,|または|と).*(?:月|日|時)/.test(sentence));
+    if (isCandidateList) {
+      lines.push(`候補日時は${candidateList}です。`);
+      return;
+    }
+
+    let follow = sentence;
+    if (!casual) {
+      follow = follow
+        .replace(/都合のよい日時を(?:伺い|教えてもらい)たい(?:です)?$/, "ご都合のよい日時をお知らせいただけますでしょうか")
+        .replace(/(?:事前に)?資料を(?:先に|事前に)?確認してほしい(?:です)?$/, "事前に資料をご確認いただけますでしょうか")
+        .replace(/^(オンライン|訪問|対面|電話|Zoom|Teams)で(\d+分|\d+時間(?:半)?)$/, "$1で$2を予定しております")
+        .replace(/オンラインで実施したい(?:です)?$/, "オンラインでの実施を予定しております")
+        .replace(/訪問したい(?:です)?$/, "訪問での実施を希望しております");
+    }
+    lines.push(politeSentence(follow));
+  });
+
+  const asksAvailability = /都合.+日時|候補.+知らせ|お知らせいただけ|教えていただけ|伺い/.test(`${incoming} ${detail}`);
+  if (!asksAvailability) {
+    lines.push(casual
+      ? "都合のよい日時を教えてください。難しければ、別の候補を2〜3個お願いします。"
+      : "ご都合のよい日時をお知らせいただけますでしょうか。難しい場合は、別の候補を2〜3個いただけますと幸いです。");
+  }
+
+  return lines;
+}
+
 function bodyLines(purpose, incoming, detail) {
   const parts = [profile?.useIncoming === false ? "" : incoming, detail].filter(Boolean);
   const core = parts.length ? parts.join("。") : "用件について確認したうえで、あらためてご連絡します。";
@@ -889,6 +939,10 @@ function bodyLines(purpose, incoming, detail) {
 
   if (purpose === "request" && tool.id === "paid-leave-request") {
     return paidLeaveBodyLines(incoming, detail);
+  }
+
+  if (purpose === "request" && tool.id === "meeting-request") {
+    return meetingRequestBodyLines(incoming, detail);
   }
 
   const polishedCore = humanizeCore(core, purpose);
