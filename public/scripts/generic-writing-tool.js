@@ -72,6 +72,16 @@ const toolProfiles = {
       ["期限を決めず確認", "以前ご相談した件について、現在の状況を伺いたいです。", "行き違いでしたら申し訳ありません。ご都合のよいときに返信をお願いします。", "client", "soft"],
     ],
   },
+  "boss-reminder": {
+    purpose: "remind", relationship: "boss", subject: "ご確認のお願い",
+    incomingLabel: "上司に確認してほしい内容", detailLabel: "必要な期限・理由・返してほしい内容",
+    incomingPlaceholder: "例：昨日申請した見積書の承認状況", detailPlaceholder: "例：次の手続きのため、本日15時までに承認が必要。難しい場合は予定を知りたい",
+    templates: [
+      ["申請の承認を確認", "昨日申請した見積書の承認状況を伺いたいです。", "次の手続きに進むため、本日15時までに承認が必要です。難しい場合は、確認予定時刻を教えてほしいです。", "boss"],
+      ["資料の確認をお願い", "昨日共有した企画書を確認してほしいです。", "明日午前の会議で使用します。修正の有無だけ、本日中に返信してほしいです。", "boss", "soft"],
+      ["判断期限を相談", "価格案AとBのどちらで進めるか、判断をお願いしたいです。", "取引先へ本日17時に回答します。難しい場合は、回答時刻を調整します。", "boss", "polite", "medium"],
+    ],
+  },
   "harsh-to-soft": {
     purpose: "rewrite", relationship: "work", includeSubject: false,
     incomingLabel: "やわらかくしたい文章", detailLabel: "残したい要点・相手への配慮",
@@ -391,6 +401,7 @@ function isChatLike() {
 function opener(purpose) {
   if (tool.id === "absence-message" && purpose === "report") return "";
   if (tool.id === "dm-reply" && purpose === "reply") return "";
+  if (tool.id === "boss-reminder" && purpose === "remind") return "お忙しいところ恐れ入ります。";
   if (tool.id === "sales-dm-decline" && purpose === "decline") {
     return "ご提案いただきありがとうございます。";
   }
@@ -887,6 +898,45 @@ function meetingRequestBodyLines(incoming, detail) {
   return lines;
 }
 
+function bossReminderBodyLines(incoming, detail) {
+  const lines = [];
+
+  splitSentences(incoming).forEach((sentence) => {
+    const request = sentence
+      .replace(/(.+?)の承認状況を(?:伺い|知り)たい(?:です)?$/, "$1について、現在の承認状況をお伺いできますでしょうか")
+      .replace(/(.+?)の確認状況を(?:伺い|知り)たい(?:です)?$/, "$1について、現在のご確認状況をお伺いできますでしょうか")
+      .replace(/(.+?)を承認してほしい(?:です)?$/, "$1をご承認いただけますでしょうか")
+      .replace(/(.+?)を確認してほしい(?:です)?$/, "$1をご確認いただけますでしょうか")
+      .replace(/(.+?)の判断をお願いしたい(?:です)?$/, "$1について、ご判断をお願いできますでしょうか")
+      .replace(/(.+?)が承認待ち(?:です)?$/, "$1は現在、承認待ちとなっております")
+      .replace(/(.+?)が確認待ち(?:です)?$/, "$1は現在、確認待ちとなっております");
+    lines.push(politeSentence(request));
+  });
+
+  splitSentences(detail).forEach((sentence) => {
+    const follow = sentence
+      .replace(/^(.+?ため)[、,](.+?)までに承認が必要(?:です)?$/, "$1、可能でしたら$2までにご承認いただけますでしょうか")
+      .replace(/^(.+?ため)[、,](.+?)までに確認が必要(?:です)?$/, "$1、可能でしたら$2までにご確認いただけますでしょうか")
+      .replace(/(.+?)までに承認が必要(?:です)?$/, "可能でしたら、$1までにご承認いただけますでしょうか")
+      .replace(/(.+?)までに確認が必要(?:です)?$/, "可能でしたら、$1までにご確認いただけますでしょうか")
+      .replace(/(.+?)までに(?:返信|回答)してほしい(?:です)?$/, "$1までにご返信いただけますでしょうか")
+      .replace(/確認予定時刻を教えてほしい(?:です)?$/, "ご確認いただける予定時刻をお知らせいただけますでしょうか")
+      .replace(/回答予定時刻を教えてほしい(?:です)?$/, "ご回答いただける予定時刻をお知らせいただけますでしょうか")
+      .replace(/修正の有無だけ(.+?)返信してほしい(?:です)?$/, "修正の有無だけ$1ご返信いただけますでしょうか")
+      .replace(/(.+)で使(?:う|います)(?:ため)?$/, "$1で使用するためです")
+      .replace(/(.+)に進むため$/, "$1に進むためです");
+    lines.push(politeSentence(follow));
+  });
+
+  if (!lines.length) {
+    lines.push("先日お願いした件について、現在のご確認状況をお伺いできますでしょうか。");
+  }
+  if (!lines.some((line) => /難しい場合|予定時刻|回答時刻|目安/.test(line))) {
+    lines.push("難しい場合は、ご確認いただける時刻の目安をお知らせください。");
+  }
+  return lines;
+}
+
 function bodyLines(purpose, incoming, detail) {
   const parts = [profile?.useIncoming === false ? "" : incoming, detail].filter(Boolean);
   const core = parts.length ? parts.join("。") : "用件について確認したうえで、あらためてご連絡します。";
@@ -943,6 +993,10 @@ function bodyLines(purpose, incoming, detail) {
 
   if (purpose === "request" && tool.id === "meeting-request") {
     return meetingRequestBodyLines(incoming, detail);
+  }
+
+  if (purpose === "remind" && tool.id === "boss-reminder") {
+    return bossReminderBodyLines(incoming, detail);
   }
 
   const polishedCore = humanizeCore(core, purpose);
