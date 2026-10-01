@@ -937,6 +937,47 @@ function bossReminderBodyLines(incoming, detail) {
   return lines;
 }
 
+function paymentReminderBodyLines(incoming, detail) {
+  const lines = [];
+
+  splitSentences(incoming).forEach((sentence) => {
+    let request = sentence
+      .replace(/(.+?)のお支払いについて確認したい(?:です)?$/, "$1のお支払いについて確認したく、ご連絡しました")
+      .replace(/(.+?)の入金状況を確認したい(?:です)?$/, "$1の入金状況を確認したく、ご連絡しました")
+      .replace(/(.+?)が未払い(?:です)?$/, "$1について、現時点で入金を確認できておりません")
+      .replace(/(.+?)の支払いがまだ(?:です)?$/, "$1について、現時点で入金を確認できておりません");
+    if (!/入金|支払|請求/.test(request)) {
+      request = `${request}について、入金状況を確認したくご連絡しました`;
+    }
+    lines.push(politeSentence(request));
+  });
+
+  splitSentences(detail).forEach((sentence) => {
+    const follow = sentence
+      .replace(/(?:現時点で|現在)?入金を確認できてい(?:ない(?:です)?|ません)$/, "現時点で入金を確認できておりません")
+      .replace(/入金が確認できてい(?:ない(?:です)?|ません)$/, "現時点で入金を確認できておりません")
+      .replace(/(.+?)までに入金予定日を返信してほしい(?:です)?$/, "$1までに入金予定日をご返信いただけますでしょうか")
+      .replace(/(.+?)までに支払い予定日を返信してほしい(?:です)?$/, "$1までにお支払い予定日をご返信いただけますでしょうか")
+      .replace(/支払予定日を確認したい(?:です)?$/, "お支払い予定日をお知らせいただけますでしょうか")
+      .replace(/入金予定日を確認したい(?:です)?$/, "入金予定日をお知らせいただけますでしょうか")
+      .replace(/請求書を再添付(?:する|します)(?:ので)?$/, "請求書を再度添付いたします")
+      .replace(/行き違い(?:なら|でしたら)申し訳ない(?:です)?$/, "行き違いですでにお手続き済みでしたら、何卒ご容赦ください")
+      .replace(/すでに(?:支払い|お支払い|入金|振り込み|振込)済みなら(.+)$/, "すでにお手続き済みでしたら、$1");
+    lines.push(politeSentence(follow));
+  });
+
+  if (!lines.length) {
+    lines.push("先日お送りした請求書について、現時点で入金を確認できていないためご連絡しました。");
+  }
+  if (!lines.some((line) => /行き違い|手続き済み|振込済み|支払い済み/.test(line))) {
+    lines.push("行き違いですでにお手続き済みでしたら、何卒ご容赦ください。");
+  }
+  if (!lines.some((line) => /ご確認|ご返信|お知らせいただけ|予定日/.test(line))) {
+    lines.push("お手数ですが、ご入金状況をご確認いただけますでしょうか。");
+  }
+  return lines;
+}
+
 function bodyLines(purpose, incoming, detail) {
   const parts = [profile?.useIncoming === false ? "" : incoming, detail].filter(Boolean);
   const core = parts.length ? parts.join("。") : "用件について確認したうえで、あらためてご連絡します。";
@@ -997,6 +1038,10 @@ function bodyLines(purpose, incoming, detail) {
 
   if (purpose === "remind" && tool.id === "boss-reminder") {
     return bossReminderBodyLines(incoming, detail);
+  }
+
+  if (purpose === "remind" && tool.id === "payment-reminder") {
+    return paymentReminderBodyLines(incoming, detail);
   }
 
   const polishedCore = humanizeCore(core, purpose);
