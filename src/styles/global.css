@@ -1661,6 +1661,17 @@ button {
   color: #b91c1c;
 }
 
+.word-choice:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.word-card .word-feedback {
+  min-height: 1.5em;
+  color: var(--text);
+  font-size: 15px;
+}
+
 .word-card > strong {
   padding: 10px 18px;
   background: #eff6ff;

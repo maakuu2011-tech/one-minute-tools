@@ -7,13 +7,48 @@ const bestEl = document.getElementById("gameBest");
 
 const gameSlug = "word-scramble";
 const bestKey = "one-minute-game-word-scramble-best";
-const words = ["メール", "チャット", "メモ", "時計", "仕事", "集中", "返信", "確認", "整理", "休憩", "道具", "文章"];
+const words = [
+  "メモ",
+  "時計",
+  "仕事",
+  "集中",
+  "返信",
+  "確認",
+  "整理",
+  "休憩",
+  "道具",
+  "文章",
+  "予定",
+  "資料",
+  "相談",
+  "連絡",
+  "報告",
+  "期限",
+  "会議",
+  "承認",
+  "メール",
+  "ボタン",
+  "ゲーム",
+  "タスク",
+  "データ",
+  "コピー",
+  "スコア",
+  "リンク",
+  "チャット",
+  "ブラウザ",
+  "リセット",
+  "アイデア",
+  "シンプル",
+  "タイマー",
+];
 
 let timerId = null;
 let score = 0;
 let timeLeft = 60;
 let running = false;
 let answer = words[0];
+let previousAnswer = "";
+let roundTimerId = null;
 
 function setBest(value) {
   const best = Math.max(Number(localStorage.getItem(bestKey) || 0), value);
@@ -28,10 +63,12 @@ function renderStats() {
 }
 
 function shuffle(items) {
-  return items
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map((item) => item.value);
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
 }
 
 function scramble(word) {
@@ -44,11 +81,17 @@ function scramble(word) {
 }
 
 function optionsFor(word) {
-  return shuffle([word, ...shuffle(words.filter((item) => item !== word)).slice(0, 3)]);
+  const length = [...word].length;
+  const sameLengthWords = words.filter((item) => item !== word && [...item].length === length);
+  return shuffle([word, ...shuffle(sameLengthWords).slice(0, 3)]);
 }
 
 function nextRound() {
-  answer = words[Math.floor(Math.random() * words.length)];
+  if (!running) return;
+
+  const candidates = words.filter((word) => word !== previousAnswer);
+  answer = candidates[Math.floor(Math.random() * candidates.length)];
+  previousAnswer = answer;
   const scrambled = scramble(answer);
   const options = optionsFor(answer);
   board.className = "game-board word-board";
@@ -59,21 +102,31 @@ function nextRound() {
       <div class="word-options">
         ${options.map((word) => `<button class="word-choice" type="button" data-word="${word}">${word}</button>`).join("")}
       </div>
+      <p class="word-feedback" role="status" aria-live="polite"></p>
     </div>
   `;
 
   board.querySelectorAll(".word-choice").forEach((button) => {
     button.addEventListener("click", () => {
       if (!running) return;
-      if (button.dataset.word === answer) {
+
+      const choices = [...board.querySelectorAll(".word-choice")];
+      const isCorrect = button.dataset.word === answer;
+      choices.forEach((choice) => {
+        choice.disabled = true;
+        if (choice.dataset.word === answer) choice.classList.add("correct");
+      });
+
+      if (isCorrect) {
         score += 1;
-        button.classList.add("correct");
       } else {
         score = Math.max(0, score - 1);
         button.classList.add("wrong");
       }
+      const feedback = board.querySelector(".word-feedback");
+      feedback.textContent = isCorrect ? "正解！ +1" : `正解は「${answer}」 -1`;
       renderStats();
-      setTimeout(nextRound, 120);
+      roundTimerId = setTimeout(nextRound, 450);
     });
   });
 }
@@ -81,6 +134,8 @@ function nextRound() {
 function endGame() {
   running = false;
   clearInterval(timerId);
+  clearTimeout(roundTimerId);
+  startButton.disabled = false;
   setBest(score);
   window.OneMinuteRanking?.record(gameSlug, score);
   board.className = "game-board";
@@ -93,9 +148,12 @@ function endGame() {
 
 function startGame() {
   clearInterval(timerId);
+  clearTimeout(roundTimerId);
   score = 0;
   timeLeft = 60;
   running = true;
+  previousAnswer = "";
+  startButton.disabled = true;
   startButton.textContent = "プレイ中";
   renderStats();
   nextRound();
@@ -108,9 +166,12 @@ function startGame() {
 
 function resetGame() {
   clearInterval(timerId);
+  clearTimeout(roundTimerId);
   score = 0;
   timeLeft = 60;
   running = false;
+  previousAnswer = "";
+  startButton.disabled = false;
   renderStats();
   board.className = "game-board";
   board.innerHTML = `<div class="game-ready"><img src="/images/mascot-thinking.png" alt="1分ツールのマスコットキャラクター" /><p>スタートを押して遊んでください。</p></div>`;
