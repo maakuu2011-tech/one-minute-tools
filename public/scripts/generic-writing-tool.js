@@ -898,6 +898,53 @@ function meetingRequestBodyLines(incoming, detail) {
   return lines;
 }
 
+function deadlineExtensionBodyLines(incoming, detail) {
+  const casual = state.tone === "casual" || el.relationship.value === "friend";
+  const lines = [];
+
+  splitSentences(incoming).forEach((sentence) => {
+    let target = sentence.replace(/[。！？!?]+$/, "");
+    if (!casual) {
+      target = target
+        .replace(/(.+?)について相談が(?:ある|あります)$/, "$1について、提出期限をご相談したくご連絡しました")
+        .replace(/(.+?)について(?:期限|締切)を延長したい(?:です)?$/, "$1について、提出期限の延長をご相談したくご連絡しました")
+        .replace(/(.+?)が期限に間に合わない見込み(?:です)?$/, "$1について、当初の期限までの完成が難しい見込みです")
+        .replace(/(.+?)が完了しない見込み(?:です)?$/, "$1について、当初の期限までの完了が難しい見込みです");
+    }
+    lines.push(politeSentence(target));
+  });
+
+  splitSentences(detail).forEach((sentence) => {
+    let follow = sentence.replace(/[。！？!?]+$/, "");
+    if (!casual) {
+      follow = follow
+        .replace(/^完成部分を(.+?)(?:送り|送る|送ります)[、,]残りを(.+?)までに提出したい(?:です)?$/, "完成している部分は$1共有いたします。残りは$2までに提出いたします")
+        .replace(/^(.+?)ため[、,]?(.+?)まで(?:期限を)?延長(?:を)?お願いしたい(?:です)?$/, "$1ため、提出期限を$2まで延長いただけないでしょうか")
+        .replace(/^(.+?)ため[、,]?(.+?)まで待ってほしい(?:です)?$/, "$1ため、$2までお時間をいただけないでしょうか")
+        .replace(/(.+?)まで(?:期限を)?延長(?:を)?お願いしたい(?:です)?$/, "提出期限を$1まで延長いただけないでしょうか")
+        .replace(/(.+?)まで待ってほしい(?:です)?$/, "$1までお時間をいただけないでしょうか")
+        .replace(/完成部分を(.+?)(?:送り|送る|送ります)(?=[、,]|$)/, "完成している部分は$1共有いたします")
+        .replace(/残りを(.+?)までに提出したい(?:です)?$/, "残りは$1までに提出いたします")
+        .replace(/途中版を(.+?)共有(?:する|します)(?:予定です)?$/, "途中版は$1共有いたします")
+        .replace(/(.+?)に(?:再度|改めて)?(?:進捗を)?報告(?:する|します)(?:予定です)?$/, "$1に改めて進捗をご報告いたします")
+        .replace(/(.+?)までに提出(?:する|します)(?:予定です)?$/, "$1までに提出いたします");
+    }
+    lines.push(politeSentence(follow));
+  });
+
+  if (!lines.length) {
+    lines.push(casual
+      ? "提出期限を延ばせるか相談したいです。"
+      : "提出期限の延長をご相談したく、ご連絡しました。");
+  }
+  if (!lines.some((line) => /延長いただけ|お時間をいただけ|問題ないか|ご相談/.test(line))) {
+    lines.push(casual
+      ? "この予定で問題ないか確認をお願いします。"
+      : "恐れ入りますが、こちらの予定で問題ないかご確認いただけますでしょうか。");
+  }
+  return lines;
+}
+
 function bossReminderBodyLines(incoming, detail) {
   const lines = [];
 
@@ -1034,6 +1081,10 @@ function bodyLines(purpose, incoming, detail) {
 
   if (purpose === "request" && tool.id === "meeting-request") {
     return meetingRequestBodyLines(incoming, detail);
+  }
+
+  if (purpose === "request" && tool.id === "deadline-extension-request") {
+    return deadlineExtensionBodyLines(incoming, detail);
   }
 
   if (purpose === "remind" && tool.id === "boss-reminder") {
