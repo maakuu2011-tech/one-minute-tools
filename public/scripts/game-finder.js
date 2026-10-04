@@ -2,21 +2,21 @@ const gameCategoryButtons = Array.from(document.querySelectorAll(".game-category
 const gameItems = Array.from(document.querySelectorAll(".game-filter-item"));
 const gameCount = document.getElementById("gameCount");
 
-function showGameCategory(category) {
+function showGameGroup(group) {
   let visibleCount = 0;
 
   gameItems.forEach((item) => {
-    const visible = category === "すべて" || item.dataset.gameCategory === category;
+    const visible = group === "all" || item.dataset.gameGroup === group;
     item.hidden = !visible;
     if (visible) visibleCount += 1;
   });
 
   gameCategoryButtons.forEach((button) => {
-    button.setAttribute("aria-pressed", String(button.dataset.gameCategory === category));
+    button.setAttribute("aria-pressed", String(button.dataset.gameGroup === group));
   });
   gameCount.textContent = String(visibleCount);
 }
 
 gameCategoryButtons.forEach((button) => {
-  button.addEventListener("click", () => showGameCategory(button.dataset.gameCategory));
+  button.addEventListener("click", () => showGameGroup(button.dataset.gameGroup));
 });
