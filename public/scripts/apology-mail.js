@@ -39,11 +39,11 @@ const templates = {
 const situationText = {
   lateReply: {
     subject: "返信遅れのお詫び",
-    apology: "返信が遅くなりましたこと、心よりお詫び申し上げます。",
+    apology: "ご返信が遅くなり、誠に申し訳ございません。",
   },
   delay: {
     subject: "対応遅延のお詫び",
-    apology: "対応が遅れておりますこと、心よりお詫び申し上げます。",
+    apology: "予定より対応が遅れており、誠に申し訳ございません。",
   },
   mistake: {
     subject: "内容誤りのお詫び",
@@ -73,16 +73,15 @@ function greeting() {
 }
 
 function closing() {
-  if (state.length === "short") return "何卒よろしくお願いいたします。";
-  if (state.length === "long") return "このたびはご迷惑をおかけし、誠に申し訳ございませんでした。何卒よろしくお願い申し上げます。";
+  if (state.length === "short") return "よろしくお願いいたします。";
+  if (state.length === "long") return "このたびはご迷惑をおかけしましたこと、重ねてお詫び申し上げます。何卒よろしくお願い申し上げます。";
   return "ご迷惑をおかけし恐縮ですが、何卒よろしくお願いいたします。";
 }
 
-function paragraph(label, text) {
+function sentence(text) {
   const value = text.trim();
   if (!value) return "";
-  if (state.length === "short") return value;
-  return `${label}\n${value}`;
+  return /[。！？!?]$/.test(value) ? value : `${value}。`;
 }
 
 function generate() {
@@ -95,19 +94,14 @@ function generate() {
     `件名：${situation.subject}`,
     "",
     greeting(),
-    "",
-    situation.apology,
   ];
 
-  const happenedBlock = paragraph("【発生した内容】", happened);
-  const actionBlock = paragraph("【今後の対応】", action);
-  const preventionBlock = paragraph("【再発防止】", prevention);
+  if (happened) parts.push("", sentence(happened));
+  parts.push(happened ? situation.apology : `このたびは、${situation.apology}`);
+  if (action) parts.push("", sentence(action));
+  if (prevention && state.length !== "short") parts.push("", sentence(prevention));
 
-  if (happenedBlock) parts.push("", happenedBlock);
-  if (actionBlock) parts.push("", actionBlock);
-  if (preventionBlock && state.length !== "short") parts.push("", preventionBlock);
-
-  if (state.length === "long") {
+  if (state.length === "long" && !prevention) {
     parts.push("", "今後は同様のことがないよう、確認と共有を徹底してまいります。");
   }
 

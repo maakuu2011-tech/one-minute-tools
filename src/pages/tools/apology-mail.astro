@@ -1,11 +1,75 @@
 ---
 import Layout from "../../components/Layout.astro";
 import MascotGuide from "../../components/MascotGuide.astro";
+
+const examples = [
+  {
+    situation: "返信が遅れたとき",
+    text: "件名：ご返信が遅れたことへのお詫び\n\n〇〇様\n\nいつもお世話になっております。〇月〇日にいただいたご連絡への返信が遅くなり、誠に申し訳ございません。ご依頼の内容を確認し、本日17時までに回答いたします。今後は受信時に対応期限を記録し、確認漏れを防ぎます。",
+    point: "謝罪だけで終わらせず、いつ回答するかを具体的に伝えます。",
+  },
+  {
+    situation: "資料の送付が遅れたとき",
+    text: "件名：【お詫び】〇〇資料の送付遅延について\n\n〇〇様\n\nいつもお世話になっております。〇月〇日にお送りする予定の〇〇資料について、最終確認に時間を要しており、送付が遅れております。ご迷惑をおかけし、誠に申し訳ございません。本日18時までに確認を終え、修正版をお送りします。今後は確認日を前倒しし、遅れが見込まれる時点で早めに共有いたします。",
+    point: "対象、当初の予定、現在の状況、新しい送付時刻をそろえます。",
+  },
+  {
+    situation: "添付を忘れたとき",
+    text: "件名：【再送】〇〇資料の添付漏れのお詫び\n\n〇〇様\n\n先ほどお送りしたメールに〇〇資料を添付できておりませんでした。確認のお手間を取らせてしまい、申し訳ございません。本メールに改めて添付しておりますので、ご確認をお願いいたします。今後は送信前に宛先と添付ファイルを確認いたします。",
+    point: "何が不足していたかと、どのメールを見ればよいかを明記します。",
+  },
+  {
+    situation: "日程変更をお願いするとき",
+    text: "件名：打ち合わせ日程変更のお願いとお詫び\n\n〇〇様\n\nいつもお世話になっております。〇月〇日14時から予定している打ち合わせについて、こちらの都合により変更をお願いしたく、ご連絡いたしました。ご調整いただいたにもかかわらず、申し訳ございません。可能でしたら、〇月〇日10時または〇月〇日15時へ変更いただけないでしょうか。難しい場合は、改めて候補をお送りします。",
+    point: "元の予定と複数の代替候補を示し、変更を一方的に決めません。",
+  },
+];
+
+const faq = [
+  {
+    question: "謝罪メールには何を書けばよいですか？",
+    answer: "何が起きたか、相手への影響、今後の対応、必要なら再発防止を順に書きます。長い言い訳より、相手が次に確認できる日時や行動を具体的にすることが大切です。",
+  },
+  {
+    question: "原因がまだ分からない場合はどう書きますか？",
+    answer: "原因を推測で断定せず、現時点で確認できている事実と、調査結果を連絡する時刻を伝えます。例えば「現在確認中で、本日17時までに改めてご報告します」とします。",
+  },
+  {
+    question: "謝罪は何度も繰り返したほうがよいですか？",
+    answer: "冒頭で明確に謝り、最後に必要なら一度添える程度で十分です。謝罪の繰り返しで、対応内容や期限が埋もれないようにしてください。",
+  },
+  {
+    question: "重大なミスでもメールだけでよいですか？",
+    answer: "業務停止、金銭、個人情報、安全、当日の予定など影響が大きい場合は、社内ルールを確認し、電話や責任者への報告を優先してください。メールは対応内容を記録する補助として使います。",
+  },
+];
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "謝罪文メーカー",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    isAccessibleForFree: true,
+    description: "返信遅れ、納期遅れ、内容の誤り、添付漏れ、日程変更のお詫びメールを無料で作成できます。",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  },
+];
 ---
 
 <Layout
   title="謝罪文メーカー｜遅延・ミスのお詫びメールを作成"
   description="遅延、返信漏れ、納期遅れ、添付ミスなどの謝罪メールを、状況に合わせて短時間で作れます。入力内容はブラウザ内で処理されます。"
+  structuredData={structuredData}
 >
   <main class="page">
     <div class="container">
@@ -17,10 +81,18 @@ import MascotGuide from "../../components/MascotGuide.astro";
 
       <MascotGuide
         title="謝罪文のコツ"
-        message="謝る文章は、言い訳を長くしすぎず、今後どうするかを入れると伝わりやすくなります。"
+        message="何について謝るかを明確にし、相手が次に確認できる日時や対応を具体的に入れましょう。"
       />
 
-      <div class="tool-layout">
+      <nav class="use-page-nav" aria-label="このページ内の目次">
+        <strong>このページでできること</strong>
+        <a href="#apology-tool">謝罪文を作る</a>
+        <a href="#apology-examples">完成例を見る</a>
+        <a href="#apology-checklist">送信前に確認する</a>
+        <a href="#apology-faq">よくある質問</a>
+      </nav>
+
+      <div class="tool-layout" id="apology-tool">
         <section class="panel">
           <h2>入力</h2>
           <div class="hint">謝罪文は「何が起きたか」「今どうするか」「次に防ぐか」を入れると伝わりやすくなります。</div>
@@ -79,9 +151,9 @@ import MascotGuide from "../../components/MascotGuide.astro";
           </div>
         </section>
 
-        <section class="panel">
-          <h2>出力</h2>
-          <div id="output" class="output"></div>
+        <section class="panel" aria-live="polite">
+          <h2>完成した謝罪文</h2>
+          <div id="output" class="output" aria-label="謝罪文の作成結果"></div>
           <div class="template-grid">
             <button class="template-button" type="button" data-template="lateReply">返信遅れ</button>
             <button class="template-button" type="button" data-template="delay">納期遅れ</button>
@@ -89,8 +161,58 @@ import MascotGuide from "../../components/MascotGuide.astro";
           </div>
         </section>
       </div>
+
+      <section class="seo-content" id="apology-examples">
+        <h2>状況別のお詫びメール完成例</h2>
+        <p>そのまま使う場合は、相手の名前、対象、日付、時刻を実際の内容に置き換えてください。</p>
+        <div class="example-list">
+          {examples.map((example) => (
+            <article class="example-card">
+              <h3>{example.situation}</h3>
+              <p>{example.text}</p>
+              <p class="example-card__point"><strong>使い分け：</strong>{example.point}</p>
+              <button
+                class="example-copy-button"
+                type="button"
+                data-copy-text={example.text}
+                aria-label={`${example.situation}の例文をコピー`}
+              >文面をコピー</button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="seo-content" id="apology-checklist">
+        <h2>謝罪メールを送る前の確認</h2>
+        <div class="send-checklist">
+          <label><input type="checkbox" /><span>相手の名前、対象、日付、時刻に誤りがないか</span></label>
+          <label><input type="checkbox" /><span>確認できていない原因を推測で断定していないか</span></label>
+          <label><input type="checkbox" /><span>相手に生じた待ち時間や手間へ配慮したか</span></label>
+          <label><input type="checkbox" /><span>次の対応と連絡時刻を具体的に書いたか</span></label>
+          <label><input type="checkbox" /><span>重大な影響がある場合、電話や責任者への報告も行ったか</span></label>
+        </div>
+        <div class="related-tools">
+          <a href="/use/apology-message/">お詫び・謝罪メールの例文</a>
+          <a href="/tools/late-reply-apology/">返信遅れのお詫び文を作る</a>
+          <a href="/use/delivery-delay-notice-examples/">納期遅延のお詫び例文</a>
+          <a href="/tools/schedule-adjust/">日程調整文を作る</a>
+        </div>
+      </section>
+
+      <section class="seo-content" id="apology-faq">
+        <h2>謝罪文でよくある質問</h2>
+        <div class="faq-list">
+          {faq.map((item) => (
+            <details>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
     </div>
   </main>
   <div id="toast" class="toast"></div>
-  <script is:inline src="/scripts/apology-mail.js"></script>
+  <script is:inline src="/scripts/apology-mail.js?v=20261006"></script>
+  <script is:inline src="/scripts/use-example-copy.js"></script>
 </Layout>
