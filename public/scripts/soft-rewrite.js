@@ -17,19 +17,19 @@ const templates = {
     sourceText: "早く確認してください。何度も同じことを言っています。",
     target: "work",
     purpose: "request",
-    note: "今日中に確認してほしいが、急かしすぎたくない",
+    note: "今日中",
   },
   feedback: {
     sourceText: "ここが間違っています。すぐ直してください。",
     target: "work",
     purpose: "feedback",
-    note: "修正してほしいが、責める感じにはしたくない",
+    note: "明日17時まで",
   },
   remind: {
     sourceText: "まだ返事がありません。いつ対応できますか？",
     target: "client",
     purpose: "remind",
-    note: "確認状況と対応できる時期を知りたい",
+    note: "10月8日まで",
   },
 };
 
@@ -122,12 +122,15 @@ function replaceAll(text, replacements) {
 }
 
 function extractDeadline(note) {
-  const match = note.match(
-    /((?:本日|今日|明日)の?\d{1,2}時(?:\d{1,2}分)?まで|本日中|今日中|明日中|明日まで|今週中|今週末まで|\d{1,2}月\d{1,2}日(?:の?\d{1,2}時(?:\d{1,2}分)?)?まで|\d{1,2}日(?:の?\d{1,2}時(?:\d{1,2}分)?)?まで)/,
+  const normalized = normalizeText(note)
+    .replace(/今日/g, "本日")
+    .replace(/[（(].*?[）)]/g, "")
+    .trim();
+  const match = normalized.match(
+    /((?:本日|明日)(?:の)?(?:午前中|午後|夕方|\d{1,2}時(?:\d{1,2}分)?)?(?:まで|中)|今週中|今週末まで|(?:月|火|水|木|金|土|日)曜(?:日)?(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで|\d{1,2}[月/]\d{1,2}日?(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで|\d{1,2}日(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで)/,
   );
   if (!match) return "";
-  if (match[1] === "今日中") return "本日中";
-  return match[1];
+  return match[1].replace(/^(\d{1,2})\/(\d{1,2})(日?)/, "$1月$2日");
 }
 
 function deadlineAdverb(deadline) {
@@ -145,7 +148,7 @@ function applyDeadline(text, deadline) {
   if (text.includes("できれば早めに")) {
     return text.replace("できれば早めに", `できれば、${timing}`);
   }
-  return text;
+  return `${timing}、${text}`;
 }
 
 function cleanPunctuation(text) {
