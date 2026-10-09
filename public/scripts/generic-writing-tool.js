@@ -463,37 +463,59 @@ function soften(text) {
   return result.replace(/\n{3,}/g, "\n\n").trim();
 }
 
+function rewriteCasual(base) {
+  return cleanText(base)
+    .replaceAll("ご連絡いただき、誠にありがとうございます", "連絡してくれて、本当にありがとう")
+    .replaceAll("ご連絡いただきありがとうございます", "連絡してくれてありがとう")
+    .replaceAll("ご対応いただき、誠にありがとうございました", "対応してくれて、本当にありがとう")
+    .replaceAll("ご対応いただきありがとうございました", "対応してくれてありがとう")
+    .replaceAll("ご都合のよい", "都合のいい")
+    .replaceAll("ご都合が悪い場合は", "都合が悪かったら")
+    .replaceAll("ご確認のうえ", "確認して")
+    .replaceAll("ご確認いただいたうえで", "確認して")
+    .replaceAll("お伺いしてもよろしいでしょうか", "行ってもいい？")
+    .replaceAll("伺ってもよろしいでしょうか", "行ってもいい？")
+    .replaceAll("お送りしてもよろしいでしょうか", "送ってもいい？")
+    .replaceAll("参加してもよろしいでしょうか", "参加してもいい？")
+    .replaceAll("ご参加いただけますでしょうか", "参加できる？")
+    .replaceAll("お知らせいただけますでしょうか", "教えてもらえる？")
+    .replaceAll("ご確認いただけますでしょうか", "確認してもらえる？")
+    .replaceAll("ご返信いただけますでしょうか", "返事してもらえる？")
+    .replaceAll("お送りいただけますでしょうか", "送ってもらえる？")
+    .replaceAll("ご対応いただけますでしょうか", "対応してもらえる？")
+    .replaceAll("ご協力いただけますでしょうか", "手伝ってもらえる？")
+    .replaceAll("ご確認いただけますと幸いです", "確認してもらえると助かる！")
+    .replaceAll("ご返信いただけますと幸いです", "返事してもらえると助かる！")
+    .replaceAll("ご連絡いただけますと幸いです", "連絡してもらえると助かる！")
+    .replaceAll("お知らせいただけますと幸いです", "教えてもらえると助かる！")
+    .replaceAll("お待ちしております", "待ってるね")
+    .replaceAll("よろしくお願いいたします", "よろしくね")
+    .replace(/(.+?)していただけますでしょうか/g, "$1してもらえる？")
+    .replace(/(.+?)していただけますと幸いです/g, "$1してもらえると助かる！")
+    .replace(/(.+?)していただき[、,]?(?:誠に)?ありがとうございました/g, "$1してくれて、本当にありがとう")
+    .replaceAll("ご確認ください", "確認してね")
+    .replaceAll("お知らせください", "教えてね")
+    .replaceAll("ご返信ください", "返事してね")
+    .replaceAll("お願いいたします", "お願いします")
+    .replaceAll("申し訳ございません", "ごめんなさい")
+    .replaceAll("お忙しいところ、", "")
+    .replaceAll("お忙しいところ", "")
+    .replaceAll("恐れ入りますが、", "")
+    .replaceAll("可能でしたら、", "できたら、")
+    .replaceAll("誠に", "本当に")
+    .replaceAll("？。", "？")
+    .replaceAll("！。", "！")
+    .replace(/([？！])\1+/g, "$1")
+    .replace(/^\s+/, "");
+}
+
 function rewriteOriginal(incoming, detail) {
   const base = incoming || detail || "伝えたい内容を、相手に配慮した表現に整えたいです。";
   if (tool.id === "harsh-to-soft") {
     return rewriteHarshToSoft(incoming, detail);
   }
   if (tool.id === "casual-converter") {
-    return cleanText(base)
-      .replaceAll("ご連絡いただきありがとうございます", "連絡ありがとう")
-      .replaceAll("ご都合のよい", "都合のいい")
-      .replaceAll("お知らせいただけますでしょうか", "教えてもらえる？")
-      .replaceAll("ご確認いただけますでしょうか", "確認してもらえる？")
-      .replaceAll("ご返信いただけますでしょうか", "返事してもらえる？")
-      .replaceAll("お送りいただけますでしょうか", "送ってもらえる？")
-      .replaceAll("ご対応いただけますでしょうか", "対応してもらえる？")
-      .replaceAll("ご協力いただけますでしょうか", "手伝ってもらえる？")
-      .replaceAll("ご確認いただけますと幸いです", "確認してもらえると助かる！")
-      .replaceAll("ご対応いただき、誠にありがとうございました", "対応してくれて本当にありがとう")
-      .replaceAll("ご対応いただきありがとうございました", "対応してくれてありがとう")
-      .replace(/(.+?)していただけますでしょうか/g, "$1してもらえる？")
-      .replace(/(.+?)していただけると幸いです/g, "$1してもらえると助かる！")
-      .replaceAll("ご確認ください", "確認してね")
-      .replaceAll("お知らせください", "教えてね")
-      .replaceAll("ご返信ください", "返事してね")
-      .replaceAll("お願いいたします", "お願いします")
-      .replaceAll("申し訳ございません", "ごめんなさい")
-      .replaceAll("お忙しいところ、", "")
-      .replaceAll("お忙しいところ", "")
-      .replaceAll("恐れ入りますが、", "")
-      .replaceAll("可能でしたら、", "できたら、")
-      .replaceAll("？。", "？")
-      .replaceAll("！。", "！");
+    return rewriteCasual(base);
   }
   if (tool.id === "keigo-converter") {
     return cleanText(base)
