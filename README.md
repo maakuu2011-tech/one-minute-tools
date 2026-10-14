@@ -6,6 +6,7 @@
 - 運用状況: [`docs/project-status.md`](docs/project-status.md)
 - 運営基準: [`docs/site-operations.md`](docs/site-operations.md)
 - Codex運用ガイド: [`AGENTS.md`](AGENTS.md)
+- 日次の役割分担: [`automation/daily-site-operation.prompt.md`](automation/daily-site-operation.prompt.md)
 
 ## 開発
 
