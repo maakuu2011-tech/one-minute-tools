@@ -1253,6 +1253,19 @@ async function copyOutput() {
     showToast("先に文章を作ってください");
     return;
   }
+
+  const copyButton = document.getElementById("copyBtn");
+  const originalLabel = copyButton.textContent;
+  copyButton.textContent = "コピー中…";
+  copyButton.disabled = true;
+
+  // Let the pressed state paint before invoking the clipboard API. Some
+  // browsers can take hundreds of milliseconds to resolve the permission
+  // check, and waiting first would make the button appear unresponsive.
+  await new Promise((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  });
+
   try {
     await navigator.clipboard.writeText(text);
   } catch {
@@ -1262,6 +1275,9 @@ async function copyOutput() {
     area.select();
     document.execCommand("copy");
     area.remove();
+  } finally {
+    copyButton.textContent = originalLabel;
+    copyButton.disabled = false;
   }
   showToast("コピーしました");
 }
