@@ -52,7 +52,16 @@ function extractTiming(text) {
   return `${date || time}${limit}`;
 }
 
-function detailLines(timing) {
+function extractMeetingPlace(text) {
+  const normalized = text.replace(/\s+/g, "")
+    .replace(/(?:\d{1,2}月\d{1,2}日|今日|明日|明後日|今週末?|来週末?|再来週|[月火水木金土日](?:曜|曜日))/g, "")
+    .replace(/(?:午前|午後|夕方|夜)?\d{1,2}(?::\d{2}|時(?:半|\d{1,2}分)?)(?:に|から)?/g, "");
+  const match = normalized.match(/(?:^|[、。！？?])([^、。！？?]{1,18}?)(?:で|に)(?:会|待ち合わせ|集合)/);
+  const place = match?.[1]?.replace(/^(?:に|で|は|場所は)/, "") ?? "";
+  return /(?:駅前|駅|改札|カフェ|喫茶店|会議室|公園|広場|ロビー|ホテル|店)$/.test(place) ? place : "";
+}
+
+function detailLines(timing, place) {
   const detail = el.detail.value.trim();
   if (!detail) return [];
 
@@ -61,6 +70,7 @@ function detailLines(timing) {
     .map((line) => line.trim())
     .filter(Boolean)
     .filter((line) => {
+      if (place && line.includes(place) && /(?:で|に)(?:会|待ち合わせ|集合)/.test(line)) return false;
       if (el.purpose.value !== "ok" || !timing) return true;
       const coreTiming = timing.replace(/(?:までに?|頃|ごろ)$/, "");
       return !(line.includes(coreTiming) && /(?:空いて|大丈夫|行け|参加でき)/.test(line));
@@ -73,9 +83,14 @@ function baseLine() {
   const soft = state.tone === "soft" || el.relationship.value === "partner";
   const incoming = el.incoming.value.trim();
   const timing = extractTiming(el.detail.value) || extractTiming(incoming);
+  const place = extractMeetingPlace(el.detail.value) || extractMeetingPlace(incoming);
   const mentionsSentItem = /送(?:った|って|付|信)|資料|内容|確認|見た[？?]?/.test(incoming);
 
   if (el.purpose.value === "ok") {
+    if (place) {
+      const whenAndWhere = `${timing && !/までに?$/.test(timing) ? `${timing}に` : ""}${place}で`;
+      return polite ? `${whenAndWhere}大丈夫です。` : soft ? `${whenAndWhere}大丈夫だよ、ありがとう。` : `${whenAndWhere}大丈夫だよ。`;
+    }
     if (timing) {
       const timingPhrase = /までに?$/.test(timing) ? `${timing.replace(/に$/, "")}で` : `${timing}なら`;
       return polite ? `${timingPhrase}大丈夫です。` : soft ? `${timingPhrase}大丈夫だよ、ありがとう。` : `${timingPhrase}大丈夫だよ。`;
@@ -83,6 +98,10 @@ function baseLine() {
     return polite ? "大丈夫です。" : soft ? "いいよ、ありがとう。" : "いいよ。";
   }
   if (el.purpose.value === "decline") {
+    if (place) {
+      const meeting = `${timing && !/までに?$/.test(timing) ? `${timing}に` : ""}${place}で会うのは`;
+      return polite ? `すみません、${meeting}難しそうです。` : soft ? `ごめん、${meeting}ちょっと難しそう。` : `ごめん、${meeting}難しい。`;
+    }
     if (timing) return polite ? `すみません、${timing}は難しそうです。` : soft ? `ごめん、${timing}はちょっと難しそう。` : `ごめん、${timing}は難しい。`;
     return polite ? "すみません、今回は難しそうです。" : soft ? "ごめん、今回はちょっと難しそう。" : "ごめん、今回は難しい。";
   }
@@ -100,6 +119,7 @@ function baseLine() {
     return apology;
   }
   if (el.purpose.value === "ask") {
+    if (place) return polite ? `${timing ? `${timing}に` : ""}${place}で合っていますか？` : `${timing ? `${timing}に` : ""}${place}で合ってる？`;
     if (timing) return polite ? `${timing}で合っていますか？` : `${timing}で合ってる？`;
     return polite ? "確認させてください。" : "ちょっと確認してもいい？";
   }
@@ -115,8 +135,9 @@ function ending() {
 
 function generate() {
   const timing = extractTiming(el.detail.value) || extractTiming(el.incoming.value);
+  const place = extractMeetingPlace(el.detail.value) || extractMeetingPlace(el.incoming.value);
   const base = baseLine();
-  const parts = [base, ...detailLines(timing)];
+  const parts = [base, ...detailLines(timing, place)];
   if (state.length === "long") {
     if (el.purpose.value === "decline") parts.push("誘ってくれたのにごめんね。");
     if (el.purpose.value === "ok") parts.push("楽しみにしてる。");
