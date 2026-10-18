@@ -4,7 +4,7 @@
 
 ## 使い始める前に
 
-1. 自宅Windowsに通常の `claude` CLI、`codex` CLI、GitHub CLI、Node.js、Gitを用意します。`claude` CLIがない場合は、[AnthropicのWindows向け案内](https://code.claude.com/docs/en/setup)に従いPowerShellで `winget install Anthropic.ClaudeCode` を実行し、新しいPowerShellを開いてください。AgentCodeGUIのアプリ内ログインは通常のCLIに引き継がれるとは限りません。
+1. 自宅Windowsに通常の `claude` CLI（2.1.248以降）、`codex` CLI、GitHub CLI、Node.js、Gitを用意します。`claude` CLIがない場合は、[AnthropicのWindows向け案内](https://code.claude.com/docs/en/setup)に従いPowerShellで `winget install Anthropic.ClaudeCode` を実行し、新しいPowerShellを開いてください。AgentCodeGUIのアプリ内ログインは通常のCLIに引き継がれるとは限りません。
 2. PowerShellで `claude auth login` を実行し、`claude auth status` と `codex.exe login status` が通ることを確認します。GitHub CLIには既存のGit Credential Manager認証を実行時だけ渡します。認証情報はファイルに保存しません。
 3. このPCには新しい `codex.exe` があり、ログイン済みです。別に入っている古い `codex.cmd` は現在の設定で起動エラーになるため、ランナーは `codex.exe` を使います。
 4. 作業前に `npm.cmd ci` と `npm.cmd run build` が通常のリポジトリで通ることを確認します。

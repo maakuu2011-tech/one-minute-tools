@@ -97,6 +97,12 @@ if (dryRun) { console.log(`Dry run: would create ${branch} and one draft PR.`); 
 // Refuse to begin agent work until each independent CLI is usable.
 run('gh', ['auth', 'status']);
 run('claude', ['auth', 'status']);
+const claudeVersion = run('claude', ['--version']).stdout.match(/(\d+)\.(\d+)\.(\d+)/)?.slice(1).map(Number);
+if (!claudeVersion || claudeVersion[0] < 2 ||
+    (claudeVersion[0] === 2 && (claudeVersion[1] < 1 ||
+      (claudeVersion[1] === 1 && claudeVersion[2] < 248)))) {
+  throw new Error('Claude Code 2.1.248 or newer is required for restricted mode.');
+}
 run('codex.exe', ['login', 'status']);
 run('npm.cmd', ['--version']);
 const currentIssue = ghJson(`repos/${REPO}/issues/${issue.number}`);
@@ -118,14 +124,14 @@ try {
     `Implement the smallest useful change. The runner will build and review it.\n\n<title>${issue.title}</title>\n<body>\n${issue.body}\n</body>`;
   stage = 'implementation';
   const claude = (prompt, turns, budget, name) => {
-    const output = run('claude', ['-p', '--bare', '--permission-mode', 'acceptEdits', '--tools', 'Read,Edit,Write,Glob,Grep',
+    const output = run('claude', ['-p', '--bare', '--restricted', '--permission-mode', 'acceptEdits', '--tools', 'Read,Edit,Write,Glob,Grep',
       '--disallowedTools', 'mcp__*', '--max-turns', String(turns), '--max-budget-usd', String(budget),
       '--output-format', 'json', 'Follow the task supplied on stdin.'], { cwd: worktree, input: prompt, timeout: 600_000 });
     writeFileSync(join(runDir, `${name}.json`), output.stdout);
   };
   claude(task, 12, 2, 'implementation');
 
-  const forbidden = /^(?:\.github\/|\.codex\/|automation\/|AGENTS\.md$|package(?:-lock)?\.json$|\.env|.*\.(?:pem|key|p12)$)/i;
+  const forbidden = /^(?:\.github\/|\.codex\/|automation\/|AGENTS\.md$|package(?:-lock)?\.json$)|(?:^|\/)\.env|\.(?:pem|key|p12)$/i;
   const validate = () => {
     git(['add', '-A'], worktree);
     const paths = git(['diff', '--cached', '--name-only', '-z'], worktree).split('\0').filter(Boolean).map(path => path.replaceAll('\\', '/'));
