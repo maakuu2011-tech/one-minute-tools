@@ -312,7 +312,7 @@
     "category": "連絡",
     "href": "/tools/health-absence-message/",
     "status": "公開中",
-    "keywords": ["体調不良 連絡", "欠勤 連絡", "休む メール"]
+    "keywords": ["体調不良 連絡", "欠勤 連絡", "病欠 メール", "休む メール"]
   },
   {
     "id": "late-arrival-message",
