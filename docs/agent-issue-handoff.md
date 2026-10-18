@@ -15,6 +15,8 @@
 2. 内容を確認した後、所有者がIssueに `agent-approved` ラベルを付けます。ラベルが実行承認です。外部の人が作ったIssueやラベル付与者が所有者でないIssueは実行しません。
 3. 自宅PCで次を実行します。`--dry-run` は承認確認だけをします。
 
+iPhoneからなら、最初に「`one-minute-tools` に目的・対象・受け入れ条件を含むIssueを作って。承認ラベルはまだ付けないで」とChatGPT / Workに伝え、Issue本文を確認してから「Issue #123 に `agent-approved` を付けて」と指示できます。
+
 ```powershell
 cd C:\Users\maaku\Documents\Codex\one-minute-tools
 node automation\agent-issue-runner.mjs --issue 123 --dry-run
