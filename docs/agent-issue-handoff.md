@@ -4,8 +4,8 @@
 
 ## 使い始める前に
 
-1. 自宅Windowsに通常の `claude` CLI、`codex` CLI、GitHub CLI、Node.js、Gitを用意し、それぞれのCLIでログインします。AgentCodeGUIのアプリ内ログインは通常のCLIに引き継がれるとは限りません。
-2. PowerShellで `gh auth login` と `claude auth login` を実行します。`gh auth status`、`claude auth status`、`codex.exe login status` が通ることを確認します。GitHubで `gh label create agent-approved --repo maakuu2011-tech/one-minute-tools --description "Owner approval for one local agent run"` を1回実行します。
+1. 自宅Windowsに通常の `claude` CLI、`codex` CLI、GitHub CLI、Node.js、Gitを用意します。`claude` CLIがない場合は、[AnthropicのWindows向け案内](https://code.claude.com/docs/en/setup)に従いPowerShellで `winget install Anthropic.ClaudeCode` を実行し、新しいPowerShellを開いてください。AgentCodeGUIのアプリ内ログインは通常のCLIに引き継がれるとは限りません。
+2. PowerShellで `claude auth login` を実行し、`claude auth status` と `codex.exe login status` が通ることを確認します。GitHub CLIには既存のGit Credential Manager認証を実行時だけ渡します。認証情報はファイルに保存しません。
 3. このPCには新しい `codex.exe` があり、ログイン済みです。別に入っている古い `codex.cmd` は現在の設定で起動エラーになるため、ランナーは `codex.exe` を使います。
 4. 作業前に `npm.cmd ci` と `npm.cmd run build` が通常のリポジトリで通ることを確認します。
 
@@ -21,13 +21,18 @@ node automation\agent-issue-runner.mjs --issue 123 --dry-run
 node automation\agent-issue-runner.mjs --issue 123
 ```
 
-`--scan` は未実行の承認済みIssueを最大1件探します。Windowsのタスクスケジューラで `node.exe` に `C:\Users\maaku\Documents\Codex\one-minute-tools\automation\agent-issue-runner.mjs --scan` を渡して定期起動できます。CLIログインが正常に済むまでは登録しないでください。タスクはPCが起動し、ユーザーの認証情報が使える時だけ動きます。
+`--scan` は未実行の承認済みIssueを最大1件探します。CLIログイン後、次のコマンドで1時間ごとのWindowsタスクを登録できます。最初のコマンドは登録内容を表示するだけです。タスクはPCが起動し、同じWindowsユーザーがサインインしている時だけ動きます。
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\automation\register-agent-issue-task.ps1 -DryRun
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\automation\register-agent-issue-task.ps1
+```
 
 ## 停止条件と確認場所
 
 - ランナーはIssue本文をコマンドとして実行せず、Claude Codeにはファイルの読み書きだけを許します。ビルドとGit操作は固定されたコマンドでランナーが行います。
 - 実装は最大12ターン・推定2米ドル、指摘修正は最大6ターン・推定1米ドル、Codexレビューは最大2回です。各エージェントは10分以内、1回の起動でIssueは最大1件、1日の開始は最大2件です。変更は最大20ファイル・差分100KBで停止します。費用上限はClaude Code側の推定額に基づき、実際の請求の厳密な上限ではありません。Codex CLIにはこのランナーから厳密なトークン上限を設定できないため、回数・時間・差分量で使用量を抑えます。
-- 作業ブランチとログはリポジトリとは別の `C:\Users\maaku\Documents\Codex\one-minute-tools-agent-runs` に残ります。Issueごとの再実行は自動では行いません。
+- 作業ブランチとログはリポジトリとは別の `C:\Users\maaku\Documents\Codex\one-minute-tools-agent-runs` に残ります。Issueごとの再実行は自動では行いません。異常終了後に `runner.lock` が残った場合は、実行中のプロセスがないことを確かめてから手動で取り除きます。
 - ビルド失敗、レビュー不備、CLIエラーでは停止します。成功時はドラフトPRとIssueコメントにリンクが残ります。ChatGPT / Workには「このリポジトリの新しいドラフトPRを確認して」と依頼すれば、差分とレポートを読み取れます。
 - PRを確認して明示的にマージするまで本番サイトには反映されません。ランナー自身はマージもデプロイもしません。Cloudflare Pagesでブランチのプレビュー公開が有効なら、PR用ブランチのpush時にプレビューが作られる可能性があります。
 

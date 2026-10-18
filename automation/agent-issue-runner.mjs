@@ -2,7 +2,7 @@
 // One approved GitHub Issue -> isolated draft PR. No webhook or Issue text is run as shell code.
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { closeSync, existsSync, mkdirSync, openSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -22,11 +22,19 @@ if ((scan === (issueNumber !== null)) || (issueNumber !== null && (!Number.isSaf
   process.exit(2);
 }
 
+// Reuse the existing Git Credential Manager login without storing a GitHub token in this repo.
+// Only gh receives the token; Claude and Codex inherit the ordinary environment.
+const credential = spawnSync('git', ['credential', 'fill'], {
+  input: 'protocol=https\nhost=github.com\n\n', encoding: 'utf8', timeout: 10_000, windowsHide: true,
+});
+const githubToken = credential.status === 0 ? credential.stdout?.match(/^password=(.+)$/m)?.[1] : undefined;
+
 function run(command, commandArgs, { cwd = root, input, timeout = 60_000, ok = true } = {}) {
   // All arguments are script-controlled; Issue text is passed only through stdin.
   const result = spawnSync(command, commandArgs, {
     cwd, input, timeout, encoding: 'utf8', maxBuffer: 2 * 1024 * 1024,
     windowsHide: true, shell: process.platform === 'win32' && command.endsWith('.cmd'),
+    env: command === 'gh' && githubToken ? { ...process.env, GH_TOKEN: githubToken } : process.env,
   });
   if (result.error || (ok && result.status !== 0)) {
     throw new Error(`${command} failed (${result.status ?? result.error?.code}): ${(result.stderr || '').slice(0, 500)}`);
@@ -49,6 +57,14 @@ function approved(issue) {
 }
 
 mkdirSync(runtime, { recursive: true });
+const lockPath = join(runtime, 'runner.lock');
+try {
+  const lock = openSync(lockPath, 'wx');
+  closeSync(lock);
+} catch {
+  throw new Error(`Another run is active, or a stale lock needs inspection: ${lockPath}`);
+}
+process.on('exit', () => { try { unlinkSync(lockPath); } catch { /* A terminated process may need manual cleanup. */ } });
 const ledgerPath = join(runtime, 'attempted-issues.json');
 const ledger = existsSync(ledgerPath) ? JSON.parse(readFileSync(ledgerPath, 'utf8')) : {};
 const today = new Date().toISOString().slice(0, 10);
