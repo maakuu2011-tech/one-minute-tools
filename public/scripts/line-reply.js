@@ -58,7 +58,7 @@ function extractMeetingPlace(text) {
     .replace(/(?:午前|午後|夕方|夜)?\d{1,2}(?::\d{2}|時(?:半|\d{1,2}分)?)(?:に|から)?/g, "");
   const match = normalized.match(/(?:^|[、。！？?])([^、。！？?]{1,18}?)(?:で|に)(?:会|待ち合わせ|集合)/);
   const place = match?.[1]?.replace(/^(?:に|で|は|場所は)/, "") ?? "";
-  return /(?:駅前|駅|改札|カフェ|喫茶店|会議室|公園|広場|ロビー|ホテル|店)$/.test(place) ? place : "";
+  return /(?:駅前|駅|(?:東|西|南|北|中央|八重洲|丸の内){1,2}(?:口|出口)|改札|入口|カフェ|喫茶店|会議室|公園|広場|ロビー|ホテル|店)$/.test(place) ? place : "";
 }
 
 function detailLines(timing, place) {
@@ -71,6 +71,7 @@ function detailLines(timing, place) {
     .filter(Boolean)
     .filter((line) => {
       if (place && line.includes(place) && /(?:で|に)(?:会|待ち合わせ|集合)/.test(line)) return false;
+      if (el.purpose.value === "ok" && /^(?:大丈夫|OK|オーケー|行ける|参加できる)(?:です|だよ)?$/.test(line)) return false;
       if (el.purpose.value !== "ok" || !timing) return true;
       const coreTiming = timing.replace(/(?:までに?|頃|ごろ)$/, "");
       return !(line.includes(coreTiming) && /(?:空いて|大丈夫|行け|参加でき)/.test(line));
