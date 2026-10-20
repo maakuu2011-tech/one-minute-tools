@@ -61,11 +61,8 @@ const formalReplacements = [
   ["待ってください", "お待ちいただけますでしょうか"],
   ["見てください", "ご確認いただけますでしょうか"],
   ["やってください", "ご対応いただけますでしょうか"],
-  ["必ず", ""],
   ["ちゃんと", "念のため"],
   ["早く", "可能でしたら早めに"],
-  ["すぐに", "可能でしたら早めに"],
-  ["すぐ", "可能でしたら早めに"],
   ["あなたのミスです", "確認の過程で行き違いがあったようです"],
   ["なぜできないのですか", "難しい事情がございましたらお知らせください"],
 ];
@@ -95,8 +92,6 @@ const casualReplacements = [
   ["見てください", "見てもらえる？"],
   ["やってください", "対応してもらえる？"],
   ["早く", "できれば早めに"],
-  ["すぐ", "できれば早めに"],
-  ["必ず", "できれば"],
   ["ちゃんと", "念のため"],
 ];
 
@@ -119,6 +114,25 @@ function replaceAll(text, replacements) {
     (result, [before, after]) => result.split(before).join(after),
     text,
   );
+}
+
+function softenCommandAdverbs(text, casual) {
+  const urgency = casual ? "できれば早めに" : "可能でしたら早めに";
+  const certainty = casual ? "できれば" : "";
+
+  return text
+    .split(/(?<=[。！？\n])/)
+    .map((sentence) => {
+      if (!/(?:してください|しなさい|しろ)(?:[。！？]?\s*)$/.test(sentence)) return sentence;
+      const hasUrgency = /(?<!まっ)(?:今すぐ|すぐに|すぐ)/.test(sentence);
+      const softened = sentence
+        .replace(/(?<!まっ)(?:今すぐ|すぐに|すぐ)/g, "")
+        .replace(/(?:絶対に|必ず(?!しも))[\s、,]*/g, certainty);
+      return hasUrgency
+        ? `${urgency}${casual ? "" : "、"}${softened.trimStart()}`
+        : softened;
+    })
+    .join("");
 }
 
 function extractDeadline(note) {
@@ -153,13 +167,19 @@ function applyDeadline(text, deadline) {
 
 function cleanPunctuation(text) {
   return text
+    .replace(/[ \t]+/g, " ")
+    .replace(/[ \t]+([、。！？])/g, "$1")
     .replace(/？[。？]+/g, "？")
     .replace(/！[。！]+/g, "！")
-    .replace(/。{2,}/g, "。");
+    .replace(/。{2,}/g, "。")
+    .split("\n")
+    .map((line) => line.trim())
+    .join("\n")
+    .trim();
 }
 
 function softenFormal(text) {
-  let result = replaceAll(text, formalReplacements);
+  let result = replaceAll(softenCommandAdverbs(text, false), formalReplacements);
 
   result = result
     .replace(/([^\s。！？、]{1,20})してください/g, "$1していただけますでしょうか")
@@ -190,7 +210,7 @@ function softenFormal(text) {
 }
 
 function softenCasual(text) {
-  let result = replaceAll(text, casualReplacements);
+  let result = replaceAll(softenCommandAdverbs(text, true), casualReplacements);
   result = result
     .replace(/([^\s。！？、]{1,20})してください/g, "$1してもらえる？")
     .replace(/([^\s。！？、]{1,20})しなさい/g, "$1してもらえる？")
