@@ -192,10 +192,10 @@ function softenFormal(text) {
 
   if (state.softness === "light") {
     result = result
-      .replace(/ご確認いただけますでしょうか/g, "ご確認をお願いします")
-      .replace(/ご修正いただけますでしょうか/g, "ご修正をお願いします")
-      .replace(/ご返信いただけますでしょうか/g, "ご返信をお願いします")
-      .replace(/ご対応いただけますでしょうか/g, "ご対応をお願いします");
+      .replace(/ご確認いただけますでしょうか/g, "ご確認ください")
+      .replace(/ご修正いただけますでしょうか/g, "ご修正ください")
+      .replace(/ご返信いただけますでしょうか/g, "ご返信ください")
+      .replace(/ご対応いただけますでしょうか/g, "ご対応ください");
   }
 
   if (state.softness === "very") {
