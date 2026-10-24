@@ -400,6 +400,7 @@ function isChatLike() {
 
 function opener(purpose) {
   if (tool.id === "absence-message" && purpose === "report") return "";
+  if (tool.id === "health-absence-message" && purpose === "report") return "";
   if (tool.id === "dm-reply" && purpose === "reply") return "";
   if (tool.id === "boss-reminder" && purpose === "remind") return "お忙しいところ恐れ入ります。";
   if (tool.id === "sales-dm-decline" && purpose === "decline") {
@@ -1221,6 +1222,12 @@ function bodyLines(purpose, incoming, detail) {
 
   if (purpose === "report") {
     if (tool.id === "absence-message") return absenceBodyLines(incoming, detail);
+    if (tool.id === "health-absence-message") {
+      const healthLines = [incoming, detail]
+        .flatMap(splitSentences)
+        .map((sentence) => `${sentence}。`);
+      return healthLines.length ? [healthLines.join("\n")] : [];
+    }
     return state.length === "short"
       ? [conciseCore]
       : [conciseCore, "現時点で大きな懸念があれば、あわせて共有いたします。", "次の対応が決まり次第、続けてご報告します。"];
