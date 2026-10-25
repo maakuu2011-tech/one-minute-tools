@@ -401,6 +401,7 @@ function isChatLike() {
 function opener(purpose) {
   if (tool.id === "absence-message" && purpose === "report") return "";
   if (tool.id === "health-absence-message" && purpose === "report") return "";
+  if (tool.id === "late-arrival-message" && purpose === "report") return "";
   if (tool.id === "dm-reply" && purpose === "reply") return "";
   if (tool.id === "boss-reminder" && purpose === "remind") return "お忙しいところ恐れ入ります。";
   if (tool.id === "sales-dm-decline" && purpose === "decline") {
@@ -768,6 +769,41 @@ function absenceBodyLines(incoming, detail) {
     lines.push(casual ? "予定を欠席します。" : "予定を欠席いたします。");
   }
   return lines;
+}
+
+function lateArrivalBodyLines(incoming, detail) {
+  const casual = state.tone === "casual" || el.relationship.value === "friend";
+  const source = [incoming, detail].filter(Boolean).join("。 ");
+  const lines = [incoming, detail]
+    .flatMap(splitSentences)
+    .map((sentence) => {
+      let text = sentence
+        .replace(
+          /先に始めていてほしい(?:です)?$/,
+          casual ? "先に始めていてください" : "恐れ入りますが、先に始めていただけますでしょうか"
+        )
+        .replace(
+          /ご迷惑をおかけすることを謝りたい(?:です)?$/,
+          casual ? "ご迷惑をおかけして申し訳ありません" : "ご迷惑をおかけし、申し訳ございません"
+        );
+      if (!/[。！？!?]$/.test(text)) text += "。";
+      return text;
+    });
+
+  const arrivalUnknown = /(到着|到着時刻|到着時間|到着見込み).*(未定|分からない|わからない|分かりません|わかりません)|現在確認中/.test(source);
+  const sourceSentences = splitSentences(source);
+  const hasArrivalEstimate = sourceSentences.some((sentence) =>
+    /(?:到着|着く).{0,12}(?:\d{1,2}時(?:\d{1,2}分)?|午前|午後|正午)|(?:\d{1,2}時(?:\d{1,2}分)?|午前|午後|正午).{0,12}(?:到着|着く)|\d+分(?:ほど)?遅れる(?:見込み|予定)/.test(sentence)
+  );
+  const hasFollowUp = sourceSentences.some((sentence) =>
+    /(?:分かり次第|わかり次第|判明次第)[、,]?(?:改めて)?(?:ご)?連絡/.test(sentence)
+    || /(?:到着|到着見込み|到着時刻|到着時間).{0,20}(?:後ほど|改めて)(?:ご)?連絡/.test(sentence)
+  );
+  if (arrivalUnknown && !hasArrivalEstimate && !hasFollowUp) {
+    lines.push(casual ? "到着見込みが分かり次第、改めて連絡します。" : "到着見込みが分かり次第、改めてご連絡いたします。");
+  }
+
+  return lines.length ? [lines.join("\n")] : [];
 }
 
 function dmReplyBodyLines(incoming, detail) {
@@ -1228,6 +1264,7 @@ function bodyLines(purpose, incoming, detail) {
         .map((sentence) => `${sentence}。`);
       return healthLines.length ? [healthLines.join("\n")] : [];
     }
+    if (tool.id === "late-arrival-message") return lateArrivalBodyLines(incoming, detail);
     return state.length === "short"
       ? [conciseCore]
       : [conciseCore, "現時点で大きな懸念があれば、あわせて共有いたします。", "次の対応が決まり次第、続けてご報告します。"];
