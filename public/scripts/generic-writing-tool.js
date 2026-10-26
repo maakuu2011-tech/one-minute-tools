@@ -798,6 +798,7 @@ function lateArrivalBodyLines(incoming, detail) {
   const hasFollowUp = sourceSentences.some((sentence) =>
     /(?:分かり次第|わかり次第|判明次第)[、,]?(?:改めて)?(?:ご)?連絡/.test(sentence)
     || /(?:到着|到着見込み|到着時刻|到着時間).{0,20}(?:後ほど|改めて)(?:ご)?連絡/.test(sentence)
+    || /(?:本日|今日|明日)?\d{1,2}時(?:\d{1,2}分)?(?:まで)?に.{0,20}(?:改めて|再度)?(?:ご)?連絡/.test(sentence)
   );
   if (arrivalUnknown && !hasArrivalEstimate && !hasFollowUp) {
     lines.push(casual ? "到着見込みが分かり次第、改めて連絡します。" : "到着見込みが分かり次第、改めてご連絡いたします。");

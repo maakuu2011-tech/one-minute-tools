@@ -317,7 +317,7 @@
   {
     "id": "late-arrival-message",
     "title": "遅刻連絡メーカー",
-    "description": "遅刻や到着遅れを伝える文章を、理由と到着目安つきで整えます。",
+    "description": "遅刻や到着遅れを、理由・到着見込み・必要な代替対応を残して整えます。到着未定なら次の連絡予定も残せます。",
     "category": "連絡",
     "href": "/tools/late-arrival-message/",
     "status": "公開中",
