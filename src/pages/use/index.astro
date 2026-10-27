@@ -146,7 +146,7 @@ const collectionSchema = {
       <section class="finder-panel use-finder" aria-label="用途検索">
         <div class="field finder-search">
           <label for="useSearch">困っていることを入力</label>
-          <input id="useSearch" type="search" placeholder="例：面接、請求書、退職、返信、断り方" />
+          <input id="useSearch" type="search" placeholder="例：返信 困った 時の返し方" />
         </div>
         <div class="category-filter" aria-label="用途カテゴリで絞り込み">
           <button type="button" class="category-pill use-category-pill" data-use-category="すべて" aria-pressed="true">すべて</button>
@@ -156,7 +156,7 @@ const collectionSchema = {
             </button>
           ))}
         </div>
-        <p class="section__note"><span id="useCount">{usePages.length}</span>件から探せます</p>
+        <p class="section__note" role="status" aria-live="polite"><span id="useCount">{usePages.length}</span>件から探せます</p>
       </section>
 
       <section class="section section--tight" aria-label="用途カテゴリ">
@@ -197,10 +197,11 @@ const collectionSchema = {
           <div>
             <strong>該当する例文が見つかりませんでした</strong>
             <p>短い言葉に変えるか、すべてのカテゴリに戻して探してください。</p>
+            <a class="button secondary" id="searchToolsLink" href="/tools/">同じ言葉でツールを探す</a>
           </div>
         </div>
       </section>
     </div>
   </main>
-  <script is:inline src="/scripts/use-finder.js"></script>
+  <script is:inline src="/scripts/use-finder.js?v=20261027"></script>
 </Layout>

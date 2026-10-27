@@ -3,6 +3,8 @@ const categoryButtons = Array.from(document.querySelectorAll(".category-pill"));
 const toolItems = Array.from(document.querySelectorAll(".tool-item"));
 const toolCount = document.getElementById("toolCount");
 const emptyState = document.getElementById("emptyState");
+const searchUseLink = document.getElementById("searchUseLink");
+const featuredToolsSection = document.getElementById("featuredToolsSection");
 
 let activeCategory = "すべて";
 
@@ -11,11 +13,31 @@ const initialQuery = params.get("q");
 const initialCategory = params.get("category");
 
 function normalize(value) {
-  return value.toLowerCase().replace(/\s+/g, "");
+  return String(value || "")
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/柔らか/g, "やわらか")
+    .replace(/未入金/g, "未払い")
+    .replace(/返事/g, "返信")
+    .replace(/命令口調/g, "命令");
+}
+
+const helperWords = new Set(["メール", "例文", "文例", "文章", "ツール", "メーカー"]);
+
+function queryTerms(value) {
+  const normalized = normalize(value)
+    .replace(/(?:時|とき)の返し方/g, "返し方")
+    .trim();
+  if (!normalized) return [];
+
+  const terms = normalized.split(/[\s　、,・/／|｜]+/).filter(Boolean);
+  if (terms.length === 1) return terms;
+  const concreteTerms = terms.filter((term) => !helperWords.has(term));
+  return concreteTerms.length ? concreteTerms : terms;
 }
 
 function applyFilters() {
-  const query = normalize(searchInput.value);
+  const terms = queryTerms(searchInput.value);
   let visibleCount = 0;
 
   toolItems.forEach((item) => {
@@ -26,9 +48,13 @@ function applyFilters() {
       item.dataset.category,
       item.dataset.keywords,
     ].join(" "));
+    const compactText = text.replace(/[\s　、,・/／|｜]+/g, "");
 
     const categoryMatches = activeCategory === "すべて" || category === activeCategory;
-    const queryMatches = !query || text.includes(query);
+    const queryMatches = terms.length === 0 || terms.every((term) => {
+      const compactTerm = term.replace(/[\s　、,・/／|｜]+/g, "");
+      return text.includes(term) || compactText.includes(compactTerm);
+    });
     const visible = categoryMatches && queryMatches;
 
     item.hidden = !visible;
@@ -37,6 +63,11 @@ function applyFilters() {
 
   toolCount.textContent = String(visibleCount);
   emptyState.hidden = visibleCount !== 0;
+  const filtering = terms.length > 0 || activeCategory !== "すべて";
+  if (featuredToolsSection) featuredToolsSection.hidden = filtering;
+  if (searchUseLink) {
+    searchUseLink.href = `/use/?q=${encodeURIComponent(searchInput.value.trim())}`;
+  }
 }
 
 categoryButtons.forEach((button) => {
