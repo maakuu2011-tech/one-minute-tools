@@ -35,6 +35,10 @@
   function renderList(element, rows) {
     if (!element) return;
     if (!rows.length) {
+      if (
+        element.children.length === 1
+        && element.firstElementChild?.classList.contains("ranking-empty")
+      ) return;
       element.innerHTML = `<li class="ranking-empty">まだ記録がありません。1回遊ぶとここに残ります。</li>`;
       return;
     }

@@ -64,6 +64,7 @@ function applyFilters() {
   toolCount.textContent = String(visibleCount);
   emptyState.hidden = visibleCount !== 0;
   const filtering = terms.length > 0 || activeCategory !== "すべて";
+  document.documentElement.classList.toggle("tools-filtering", filtering);
   if (featuredToolsSection) featuredToolsSection.hidden = filtering;
   if (searchUseLink) {
     searchUseLink.href = `/use/?q=${encodeURIComponent(searchInput.value.trim())}`;

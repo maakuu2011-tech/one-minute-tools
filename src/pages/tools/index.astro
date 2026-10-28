@@ -20,6 +20,16 @@ const categories = ["すべて", ...Array.from(new Set(tools.map((tool) => tool.
 ---
 
 <Layout title="ツール一覧｜無料で使える文章作成ツール集" description="チャット返信、敬語メール、断り方、催促文、謝罪文、言い換えなどを無料で作れる1分ツールの一覧です。用途やカテゴリから探せます。">
+  <script is:inline>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const query = params.get("q")?.trim();
+      const category = params.get("category")?.trim();
+      if (query || (category && category !== "すべて")) {
+        document.documentElement.classList.add("tools-filtering");
+      }
+    })();
+  </script>
   <main class="page">
     <div class="container">
       <div class="section__head tools-head">
@@ -105,5 +115,5 @@ const categories = ["すべて", ...Array.from(new Set(tools.map((tool) => tool.
       </section>
       </div>
   </main>
-  <script is:inline src="/scripts/tool-finder.js?v=20261027"></script>
+  <script is:inline src="/scripts/tool-finder.js?v=20261028"></script>
 </Layout>

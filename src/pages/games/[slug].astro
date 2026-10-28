@@ -94,7 +94,9 @@ const gameSchema = {
           </div>
           <a class="button secondary" href="/games/ranking/">ランキング一覧へ</a>
         </div>
-        <ol class="ranking-list" id="rankingList"></ol>
+        <ol class="ranking-list" id="rankingList">
+          <li class="ranking-empty">まだ記録がありません。1回遊ぶとここに残ります。</li>
+        </ol>
       </section>
 
       <section class="seo-content game-content">
@@ -129,6 +131,6 @@ const gameSchema = {
     </div>
   </main>
   <script type="application/json" id="game-meta" set:html={JSON.stringify({ slug: game.slug })}></script>
-  <script src="/scripts/game-ranking.js" defer></script>
+  <script src="/scripts/game-ranking.js?v=20261028" defer></script>
   <script src={game.script} defer></script>
 </Layout>
