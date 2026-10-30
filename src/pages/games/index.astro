@@ -2,6 +2,7 @@
 import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
 import MascotGuide from "../../components/MascotGuide.astro";
+import gameGroups from "../../data/gameGroups.json";
 import games from "../../data/games.json";
 import { SITE_URL } from "../../../site.config.mjs";
 
@@ -20,23 +21,6 @@ const gameIcons = {
 const featuredGames = ["janken-reaction", "number-order", "sea-battle"]
   .map((slug) => games.find((game) => game.slug === slug))
   .filter(Boolean);
-const gameGroups = [
-  {
-    id: "reaction",
-    label: "反射・タップ",
-    slugs: ["tap-target", "color-match", "number-order", "janken-reaction"],
-  },
-  {
-    id: "brain",
-    label: "頭の体操",
-    slugs: ["memory-cards", "quick-math", "word-scramble"],
-  },
-  {
-    id: "puzzle",
-    label: "パズル・冒険",
-    slugs: ["minesweeper", "sea-battle", "maze-runner"],
-  },
-];
 const gameGroupBySlug = Object.fromEntries(
   gameGroups.flatMap((group) => group.slugs.map((slug) => [slug, group.id])),
 );

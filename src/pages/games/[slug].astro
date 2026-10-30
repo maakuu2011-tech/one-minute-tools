@@ -2,6 +2,7 @@
 import IconBadge from "../../components/IconBadge.astro";
 import Layout from "../../components/Layout.astro";
 import MascotGuide from "../../components/MascotGuide.astro";
+import gameGroups from "../../data/gameGroups.json";
 import games from "../../data/games.json";
 import { SITE_URL } from "../../../site.config.mjs";
 
@@ -13,7 +14,15 @@ export function getStaticPaths() {
 }
 
 const { game } = Astro.props;
-const relatedGames = games.filter((item) => item.slug !== game.slug).slice(0, 3);
+const currentGroup = gameGroups.find((group) => group.slugs.includes(game.slug));
+const sameGroupSlugs = currentGroup?.slugs.filter((slug) => slug !== game.slug) ?? [];
+const fallbackSlugs = games
+  .map((item) => item.slug)
+  .filter((slug) => slug !== game.slug && !sameGroupSlugs.includes(slug));
+const relatedGames = [...sameGroupSlugs, ...fallbackSlugs]
+  .slice(0, 3)
+  .map((slug) => games.find((item) => item.slug === slug))
+  .filter(Boolean);
 const seoDescription = `${game.title}は、${game.description}登録不要・無料でブラウザからすぐ遊べる1分ミニゲームです。`;
 const gameIcons = {
   反射神経: "game",
@@ -110,7 +119,7 @@ const gameSchema = {
         <div class="section__head">
           <div>
             <h2>ほかの1分ゲーム</h2>
-            <p class="section__note">もう少しだけ遊ぶなら、近いサイズのゲームもあります。</p>
+            <p class="section__note">もう少しだけ遊ぶなら、遊び方が近いゲームから選べます。</p>
           </div>
           <a class="button secondary" href="/games/">すべて見る</a>
         </div>
