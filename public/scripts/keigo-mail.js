@@ -80,9 +80,7 @@ function closing() {
 
 function soften(text) {
   if (state.politeness === "formal") {
-    return text
-      .replaceAll("以下の内容で進めます。", "以下の内容にて進めさせていただきます。")
-      .replaceAll("送る", "送付いたします");
+    return text.replaceAll("以下の内容で進めます。", "以下の内容にて進めさせていただきます。");
   }
   if (state.politeness === "soft") {
     return text.replaceAll("恐れ入りますが、", "お手数ですが、");
@@ -90,11 +88,35 @@ function soften(text) {
   return text;
 }
 
+function politeDetailLine(line) {
+  const trimmed = line.trim();
+  if (!trimmed) return "";
+
+  let result = trimmed
+    .replace(/(確認|相談|お願い|調整|連絡)したい(?=[、,。.!！?？]|$)/g, "$1したく存じます")
+    .replace(
+      /(確認|送付|共有|返信|連絡|提出|対応|回答|報告|案内|調整|検討|準備|発送|返送|修正|連携)する(?=[、,。.!！?？]|$)/g,
+      "$1いたします",
+    )
+    .replace(/送る(?=[、,。.!！?？]|$)/g, "お送りします");
+
+  if (!/[。.!！?？]$/.test(result)) result += "。";
+  return result;
+}
+
+function politeDetails(text) {
+  return text
+    .split(/\r?\n/)
+    .map(politeDetailLine)
+    .filter(Boolean)
+    .join("\n");
+}
+
 function detailsBlock() {
   const details = el.details.value.trim();
   if (!details) return "";
   const prefix = state.politeness === "formal" ? "以下の内容にて進めさせていただきます。" : "以下の内容で進めます。";
-  return `${prefix}\n\n${details}`;
+  return `${prefix}\n\n${politeDetails(details)}`;
 }
 
 function extractTopic() {
