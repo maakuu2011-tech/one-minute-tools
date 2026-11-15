@@ -135,22 +135,31 @@ function softenCommandAdverbs(text, casual) {
     .join("");
 }
 
-function extractDeadline(note) {
+function extractDeadlines(note) {
   const normalized = normalizeText(note)
     .replace(/今日/g, "本日")
     .replace(/[（(].*?[）)]/g, "")
     .trim();
-  const match = normalized.match(
-    /((?:本日|明日)(?:の)?(?:午前中|午後|夕方|\d{1,2}時(?:\d{1,2}分)?)?(?:まで|中)|今週中|今週末まで|(?:月|火|水|木|金|土|日)曜(?:日)?(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで|\d{1,2}[月/]\d{1,2}日?(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで|\d{1,2}日(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで)/,
+  const matches = normalized.matchAll(
+    /((?:本日|明日)(?:の)?(?:午前中|午後|夕方|\d{1,2}時(?:\d{1,2}分)?)?(?:まで|中)|今週中|今週末まで|(?:月|火|水|木|金|土|日)曜(?:日)?(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで|\d{1,2}[月/]\d{1,2}日?(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで|\d{1,2}日(?:[\sの]*\d{1,2}時(?:\d{1,2}分)?)?まで)/g,
   );
-  if (!match) return "";
-  return match[1].replace(/^(\d{1,2})\/(\d{1,2})(日?)/, "$1月$2日");
+  return Array.from(matches, (match) =>
+    match[1].replace(/^(\d{1,2})\/(\d{1,2})(日?)/, "$1月$2日"),
+  );
+}
+
+function extractDeadline(note) {
+  return extractDeadlines(note)[0] || "";
 }
 
 function deadlineAdverb(deadline) {
   if (!deadline) return "";
   if (deadline.endsWith("まで")) return `${deadline}に`;
   return `${deadline}に`;
+}
+
+function deadlineComparisonKey(deadline) {
+  return deadline.replace(/[\sの]/g, "");
 }
 
 function applyDeadline(text, deadline) {
@@ -252,9 +261,14 @@ function buildResult() {
   if (!source) return "";
 
   const deadline = extractDeadline(el.note.value);
+  const sourceDeadlineKeys = extractDeadlines(source).map(deadlineComparisonKey);
   const softened =
     el.target.value === "friend" ? softenCasual(source) : softenFormal(source);
-  const core = cleanPunctuation(applyDeadline(softened, deadline));
+  const hasSameDeadline =
+    deadline && sourceDeadlineKeys.includes(deadlineComparisonKey(deadline));
+  const core = cleanPunctuation(
+    applyDeadline(softened, hasSameDeadline ? "" : deadline),
+  );
 
   if (state.length === "short") return core;
 
